@@ -3,17 +3,21 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
       <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="#page-top">{{ $t('navbar.brand') }}</a>
+        <a class="navbar-brand" @click="scrollToTop">{{ $t('navbar.brand') }}</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
           data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
           aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
 
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto my-2 my-lg-0">
-            <li class="nav-item"><a class="nav-link" href="#about">{{ $t('navbar.about') }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="#services">{{ $t('navbar.services') }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="#portfolio">{{ $t('navbar.catalog') }}</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">{{ $t('navbar.contact') }}</a></li>
+            <li class="nav-item"><a class="nav-link" @click="scrollToSection('about')">{{ $t('navbar.about')
+                }}</a></li>
+            <li class="nav-item"><a class="nav-link" @click="scrollToSection('services')">{{
+              $t('navbar.services') }}</a></li>
+            <li class="nav-item"><a class="nav-link" @click="scrollToSection('portfolio')">{{
+              $t('navbar.catalog') }}</a></li>
+            <li class="nav-item"><a class="nav-link" @click="scrollToSection('contact')">{{ $t('navbar.contact')
+                }}</a></li>
 
             <!-- 🔽 Dropdown de idiomas -->
             <li class="nav-item dropdown">
@@ -40,7 +44,7 @@
           </div>
           <div class="col-lg-8 align-self-baseline">
             <p class="text-white-75 mb-5">{{ $t('masthead.subtitle') }}</p>
-            <a class="btn btn-primary btn-xl" href="#about">{{ $t('masthead.discoverButton') }}</a>
+            <a class="btn btn-primary btn-xl" @click="scrollToSection('about')">{{ $t('masthead.discoverButton') }}</a>
           </div>
         </div>
       </div>
@@ -339,6 +343,12 @@ body {
   padding: 1.5rem;
   border-radius: 10px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar-brand,
+.nav-link,
+.btn {
+  cursor: pointer;
 }
 
 .feature-card:hover {
@@ -13101,5 +13111,15 @@ const { locale } = useI18n()
 function setLocale(lang) {
   locale.value = lang
   localStorage.setItem('locale', lang)
+}
+
+function scrollToSection(sectionId) {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
