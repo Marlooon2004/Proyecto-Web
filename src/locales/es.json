@@ -9,11 +9,11 @@
     },
     "masthead": {
         "title": "Tu sitio de renta de motos favorito",
-        "subtitle": "Un espacio para los amantes de las dos ruedas, donde la velocidad y la libertad se encuentran!",
+        "subtitle": "Un espacio para los amantes de las dos ruedas, donde la velocidad y la libertad se encuentran",
         "discoverButton": "Descubre más"
     },
     "about": {
-        "title": "Tenemos lo que necesitas!",
+        "title": "Tenemos lo que necesitas",
         "description": "La moto que necesitas, lista para ti. Renta fácil, rápida y segura.",
         "features": {
             "security": {
@@ -75,12 +75,12 @@
         "custom": "Custom"
     },
     "callToAction": {
-        "title": "Con tu cuenta, guarda tus rutas favoritas y accede más rápido a tus motos preferidas!",
-        "loginButton": "Iniciar sesión!"
+        "title": "Con tu cuenta, guarda tus rutas favoritas y accede más rápido a tus motos preferidas",
+        "loginButton": "Iniciar sesión"
     },
     "contact": {
-        "title": "Mantengámonos en contacto!",
-        "description": "Tienes sugerencias de como podríamos mejorar nuestros servicios, o dudas e inconvenientes, no dudes en contactarnos!",
+        "title": "Mantengámonos en contacto",
+        "description": "Tienes sugerencias de como podríamos mejorar nuestros servicios, o dudas e inconvenientes, no dudes en contactarnos",
         "form": {
             "name": "Nombre completo",
             "namePlaceholder": "Escribe tu nombre...",
@@ -117,25 +117,25 @@
         "loading": "Cargando..."
     },
     "auth": {
-        "login": "Inicia sesión ahora!",
+        "login": "Inicia sesión ahora",
         "username": "Usuario",
         "password": "Contraseña",
         "loginButton": "Iniciar sesión",
         "cancelButton": "Cancelar",
-        "noAccount": "No tienes una cuenta?",
-        "registerHere": "Regístrate aquí!",
-        "register": "Regístrate ahora!",
+        "noAccount": "No tienes una cuenta",
+        "registerHere": "Regístrate aquí",
+        "register": "Regístrate ahora",
         "email": "Correo electrónico",
         "confirmPassword": "Confirmar contraseña",
-        "forgotPassword": "Olvidaste tu contraseña?",
-        "hasAccount": "Ya tienes cuenta? Inicia sesión",
+        "forgotPassword": "Olvidaste tu contraseña",
+        "hasAccount": "Ya tienes cuenta, inicia sesión",
         "firstName": "Nombre",
         "lastName": "Apellidos",
         "municipality": "Seleccione un municipio",
         "idNumber": "CI",
         "repeatPassword": "Repita la contraseña",
         "registerButton": "Registrarse",
-        "loginHere": "Inicia sesión aquí!"
+        "loginHere": "Inicia sesión aquí"
     },
     "catalog": {
         "title": "Catálogo de Motos",
@@ -167,7 +167,7 @@
         "streetDescription3": "Enfocada en usabilidad y comodidad",
         "motocrossCatalog": "Catálogo de motos de motocross",
         "currency": "$",
-        "perDay": "/día",
+        "perDay": "por día",
         "scootersCatalog": "Catálogo de scooters",
         "touringCatalog": "Catálogo de motos touring"
     },
@@ -177,7 +177,7 @@
         "endDate": "Fecha de fin",
         "total": "Total",
         "confirm": "Confirmar Reserva",
-        "success": "Reserva confirmada!"
+        "success": "Reserva confirmada"
     },
     "profile": {
         "title": "Mi Perfil",

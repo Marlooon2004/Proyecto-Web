@@ -9,11 +9,11 @@
   },
   "masthead": {
     "title": "Your favorite motorcycle rental site",
-    "subtitle": "A space for two-wheel lovers, where speed and freedom meet!",
+    "subtitle": "A space for two-wheel lovers, where speed and freedom meet",
     "discoverButton": "Discover more"
   },
   "about": {
-    "title": "We have what you need!",
+    "title": "We have what you need",
     "description": "The motorcycle you need, ready for you. Easy, fast and secure rental.",
     "features": {
       "security": {
@@ -75,12 +75,12 @@
     "custom": "Custom"
   },
   "callToAction": {
-    "title": "With your account, save your favorite routes and access your preferred motorcycles faster!",
-    "loginButton": "Login!"
+    "title": "With your account, save your favorite routes and access your preferred motorcycles faster",
+    "loginButton": "Login"
   },
   "contact": {
-    "title": "Let's keep in touch!",
-    "description": "Do you have suggestions on how we could improve our services, or questions and issues, don't hesitate to contact us!",
+    "title": "Let's keep in touch",
+    "description": "Do you have suggestions on how we could improve our services, or questions and issues, don't hesitate to contact us",
     "form": {
       "name": "Full name",
       "namePlaceholder": "Enter your name...",
@@ -117,25 +117,25 @@
     "loading": "Loading..."
   },
   "auth": {
-    "login": "Login now!",
+    "login": "Login now",
     "username": "Username",
     "password": "Password",
     "loginButton": "Login",
     "cancelButton": "Cancel",
-    "noAccount": "Don't have an account?",
-    "registerHere": "Sign up here!",
-    "register": "Sign up now!",
+    "noAccount": "Don't have an account",
+    "registerHere": "Sign up here",
+    "register": "Sign up now",
     "email": "Email",
     "confirmPassword": "Confirm Password",
-    "forgotPassword": "Forgot Password?",
-    "hasAccount": "Already have an account? Login",
+    "forgotPassword": "Forgot Password",
+    "hasAccount": "Already have an account, login",
     "firstName": "First Name",
     "lastName": "Last Name",
     "municipality": "Select a municipality",
     "idNumber": "ID Number",
     "repeatPassword": "Repeat Password",
     "registerButton": "Sign Up",
-    "loginHere": "Login here!"
+    "loginHere": "Login here"
   },
   "catalog": {
     "title": "Motorcycle Catalog",
@@ -167,7 +167,7 @@
     "streetDescription3": "Focused on usability and comfort",
     "motocrossCatalog": "Motocross motorcycles catalog",
     "currency": "$",
-    "perDay": "/day",
+    "perDay": "per day",
     "scootersCatalog": "Scooters catalog",
     "touringCatalog": "Touring motorcycles catalog"
   },
@@ -177,7 +177,7 @@
     "endDate": "End date",
     "total": "Total",
     "confirm": "Confirm Reservation",
-    "success": "Reservation confirmed!"
+    "success": "Reservation confirmed"
   },
   "profile": {
     "title": "My Profile",
