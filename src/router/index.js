@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import PaginaPrincipal from '../views/pagina-principal.vue'
+import IniciarSesion from '../views/iniciar-sesion.vue'
+import RegistrarCliente from '../views/registrar-cliente.vue'
 
 const routes = [
   {
@@ -10,6 +12,16 @@ const routes = [
     path: '/pagina-principal',
     name: 'PaginaPrincipal',
     component: PaginaPrincipal,
+  },
+  {
+    path: '/iniciar-sesion',
+    name: 'IniciarSesion',
+    component: IniciarSesion,
+  },
+  {
+    path: '/registrar-cliente',
+    name: 'RegistrarCliente',
+    component: RegistrarCliente,
   },
 ]
 

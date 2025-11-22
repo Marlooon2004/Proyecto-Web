@@ -11,7 +11,7 @@
           <ul class="navbar-nav ms-auto my-2 my-lg-0">
             <li class="nav-item"><a class="nav-link" href="#about">Acerca</a></li>
             <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
-            <li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>
+            <li class="nav-item"><a class="nav-link" href="#portfolio">Catálogo</a></li>
             <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
           </ul>
         </div>
@@ -26,9 +26,9 @@
             <hr class="divider" />
           </div>
           <div class="col-lg-8 align-self-baseline">
-            <p class="text-white-75 mb-5">Start Bootstrap can help you build better websites using the Bootstrap
-              framework! Just download a theme and start customizing, no strings attached!</p>
-            <a class="btn btn-primary btn-xl" href="#about">Find Out More</a>
+            <p class="text-white-75 mb-5">Un espacio para los amantes de las dos ruedas, donde la velocidad y la
+              libertad se encuentran.!</p>
+            <a class="btn btn-primary btn-xl" href="#about">Descubre más</a>
           </div>
         </div>
       </div>
@@ -38,48 +38,124 @@
       <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
           <div class="col-lg-8 text-center">
-            <h2 class="text-white mt-0">We've got what you need!</h2>
+            <h2 class="text-white mt-0">Tenemos lo que necesitas!</h2>
             <hr class="divider divider-light" />
-            <p class="text-white-75 mb-4">Start Bootstrap has everything you need to get your new website up and running
-              in no time! Choose one of our open source, free to download, and easy to use themes! No strings attached!
+            <p class="text-white-75 mb-4">
+              La moto que necesitas, lista para ti. Renta fácil, rápida y segura.
             </p>
-            <a class="btn btn-light btn-xl" href="#services">Get Started!</a>
+          </div>
+        </div>
+
+        <!-- Grid de características -->
+        <div class="row mt-5">
+          <!-- Seguridad Primero -->
+          <div class="col-md-4 mb-4">
+            <div class="feature-card h-100">
+              <h3>Seguridad Primero</h3>
+              <p>
+                Cada moto pasa por rigurosas revisiones técnicas antes de cada renta. Incluimos equipos
+                de protección certificados y seguro contra accidentes. Tu tranquilidad es nuestra máxima
+                prioridad en cada kilómetro.
+              </p>
+            </div>
+          </div>
+
+          <!-- Cobertura Nacional -->
+          <div class="col-md-4 mb-4">
+            <div class="feature-card h-100">
+              <h3>Cobertura Nacional</h3>
+              <p>
+                ¿Planeas un viaje interestatal? Tenemos alianzas en múltiples ciudades. Devuelve tu moto
+                en cualquiera de nuestras sucursales asociadas. Viaja sin límites por todo el territorio
+                nacional.
+              </p>
+            </div>
+          </div>
+
+          <!-- Reserva Instantánea -->
+          <div class="col-md-4 mb-4">
+            <div class="feature-card h-100">
+              <h3>Reserva Instantánea</h3>
+              <p>
+                Olvídate de trámites interminables y papeleos complicados. Con nuestro sistema online,
+                reserva tu moto en menos de 3 minutos. Recibe confirmación inmediata y prepárate para
+                rodar.
+              </p>
+            </div>
+          </div>
+
+          <!-- Precios Sin Sorpresas -->
+          <div class="col-md-4 mb-4">
+            <div class="feature-card h-100">
+              <h3>Precios Sin Sorpresas</h3>
+              <p>
+                Todo incluido en tu tarifa: seguro, casco, guantes y asistencia vial. Sin costos ocultos
+                ni cargos adicionales al finalizar. Transparencia total desde el momento de tu cotización.
+              </p>
+            </div>
+          </div>
+
+          <!-- Flota Actualizada -->
+          <div class="col-md-4 mb-4">
+            <div class="feature-card h-100">
+              <h3>Flota Actualizada</h3>
+              <p>
+                Motos de última generación con tecnología de punta. Desde scooters urbanos hasta adventure
+                para terracería. Encuentra la compañera perfecta para cada tipo de viaje.
+              </p>
+            </div>
+          </div>
+
+          <!-- Experiencia Premium -->
+          <div class="col-md-4 mb-4">
+            <div class="feature-card h-100">
+              <h3>Experiencia Premium</h3>
+              <p>
+                Asesoramiento personalizado para elegir la moto ideal. Kit de bienvenida con mapas y rutas
+                recomendadas. Hacemos de tu viaje una experiencia inolvidable.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </section>
+
     <!-- Services-->
     <section class="page-section" id="services">
       <div class="container px-4 px-lg-5">
-        <h2 class="text-center mt-0">At Your Service</h2>
+        <h2 class="text-center mt-0">Servicios que ofrecemos</h2>
         <hr class="divider" />
         <div class="row gx-4 gx-lg-5">
           <div class="col-lg-3 col-md-6 text-center">
             <div class="mt-5">
               <div class="mb-2"><i class="bi-gem fs-1 text-primary"></i></div>
-              <h3 class="h4 mb-2">Sturdy Themes</h3>
-              <p class="text-muted mb-0">Our themes are updated regularly to keep them bug free!</p>
+              <h3 class="h4 mb-2">Reserva en línea</h3>
+              <p class="text-muted mb-0">Sistema de reservas desde la web o aplicación móvil.</p>
+              <p class="text-muted mb-0">Confirmación inmediata y opción de pago seguro en línea.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="mt-5">
               <div class="mb-2"><i class="bi-laptop fs-1 text-primary"></i></div>
-              <h3 class="h4 mb-2">Up to Date</h3>
-              <p class="text-muted mb-0">All dependencies are kept current to keep things fresh.</p>
+              <h3 class="h4 mb-2">Entrega y recogida a domicilio</h3>
+              <p class="text-muted mb-0">Servicio de entrega de la moto en la ubicación del cliente.</p>
+              <p class="text-muted mb-0">Recogida al finalizar el contrato, ahorrando tiempo y desplazamientos.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="mt-5">
               <div class="mb-2"><i class="bi-globe fs-1 text-primary"></i></div>
-              <h3 class="h4 mb-2">Ready to Publish</h3>
-              <p class="text-muted mb-0">You can use this design as is, or you can make changes!</p>
+              <h3 class="h4 mb-2">Renta por horas, días o semanas</h3>
+              <p class="text-muted mb-0">Flexibilidad en los tiempos de alquiler según la necesidad del usuario.</p>
+              <p class="text-muted mb-0">Tarifas dinámicas y transparentes.</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="mt-5">
               <div class="mb-2"><i class="bi-heart fs-1 text-primary"></i></div>
-              <h3 class="h4 mb-2">Made with Love</h3>
-              <p class="text-muted mb-0">Is it really open source if it's not made with love?</p>
+              <h3 class="h4 mb-2">Guías y rutas recomendadas</h3>
+              <p class="text-muted mb-0">Mapas digitales con rutas seguras y turísticas.</p>
+              <p class="text-muted mb-0">Consejos de conducción en la ciudad o carretera.</p>
             </div>
           </div>
         </div>
@@ -149,8 +225,8 @@
     <!-- Call to action-->
     <section class="page-section bg-dark text-white">
       <div class="container px-4 px-lg-5 text-center">
-        <h2 class="mb-4">Free Download at Start Bootstrap!</h2>
-        <a class="btn btn-light btn-xl" href="https://startbootstrap.com/theme/creative/">Download Now!</a>
+        <h2 class="mb-4">Con tu cuenta, guarda tus rutas favoritas y accede más rápido a tus motos preferidas!</h2>
+        <router-link to="/iniciar-sesion" class="btn btn-light btn-xl">Iniciar sesión!</router-link>
       </div>
     </section>
     <!-- Contact-->
@@ -160,7 +236,8 @@
           <div class="col-lg-8 col-xl-6 text-center">
             <h2 class="mt-0">Mantengámonos en contacto!</h2>
             <hr class="divider" />
-            <p class="text-muted mb-5">Tienes sugerencias de como podriamos mejorar nuestros servicios, o dudas e inconvenientes, no dudes en contactarnos!</p>
+            <p class="text-muted mb-5">Tienes sugerencias de como podriamos mejorar nuestros servicios, o dudas e
+              inconvenientes, no dudes en contactarnos!</p>
           </div>
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
@@ -193,7 +270,8 @@
                 <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890"
                   data-sb-validations="required" />
                 <label for="phone">Número telefónico</label>
-                <div class="invalid-feedback" data-sb-feedback="phone:required">Un número de telefono es requerido.</div>
+                <div class="invalid-feedback" data-sb-feedback="phone:required">Un número de telefono es requerido.
+                </div>
               </div>
               <!-- Message input-->
               <div class="form-floating mb-3">
@@ -231,7 +309,12 @@
         <div class="row gx-4 gx-lg-5 justify-content-center">
           <div class="col-lg-4 text-center mb-5 mb-lg-0">
             <i class="bi-phone fs-2 mb-3 text-muted"></i>
-            <div>+53 55861298</div>
+            <div class="small text-center text-muted">Calle Albear entre Colmenares y Pozito, Vedado</div>
+            <div class="small text-center text-muted"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+                <path
+                  d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+              </svg> 7-647-6798</div>
           </div>
         </div>
       </div>
@@ -239,6 +322,7 @@
     <!-- Footer-->
     <footer class="bg-light py-5">
       <div class="container px-4 px-lg-5">
+
         <div class="small text-center text-muted">Copyright &copy; 2024 - Renta de Motos Habana</div>
       </div>
     </footer>
@@ -258,6 +342,34 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+.feature-card {
+  background: transparent;
+  /* sin fondo */
+  color: white;
+  /* texto blanco para contraste con azul */
+  padding: 1.5rem;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+  /* sombra clara sobre azul */
+}
+
+.feature-card h3 {
+  margin-bottom: 0.75rem;
+  font-weight: bold;
+}
+
+.feature-card p {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+
 
 hr {
   margin: 1rem 0;
