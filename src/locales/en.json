@@ -85,7 +85,7 @@
       "name": "Full name",
       "namePlaceholder": "Enter your name...",
       "email": "Email address",
-      "emailPlaceholder": "name@example.com",
+      "emailPlaceholder": "enter your email",
       "phone": "Phone number",
       "phonePlaceholder": "(123) 456-7890",
       "message": "Message",
