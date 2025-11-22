@@ -22,7 +22,7 @@
             },
             "coverage": {
                 "title": "Cobertura Nacional",
-                "description": "¿Planeas un viaje interestatal? Tenemos alianzas en múltiples ciudades. Devuelve tu moto en cualquiera de nuestras sucursales asociadas. Viaja sin límites por todo el territorio nacional."
+                "description": "Planeas un viaje interestatal? Tenemos alianzas en múltiples ciudades. Devuelve tu moto en cualquiera de nuestras sucursales asociadas. Viaja sin límites por todo el territorio nacional."
             },
             "reservation": {
                 "title": "Reserva Instantánea",
@@ -103,7 +103,7 @@
         "phone": "7-647-6798"
     },
     "footer": {
-        "copyright": "Copyright © 2024 - Renta de Motos Habana"
+        "copyright": "Copyright 2024 - Renta de Motos Habana"
     },
     "common": {
         "login": "Iniciar sesión",
@@ -117,7 +117,7 @@
         "loading": "Cargando..."
     },
     "auth": {
-        "login": "Inicia Sesión ahora!",
+        "login": "Inicia sesión ahora!",
         "username": "Usuario",
         "password": "Contraseña",
         "loginButton": "Iniciar sesión",
@@ -127,8 +127,8 @@
         "register": "Regístrate ahora!",
         "email": "Correo electrónico",
         "confirmPassword": "Confirmar contraseña",
-        "forgotPassword": "¿Olvidaste tu contraseña?",
-        "hasAccount": "¿Ya tienes cuenta? Inicia sesión",
+        "forgotPassword": "Olvidaste tu contraseña?",
+        "hasAccount": "Ya tienes cuenta? Inicia sesión",
         "firstName": "Nombre",
         "lastName": "Apellidos",
         "municipality": "Seleccione un municipio",
@@ -177,7 +177,7 @@
         "endDate": "Fecha de fin",
         "total": "Total",
         "confirm": "Confirmar Reserva",
-        "success": "¡Reserva confirmada!"
+        "success": "Reserva confirmada!"
     },
     "profile": {
         "title": "Mi Perfil",
