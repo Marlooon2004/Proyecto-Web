@@ -1,8 +1,13 @@
 <template>
   <div class="contenedor-general">
-
     <!-- Main content -->
     <div class="popular-products">
+      <div class="header">
+        <!-- Botón con cruz -->
+        <button class="btn btn-link text-danger" @click="goHome">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
       <h2 class="section-title">Catálogo de motos custom</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
@@ -30,6 +35,13 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+function goHome() {
+  router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
+}
+
 import moto1 from '@/assets/img/catalogo motos/custom/morbidelli-c652v-2026-port-640x0.jpg'
 import moto2 from '@/assets/img/catalogo motos/custom/punk-500-4-portada-640x0.jpg'
 import moto3 from '@/assets/img/catalogo motos/custom/voge-cu625-2026-port-640x0.jpg'
@@ -54,6 +66,12 @@ const products = [
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
 .contenedor-general {
   position: relative;
   padding: 1rem;

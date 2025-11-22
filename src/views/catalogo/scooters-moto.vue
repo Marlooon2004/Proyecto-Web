@@ -3,6 +3,12 @@
 
     <!-- Main content -->
     <div class="popular-products">
+      <div class="header">
+        <!-- Botón con cruz -->
+        <button class="btn btn-link text-danger" @click="goHome">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
       <h2 class="section-title">Catálogo de scooters</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
@@ -30,6 +36,12 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+function goHome() {
+  router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
+}
 import scooter1 from '@/assets/img/catalogo motos/scooters/mecha-1-portada-640x0.jpg'
 import scooter2 from '@/assets/img/catalogo motos/scooters/morbidelli-sc125re-port-640x0.jpg'
 import scooter3 from '@/assets/img/catalogo motos/scooters/honda-forza-125-2026-port-640x0.jpg'
@@ -78,6 +90,12 @@ const products = [
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
 .contenedor-general {
   position: relative;
   padding: 1rem;

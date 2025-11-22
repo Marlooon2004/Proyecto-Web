@@ -3,6 +3,12 @@
 
     <!-- Main content -->
     <div class="popular-products">
+      <div class="header">
+        <!-- Botón con cruz -->
+        <button class="btn btn-link text-danger" @click="goHome">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
       <h2 class="section-title">Catálogo de motos de calle</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
@@ -30,6 +36,13 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+function goHome() {
+  router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
+}
+
 import moto1 from '@/assets/img/catalogo motos/de calle/yamaha_ys125_54703_4_600.webp'
 import moto2 from '@/assets/img/catalogo motos/de calle/vespa_primavera_125_3v_abs_54703_1_600.webp'
 import moto3 from '@/assets/img/catalogo motos/de calle/kymco_super_dink_125i_54703_3_600.webp'
@@ -60,6 +73,12 @@ const products = [
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
 .contenedor-general {
   position: relative;
   padding: 1rem;
