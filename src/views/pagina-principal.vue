@@ -164,58 +164,62 @@
     <!-- Portfolio-->
     <div id="portfolio">
       <div class="container-fluid p-0">
+        <h2 class="text-center mt-0">Nuestro catalogo</h2>
         <div class="row g-0">
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/img/portfolio/fullsize/1.jpg" title="Project Name">
-              <img class="img-fluid" src="../assets/img/portfolio/thumbnails/1.jpg" alt="..." />
+            <a class="portfolio-box" href="../assets/img/catalogo motos/scooters/mecha-1-portada-640x0.jpg"
+              title="Project Name">
+              <img class="img-fluid" src="../assets/img/catalogo motos/scooters/mecha-1-portada-640x0.jpg" alt="..." />
               <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">Project Name</div>
+                <div class="project-category text-white-50">Scooters</div>
               </div>
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/img/portfolio/fullsize/2.jpg" title="Project Name">
-              <img class="img-fluid" src="../assets/img/portfolio/thumbnails/2.jpg" alt="..." />
+            <a class="portfolio-box" href="../assets/img/catalogo motos/de calle/yamaha_ys125_54703_4_600.webp"
+              title="Project Name">
+              <img class="img-fluid" src="../assets/img/catalogo motos/de calle/yamaha_ys125_54703_4_600.webp"
+                alt="..." />
               <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">Project Name</div>
+                <div class="project-category text-white-50">Motos de calle</div>
               </div>
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/img/portfolio/fullsize/3.jpg" title="Project Name">
-              <img class="img-fluid" src="../assets/img/portfolio/thumbnails/3.jpg" alt="..." />
+            <a class="portfolio-box" href="../assets/img/catalogo motos/deportivas/voge-rr660s-2026-port-640x0.jpg"
+              title="Project Name">
+              <img class="img-fluid" src="../assets/img/catalogo motos/deportivas/voge-rr660s-2026-port-640x0.jpg"
+                alt="..." />
               <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">Project Name</div>
+                <div class="project-category text-white-50">Deportivas</div>
               </div>
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/img/portfolio/fullsize/4.jpg" title="Project Name">
-              <img class="img-fluid" src="../assets/img/portfolio/thumbnails/4.jpg" alt="..." />
+            <a class="portfolio-box" href="../assets/img/catalogo motos/motocross/suzuki-rm-z450-2023-640x0.jpg"
+              title="Project Name">
+              <img class="img-fluid" src="../assets/img/catalogo motos/motocross/suzuki-rm-z450-2023-640x0.jpg"
+                alt="..." />
               <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">Project Name</div>
+                <div class="project-category text-white-50">Motocross</div>
               </div>
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/img/portfolio/fullsize/5.jpg" title="Project Name">
-              <img class="img-fluid" src="../assets/img/portfolio/thumbnails/5.jpg" alt="..." />
+            <a class="portfolio-box" href="../assets/img/catalogo motos/touring/yamaha-tracer-7-2025-port-640x0.jpg"
+              title="Project Name">
+              <img class="img-fluid" src="../assets/img/catalogo motos/touring/yamaha-tracer-7-2025-port-640x0.jpg"
+                alt="..." />
               <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">Project Name</div>
+                <div class="project-category text-white-50">Touring</div>
               </div>
             </a>
           </div>
           <div class="col-lg-4 col-sm-6">
-            <a class="portfolio-box" href="../assets/img/portfolio/fullsize/6.jpg" title="Project Name">
-              <img class="img-fluid" src="../assets/img/portfolio/thumbnails/6.jpg" alt="..." />
+            <a class="portfolio-box" href="../assets/img/catalogo motos/custom/voge-cu625-2026-port-640x0.jpg" title="Project Name">
+              <img class="img-fluid" src="../assets/img/catalogo motos/custom/voge-cu625-2026-port-640x0.jpg" alt="..." />
               <div class="portfolio-box-caption p-3">
-                <div class="project-category text-white-50">Category</div>
-                <div class="project-name">Project Name</div>
+                <div class="project-category text-white-50">Custom</div>
               </div>
             </a>
           </div>
