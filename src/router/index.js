@@ -1,11 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 
-//Pagina principal
+// Pagina principal
 import PaginaPrincipal from '@/views/pagina-principal.vue'
-//Login
+// Login
 import IniciarSesion from '@/views/iniciar-sesion.vue'
 import RegistrarCliente from '@/views/registrar-cliente.vue'
-//Catálogo motos
+// Catálogo motos
 import CustomMoto from '@/views/catalogo/custom-moto.vue'
 import DeportivoMoto from '@/views/catalogo/deportivo-moto.vue'
 import MotoCalle from '@/views/catalogo/moto-calle.vue'
@@ -66,7 +66,8 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // 👇 Hash mode para GitHub Pages
+  history: createWebHashHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior(to) {
     if (to.hash) {
