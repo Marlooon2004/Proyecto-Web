@@ -71,29 +71,8 @@
                   @click="volverAlMenu">
                   Cancelar
                 </button>
-
-                <!-- Register buttons -->
                 <div class="text-center">
-                  <p>o inicie sesión con:</p>
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init
-                    class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-facebook-f"></i>
-                  </button>
-
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init
-                    class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-google"></i>
-                  </button>
-
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init
-                    class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-twitter"></i>
-                  </button>
-
-                  <button type="button" data-mdb-button-init data-mdb-ripple-init
-                    class="btn btn-link btn-floating mx-1">
-                    <i class="fab fa-github"></i>
-                  </button>
+                  <p>Ya tienes una cuenta? <router-link to="/iniciar-sesion">Inicia sesión aquí!</router-link></p>
                 </div>
               </form>
             </div>

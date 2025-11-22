@@ -35,29 +35,7 @@
                     Cancelar
                   </button>
 
-                  <!-- Register buttons -->
                   <div class="text-center">
-                    <p>o inicia sesion con:</p>
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                      class="btn btn-link btn-floating mx-1">
-                      <i class="fab fa-facebook-f"></i>
-                    </button>
-
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                      class="btn btn-link btn-floating mx-1">
-                      <i class="fab fa-google"></i>
-                    </button>
-
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                      class="btn btn-link btn-floating mx-1">
-                      <i class="fab fa-twitter"></i>
-                    </button>
-
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init
-                      class="btn btn-link btn-floating mx-1">
-                      <i class="fab fa-github"></i>
-                    </button>
-
                     <p>No tienes una cuenta? <router-link to="/registrar-cliente">Registráte aquí!</router-link></p>
                   </div>
                 </form>
@@ -91,10 +69,9 @@
   margin-bottom: 50px;
 }
 
-.boton_class{
+.boton_class {
   margin-right: 70px;
 }
-
 </style>
 <script setup>
 import { useRouter } from 'vue-router'
@@ -104,4 +81,3 @@ const router = useRouter()
 function volverAlMenu() {
   router.push('/')
 }</script>
-
