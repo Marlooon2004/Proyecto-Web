@@ -7,27 +7,27 @@
         <div class="col-lg-6 mb-5 mb-lg-0">
           <div class="card cascading-right bg-body-tertiary" style="backdrop-filter: blur(30px);">
             <div class="card-body p-5 shadow-5 text-center">
-              <h2 class="fw-bold mb-5">Regístrate ahora!</h2>
+              <h2 class="fw-bold mb-5">{{ $t('auth.register') }}</h2>
               <form>
                 <!-- 2 column grid layout with text inputs for the first and last names -->
                 <div class="row">
                   <div class="col-md-6 mb-4">
                     <div data-mdb-input-init class="form-outline">
                       <input type="text" id="form3Example1" class="form-control" />
-                      <label class="form-label" for="form3Example1">Nombre</label>
+                      <label class="form-label" for="form3Example1">{{ $t('auth.firstName') }}</label>
                     </div>
                   </div>
                   <div class="col-md-6 mb-4">
                     <div data-mdb-input-init class="form-outline">
                       <input type="text" id="form3Example2" class="form-control" />
-                      <label class="form-label" for="form3Example2">Apellidos</label>
+                      <label class="form-label" for="form3Example2">{{ $t('auth.lastName') }}</label>
                     </div>
                   </div>
                   <!-- Usuario centrado -->
                   <div class="col-12 mb-4 d-flex justify-content-center">
                     <div data-mdb-input-init class="form-outline w-50">
                       <input type="text" id="form3Example3" class="form-control input-usuario" />
-                      <label class="form-label" for="form3Example3">Usuario</label>
+                      <label class="form-label" for="form3Example3">{{ $t('auth.username') }}</label>
                     </div>
                   </div>
                 </div>
@@ -35,44 +35,52 @@
                 <!-- Email input -->
                 <div data-mdb-input-init class="form-outline mb-4">
                   <input type="email" id="form3Example3" class="form-control" />
-                  <label class="form-label" for="form3Example3">Correo</label>
+                  <label class="form-label" for="form3Example3">{{ $t('auth.email') }}</label>
                 </div>
 
                 <!-- Municipio input -->
                 <div data-mdb-input-init class="form-outline mb-4">
                   <select id="municipios_lista" class="validacionMunicipio form-control">
                   </select>
-                  <label class="form-label" for="municipios_lista">Seleccione un municipio</label>
+                  <label class="form-label" for="municipios_lista">{{ $t('auth.municipality') }}</label>
                 </div>
 
                 <!-- CI input -->
                 <div data-mdb-input-init class="form-outline mb-4">
                   <input type="text" id="form3Example4" class="form-control" />
-                  <label class="form-label" for="form3Example4">CI</label>
+                  <label class="form-label" for="form3Example4">{{ $t('auth.idNumber') }}</label>
                 </div>
 
                 <!-- Password input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                  <input type="password" id="form3Example4" class="form-control" />
-                  <label class="form-label" for="form3Example4">Contraseña</label>
+                  <input type="password" id="form3Example5" class="form-control" />
+                  <label class="form-label" for="form3Example5">{{ $t('auth.password') }}</label>
                 </div>
-                <!-- Password input -->
+
+                <!-- Repeat Password input -->
                 <div data-mdb-input-init class="form-outline mb-4">
-                  <input type="password" id="form3Example4" class="form-control" />
-                  <label class="form-label" for="form3Example4">Repita la contraseña</label>
+                  <input type="password" id="form3Example6" class="form-control" />
+                  <label class="form-label" for="form3Example6">{{ $t('auth.repeatPassword') }}</label>
                 </div>
 
                 <!-- Submit button -->
                 <button type="submit" data-mdb-button-init data-mdb-ripple-init
                   class="btn btn-primary btn-block mb-4 boton_class">
-                  Registrarse
+                  {{ $t('auth.registerButton') }}
                 </button>
+
                 <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4"
                   @click="volverAlMenu">
-                  Cancelar
+                  {{ $t('auth.cancelButton') }}
                 </button>
+
                 <div class="text-center">
-                  <p>Ya tienes una cuenta? <router-link to="/iniciar-sesion">Inicia sesión aquí!</router-link></p>
+                  <p>
+                    {{ $t('auth.hasAccount') }}
+                    <router-link to="/iniciar-sesion">
+                      {{ $t('auth.loginHere') }}
+                    </router-link>
+                  </p>
                 </div>
               </form>
             </div>
@@ -109,5 +117,9 @@ function volverAlMenu() {
   .cascading-right {
     margin-right: 0;
   }
+}
+
+.boton_class {
+  margin-right: 70px;
 }
 </style>

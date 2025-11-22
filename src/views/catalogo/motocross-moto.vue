@@ -1,23 +1,32 @@
 <template>
   <div class="contenedor-general">
-
     <!-- Main content -->
     <div class="popular-products">
       <div class="header">
         <!-- Botón con cruz -->
-        <button class="btn btn-link text-danger" @click="goHome">
+        <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
-      <h2 class="section-title">Catálogo de motos de motocross</h2>
+      <h2 class="section-title">{{ $t('catalog.motocrossCatalog') }}</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
           <img :src="product.image" class="product-image" :alt="product.title" />
           <div class="product-body">
             <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ product.description }}</p>
+            <p class="product-description">
+              <template v-if="product.power && product.displacement">
+                {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }} - {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
+              </template>
+              <template v-else-if="product.power">
+                {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
+              </template>
+              <template v-else-if="product.displacement">
+                {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
+              </template>
+            </p>
             <div class="product-info">
-              <span class="product-price">{{ product.price }}</span>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay') }}</span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -26,7 +35,7 @@
             </div>
           </div>
           <div class="product-footer">
-            <button class="btn primary">Reservar</button>
+            <button class="btn primary">{{ $t('catalog.reserve') }}</button>
             <button class="btn secondary">♡</button>
           </div>
         </div>
@@ -42,6 +51,7 @@ const router = useRouter()
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
+
 import moto1 from '@/assets/img/catalogo motos/motocross/ducati-desmo450-mx-port-640x0.jpg'
 import moto2 from '@/assets/img/catalogo motos/motocross/ktm-freeride-e-xc-2023-640x0.jpg'
 import moto3 from '@/assets/img/catalogo motos/motocross/suzuki-rm-z450-2023-640x0.jpg'
@@ -49,18 +59,22 @@ import moto3 from '@/assets/img/catalogo motos/motocross/suzuki-rm-z450-2023-640
 const products = [
   {
     title: 'Ducati Desmo450 MX',
-    description: 'Potencia: 63.5 cv - Cilindrada: 450 cc.',
+    power: '63.5',
+    displacement: '450',
     image: moto1,
+    price: '90'
   },
   {
     title: 'KTM Freeride E-XC',
-    description: 'Potencia: 22 cv.',
+    power: '22',
     image: moto2,
+    price: '70'
   },
   {
     title: 'Suzuki RM-Z450',
-    description: 'Cilindrada: 449 cc.',
+    displacement: '449',
     image: moto3,
+    price: '85'
   }
 ]
 </script>

@@ -1,23 +1,24 @@
 <template>
   <div class="contenedor-general">
-
     <!-- Main content -->
     <div class="popular-products">
       <div class="header">
         <!-- Botón con cruz -->
-        <button class="btn btn-link text-danger" @click="goHome">
+        <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
-      <h2 class="section-title">Catálogo de motos deportivas</h2>
+      <h2 class="section-title">{{ $t('catalog.sportCatalog') }}</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
           <img :src="product.image" class="product-image" :alt="product.title" />
           <div class="product-body">
             <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ product.description }}</p>
+            <p class="product-description">{{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
+              - {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}</p>
             <div class="product-info">
-              <span class="product-price">{{ product.price }}</span>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
+                }}</span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -26,7 +27,7 @@
             </div>
           </div>
           <div class="product-footer">
-            <button class="btn primary">Reservar</button>
+            <button class="btn primary">{{ $t('catalog.reserve') }}</button>
             <button class="btn secondary">♡</button>
           </div>
         </div>
@@ -42,6 +43,7 @@ const router = useRouter()
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
+
 import moto1 from '@/assets/img/catalogo motos/deportivas/voge-rr660s-2026-port-640x0.jpg'
 import moto2 from '@/assets/img/catalogo motos/deportivas/kawasaki-ninja-125-2026-port-640x0.jpg'
 import moto3 from '@/assets/img/catalogo motos/deportivas/kawasaki-ninja-zx-10rr-2023-640x0.jpg'
@@ -52,33 +54,45 @@ import moto6 from '@/assets/img/catalogo motos/deportivas/yamaha-xsr900-gp-2026-
 const products = [
   {
     title: 'VOGE RR660S 2026',
-    description: 'Potencia: 99 cv - Cilindrada: 663 cc.',
+    power: '99',
+    displacement: '663',
     image: moto1,
+    price: '120'
   },
   {
     title: 'Kawasaki Ninja 125 2026',
-    description: 'Potencia: 14.75 cv - Cilindrada: 125 CC.',
+    power: '14.75',
+    displacement: '125',
     image: moto2,
+    price: '45'
   },
   {
     title: 'Kawasaki ZX-10R / RR 2026',
-    description: 'Potencia: 200 cv - Cilindrada: 998 cc.',
+    power: '200',
+    displacement: '998',
     image: moto3,
+    price: '180'
   },
   {
     title: 'KTM 990 RC R',
-    description: 'Enfocada en usabilidad y comodidad - Cilindrada: 125 cc.',
+    power: '130',
+    displacement: '947',
     image: moto4,
+    price: '150'
   },
   {
     title: 'Yamaha R7 2026',
-    description: 'Potencia: 73 cv - Cilindrada: 698 cc.',
+    power: '73',
+    displacement: '698',
     image: moto5,
+    price: '95'
   },
   {
     title: 'Yamaha XSR900 GP 2026',
-    description: 'Potencia: 118 cv - Cilindrada: 890 cc.',
+    power: '118',
+    displacement: '890',
     image: moto6,
+    price: '110'
   }
 ]
 </script>

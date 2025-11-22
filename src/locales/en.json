@@ -1,0 +1,188 @@
+{
+  "navbar": {
+    "brand": "Havana Motorcycle Rental",
+    "language": "Language",
+    "about": "About",
+    "services": "Services",
+    "catalog": "Catalog",
+    "contact": "Contact"
+  },
+  "masthead": {
+    "title": "Your favorite motorcycle rental site",
+    "subtitle": "A space for two-wheel lovers, where speed and freedom meet!",
+    "discoverButton": "Discover more"
+  },
+  "about": {
+    "title": "We have what you need!",
+    "description": "The motorcycle you need, ready for you. Easy, fast and secure rental.",
+    "features": {
+      "security": {
+        "title": "Safety First",
+        "description": "Each motorcycle undergoes rigorous technical inspections before each rental. We include certified protective equipment and accident insurance. Your peace of mind is our top priority on every kilometer."
+      },
+      "coverage": {
+        "title": "National Coverage",
+        "description": "Planning an interstate trip? We have partnerships in multiple cities. Return your motorcycle at any of our associated branches. Travel without limits throughout the national territory."
+      },
+      "reservation": {
+        "title": "Instant Reservation",
+        "description": "Forget about endless paperwork and complicated procedures. With our online system, reserve your motorcycle in less than 3 minutes. Receive immediate confirmation and get ready to ride."
+      },
+      "pricing": {
+        "title": "No Surprise Pricing",
+        "description": "Everything included in your rate: insurance, helmet, gloves and roadside assistance. No hidden costs or additional charges at the end. Total transparency from the moment of your quote."
+      },
+      "fleet": {
+        "title": "Updated Fleet",
+        "description": "Latest generation motorcycles with cutting-edge technology. From urban scooters to adventure bikes for off-road. Find the perfect companion for every type of trip."
+      },
+      "experience": {
+        "title": "Premium Experience",
+        "description": "Personalized advice to choose the ideal motorcycle. Welcome kit with maps and recommended routes. We make your trip an unforgettable experience."
+      }
+    }
+  },
+  "services": {
+    "title": "Services we offer",
+    "onlineBooking": {
+      "title": "Online Booking",
+      "description1": "Booking system from the web or mobile application.",
+      "description2": "Immediate confirmation and secure online payment option."
+    },
+    "delivery": {
+      "title": "Home Delivery and Pickup",
+      "description1": "Motorcycle delivery service at the customer's location.",
+      "description2": "Pickup at the end of the contract, saving time and travel."
+    },
+    "rental": {
+      "title": "Rental by hours, days or weeks",
+      "description1": "Flexibility in rental times according to user needs.",
+      "description2": "Dynamic and transparent rates."
+    },
+    "guides": {
+      "title": "Guides and Recommended Routes",
+      "description1": "Digital maps with safe and tourist routes.",
+      "description2": "Driving tips in the city or on the highway."
+    }
+  },
+  "portfolio": {
+    "title": "Our catalog",
+    "scooters": "Scooters",
+    "street": "Street Motorcycles",
+    "sport": "Sport Bikes",
+    "motocross": "Motocross",
+    "touring": "Touring",
+    "custom": "Custom"
+  },
+  "callToAction": {
+    "title": "With your account, save your favorite routes and access your preferred motorcycles faster!",
+    "loginButton": "Login!"
+  },
+  "contact": {
+    "title": "Let's keep in touch!",
+    "description": "Do you have suggestions on how we could improve our services, or questions and issues, don't hesitate to contact us!",
+    "form": {
+      "name": "Full name",
+      "namePlaceholder": "Enter your name...",
+      "email": "Email address",
+      "emailPlaceholder": "name@example.com",
+      "phone": "Phone number",
+      "phonePlaceholder": "(123) 456-7890",
+      "message": "Message",
+      "messagePlaceholder": "Enter your message here...",
+      "submitButton": "Send",
+      "validations": {
+        "nameRequired": "A name is required.",
+        "emailRequired": "An email is required.",
+        "emailInvalid": "Email is not valid.",
+        "phoneRequired": "A phone number is required.",
+        "messageRequired": "A message is required."
+      }
+    },
+    "location": "Calle Albear entre Colmenares y Pozito, Vedado",
+    "phone": "7-647-6798"
+  },
+  "footer": {
+    "copyright": "Copyright © 2024 - Havana Motorcycle Rental"
+  },
+  "common": {
+    "login": "Login",
+    "register": "Register",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "view": "View",
+    "search": "Search",
+    "loading": "Loading..."
+  },
+  "auth": {
+    "login": "Login now!",
+    "username": "Username",
+    "password": "Password",
+    "loginButton": "Login",
+    "cancelButton": "Cancel",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Sign up here!",
+    "register": "Sign up now!",
+    "email": "Email",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "hasAccount": "Already have an account? Login",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "municipality": "Select a municipality",
+    "idNumber": "ID Number",
+    "repeatPassword": "Repeat Password",
+    "registerButton": "Sign Up",
+    "loginHere": "Login here!"
+  },
+  "catalog": {
+    "title": "Motorcycle Catalog",
+    "customTitle": "Custom Motorcycles",
+    "sportTitle": "Sport Bikes",
+    "streetTitle": "Street Motorcycles",
+    "motocrossTitle": "Motocross",
+    "scootersTitle": "Scooters",
+    "touringTitle": "Touring Motorcycles",
+    "filter": "Filter by category",
+    "filterByPrice": "Filter by price",
+    "price": "Price",
+    "availability": "Availability",
+    "rentNow": "Rent Now",
+    "details": "View Details",
+    "customCatalog": "Custom motorcycles catalog",
+    "reserve": "Reserve",
+    "favorite": "Favorite",
+    "power": "Power",
+    "displacement": "Displacement",
+    "rating": "Rating",
+    "close": "Close",
+    "horsepower": "hp",
+    "cc": "cc",
+    "sportCatalog": "Sport motorcycles catalog",
+    "streetCatalog": "Street motorcycles catalog",
+    "streetDescription1": "3-valve engine with electronic injection for low consumption without losing effectiveness",
+    "streetDescription2": "Perfect for people who want a premium style scooter",
+    "streetDescription3": "Focused on usability and comfort",
+    "motocrossCatalog": "Motocross motorcycles catalog",
+    "currency": "$",
+    "perDay": "/day",
+    "scootersCatalog": "Scooters catalog",
+    "touringCatalog": "Touring motorcycles catalog"
+  },
+  "reservation": {
+    "title": "Book Your Motorcycle",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "total": "Total",
+    "confirm": "Confirm Reservation",
+    "success": "Reservation confirmed!"
+  },
+  "profile": {
+    "title": "My Profile",
+    "personalInfo": "Personal Information",
+    "rentalHistory": "Rental History",
+    "preferences": "Preferences"
+  }
+}

@@ -4,19 +4,21 @@
     <div class="popular-products">
       <div class="header">
         <!-- Botón con cruz -->
-        <button class="btn btn-link text-danger" @click="goHome">
+        <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
-      <h2 class="section-title">Catálogo de motos custom</h2>
+      <h2 class="section-title">{{ $t('catalog.customCatalog') }}</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
           <img :src="product.image" class="product-image" :alt="product.title" />
           <div class="product-body">
             <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ product.description }}</p>
+            <p class="product-description">{{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
+              - {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}</p>
             <div class="product-info">
-              <span class="product-price">{{ product.price }}</span>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
+                }}</span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -25,7 +27,7 @@
             </div>
           </div>
           <div class="product-footer">
-            <button class="btn primary">Reservar</button>
+            <button class="btn primary">{{ $t('catalog.reserve') }}</button>
             <button class="btn secondary">♡</button>
           </div>
         </div>
@@ -49,18 +51,24 @@ import moto3 from '@/assets/img/catalogo motos/custom/voge-cu625-2026-port-640x0
 const products = [
   {
     title: 'Morbidelli C652V 2026',
-    description: 'Potencia: 55.7 cv - Cilindrada: 652 cc.',
+    power: '55.7',
+    displacement: '652',
     image: moto1,
+    price: '85'
   },
   {
     title: 'LETBE PUNK 500 ABS',
-    description: 'Potencia: 54 cv - Cilindrada: 500cc.',
+    power: '54',
+    displacement: '500',
     image: moto2,
+    price: '75'
   },
   {
     title: 'Voge CU625 2026',
-    description: 'Potencia: 60 cv - Cilindrada: 578 cc.',
+    power: '60',
+    displacement: '578',
     image: moto3,
+    price: '80'
   }
 ]
 </script>

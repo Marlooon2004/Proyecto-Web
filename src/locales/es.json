@@ -1,0 +1,188 @@
+{
+    "navbar": {
+        "brand": "Renta de Motos Habana",
+        "language": "Idioma",
+        "about": "Acerca",
+        "services": "Servicios",
+        "catalog": "Catálogo",
+        "contact": "Contacto"
+    },
+    "masthead": {
+        "title": "Tu sitio de renta de motos favorito",
+        "subtitle": "Un espacio para los amantes de las dos ruedas, donde la velocidad y la libertad se encuentran!",
+        "discoverButton": "Descubre más"
+    },
+    "about": {
+        "title": "Tenemos lo que necesitas!",
+        "description": "La moto que necesitas, lista para ti. Renta fácil, rápida y segura.",
+        "features": {
+            "security": {
+                "title": "Seguridad Primero",
+                "description": "Cada moto pasa por rigurosas revisiones técnicas antes de cada renta. Incluimos equipos de protección certificados y seguro contra accidentes. Tu tranquilidad es nuestra máxima prioridad en cada kilómetro."
+            },
+            "coverage": {
+                "title": "Cobertura Nacional",
+                "description": "¿Planeas un viaje interestatal? Tenemos alianzas en múltiples ciudades. Devuelve tu moto en cualquiera de nuestras sucursales asociadas. Viaja sin límites por todo el territorio nacional."
+            },
+            "reservation": {
+                "title": "Reserva Instantánea",
+                "description": "Olvídate de trámites interminables y papeleos complicados. Con nuestro sistema online, reserva tu moto en menos de 3 minutos. Recibe confirmación inmediata y prepárate para rodar."
+            },
+            "pricing": {
+                "title": "Precios Sin Sorpresas",
+                "description": "Todo incluido en tu tarifa: seguro, casco, guantes y asistencia vial. Sin costos ocultos ni cargos adicionales al finalizar. Transparencia total desde el momento de tu cotización."
+            },
+            "fleet": {
+                "title": "Flota Actualizada",
+                "description": "Motos de última generación con tecnología de punta. Desde scooters urbanos hasta adventure para terracería. Encuentra la compañera perfecta para cada tipo de viaje."
+            },
+            "experience": {
+                "title": "Experiencia Premium",
+                "description": "Asesoramiento personalizado para elegir la moto ideal. Kit de bienvenida con mapas y rutas recomendadas. Hacemos de tu viaje una experiencia inolvidable."
+            }
+        }
+    },
+    "services": {
+        "title": "Servicios que ofrecemos",
+        "onlineBooking": {
+            "title": "Reserva en línea",
+            "description1": "Sistema de reservas desde la web o aplicación móvil.",
+            "description2": "Confirmación inmediata y opción de pago seguro en línea."
+        },
+        "delivery": {
+            "title": "Entrega y recogida a domicilio",
+            "description1": "Servicio de entrega de la moto en la ubicación del cliente.",
+            "description2": "Recogida al finalizar el contrato, ahorrando tiempo y desplazamientos."
+        },
+        "rental": {
+            "title": "Renta por horas, días o semanas",
+            "description1": "Flexibilidad en los tiempos de alquiler según la necesidad del usuario.",
+            "description2": "Tarifas dinámicas y transparentes."
+        },
+        "guides": {
+            "title": "Guías y rutas recomendadas",
+            "description1": "Mapas digitales con rutas seguras y turísticas.",
+            "description2": "Consejos de conducción en la ciudad o carretera."
+        }
+    },
+    "portfolio": {
+        "title": "Nuestro catálogo",
+        "scooters": "Scooters",
+        "street": "Motos de calle",
+        "sport": "Deportivas",
+        "motocross": "Motocross",
+        "touring": "Touring",
+        "custom": "Custom"
+    },
+    "callToAction": {
+        "title": "Con tu cuenta, guarda tus rutas favoritas y accede más rápido a tus motos preferidas!",
+        "loginButton": "Iniciar sesión!"
+    },
+    "contact": {
+        "title": "Mantengámonos en contacto!",
+        "description": "Tienes sugerencias de como podríamos mejorar nuestros servicios, o dudas e inconvenientes, no dudes en contactarnos!",
+        "form": {
+            "name": "Nombre completo",
+            "namePlaceholder": "Escribe tu nombre...",
+            "email": "Dirección email",
+            "emailPlaceholder": "name@example.com",
+            "phone": "Número telefónico",
+            "phonePlaceholder": "(123) 456-7890",
+            "message": "Mensaje",
+            "messagePlaceholder": "Escribe tu mensaje aqui...",
+            "submitButton": "Enviar",
+            "validations": {
+                "nameRequired": "Es requerido un nombre.",
+                "emailRequired": "Es requerido un email.",
+                "emailInvalid": "Email no válido.",
+                "phoneRequired": "Un número de teléfono es requerido.",
+                "messageRequired": "Un mensaje es requerido."
+            }
+        },
+        "location": "Calle Albear entre Colmenares y Pozito, Vedado",
+        "phone": "7-647-6798"
+    },
+    "footer": {
+        "copyright": "Copyright © 2024 - Renta de Motos Habana"
+    },
+    "common": {
+        "login": "Iniciar sesión",
+        "register": "Registrarse",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "view": "Ver",
+        "search": "Buscar",
+        "loading": "Cargando..."
+    },
+    "auth": {
+        "login": "Inicia Sesión ahora!",
+        "username": "Usuario",
+        "password": "Contraseña",
+        "loginButton": "Iniciar sesión",
+        "cancelButton": "Cancelar",
+        "noAccount": "No tienes una cuenta?",
+        "registerHere": "Regístrate aquí!",
+        "register": "Regístrate ahora!",
+        "email": "Correo electrónico",
+        "confirmPassword": "Confirmar contraseña",
+        "forgotPassword": "¿Olvidaste tu contraseña?",
+        "hasAccount": "¿Ya tienes cuenta? Inicia sesión",
+        "firstName": "Nombre",
+        "lastName": "Apellidos",
+        "municipality": "Seleccione un municipio",
+        "idNumber": "CI",
+        "repeatPassword": "Repita la contraseña",
+        "registerButton": "Registrarse",
+        "loginHere": "Inicia sesión aquí!"
+    },
+    "catalog": {
+        "title": "Catálogo de Motos",
+        "customTitle": "Motos Custom",
+        "sportTitle": "Motos Deportivas",
+        "streetTitle": "Motos de Calle",
+        "motocrossTitle": "Motocross",
+        "scootersTitle": "Scooters",
+        "touringTitle": "Motos Touring",
+        "filter": "Filtrar por categoría",
+        "filterByPrice": "Filtrar por precio",
+        "price": "Precio",
+        "availability": "Disponibilidad",
+        "rentNow": "Rentar Ahora",
+        "details": "Ver Detalles",
+        "customCatalog": "Catálogo de motos custom",
+        "reserve": "Reservar",
+        "favorite": "Favorito",
+        "power": "Potencia",
+        "displacement": "Cilindrada",
+        "rating": "Calificación",
+        "close": "Cerrar",
+        "horsepower": "cv",
+        "cc": "cc",
+        "sportCatalog": "Catálogo de motos deportivas",
+        "streetCatalog": "Catálogo de motos de calle",
+        "streetDescription1": "Propulsor de 3 válvulas con inyección electrónica para bajo consumo y sin perder eficacia",
+        "streetDescription2": "Perfecto para personas que desean un scooter de estilo premium",
+        "streetDescription3": "Enfocada en usabilidad y comodidad",
+        "motocrossCatalog": "Catálogo de motos de motocross",
+        "currency": "$",
+        "perDay": "/día",
+        "scootersCatalog": "Catálogo de scooters",
+        "touringCatalog": "Catálogo de motos touring"
+    },
+    "reservation": {
+        "title": "Reserva tu Moto",
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de fin",
+        "total": "Total",
+        "confirm": "Confirmar Reserva",
+        "success": "¡Reserva confirmada!"
+    },
+    "profile": {
+        "title": "Mi Perfil",
+        "personalInfo": "Información Personal",
+        "rentalHistory": "Historial de Rentas",
+        "preferences": "Preferencias"
+    }
+}

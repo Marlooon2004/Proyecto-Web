@@ -1,23 +1,24 @@
 <template>
   <div class="contenedor-general">
-
     <!-- Main content -->
     <div class="popular-products">
       <div class="header">
         <!-- Botón con cruz -->
-        <button class="btn btn-link text-danger" @click="goHome">
+        <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
-      <h2 class="section-title">Catálogo de motos de calle</h2>
+      <h2 class="section-title">{{ $t('catalog.streetCatalog') }}</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
           <img :src="product.image" class="product-image" :alt="product.title" />
           <div class="product-body">
             <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ product.description }}</p>
+            <p class="product-description">{{ $t('catalog.displacement') }}: {{ product.displacement }} {{
+              $t('catalog.cc') }}</p>
             <div class="product-info">
-              <span class="product-price">{{ product.price }}</span>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
+                }}</span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -26,7 +27,7 @@
             </div>
           </div>
           <div class="product-footer">
-            <button class="btn primary">Reservar</button>
+            <button class="btn primary">{{ $t('catalog.reserve') }}</button>
             <button class="btn secondary">♡</button>
           </div>
         </div>
@@ -51,23 +52,27 @@ import moto4 from '@/assets/img/catalogo motos/de calle/honda_sh125i_54703_0_600
 const products = [
   {
     title: 'Yamaha YS125',
-    description: 'Cilindrada: 125 cc.',
+    displacement: '125',
     image: moto1,
+    price: '35'
   },
   {
     title: 'Vespa Primavera 125 3V ABS',
-    description: 'Propulsor de 3 válvulas con inyección electrónica para bajo consumo y sin perder eficacia.',
+    displacement: '125',
     image: moto2,
+    price: '40'
   },
   {
     title: 'KYMCO Super Dink 125i',
-    description: 'Perfecto para personas que desean un scooter de estilo premium.',
+    displacement: '125',
     image: moto3,
+    price: '38'
   },
   {
     title: 'Honda SH125i',
-    description: 'Enfocada en usabilidad y comodidad - Cilindrada: 125 cc.',
+    displacement: '125',
     image: moto4,
+    price: '42'
   }
 ]
 </script>

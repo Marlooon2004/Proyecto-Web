@@ -1,23 +1,31 @@
 <template>
   <div class="contenedor-general">
-
     <!-- Main content -->
     <div class="popular-products">
       <div class="header">
         <!-- Botón con cruz -->
-        <button class="btn btn-link text-danger" @click="goHome">
+        <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
-      <h2 class="section-title">Catálogo de scooters</h2>
+      <h2 class="section-title">{{ $t('catalog.scootersCatalog') }}</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
           <img :src="product.image" class="product-image" :alt="product.title" />
           <div class="product-body">
             <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ product.description }}</p>
+            <p class="product-description">
+              <template v-if="product.power && product.displacement">
+                {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }} - {{
+                  $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
+              </template>
+              <template v-else-if="product.displacement">
+                {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
+              </template>
+            </p>
             <div class="product-info">
-              <span class="product-price">{{ product.price }}</span>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
+                }}</span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -26,7 +34,7 @@
             </div>
           </div>
           <div class="product-footer">
-            <button class="btn primary">Reservar</button>
+            <button class="btn primary">{{ $t('catalog.reserve') }}</button>
             <button class="btn secondary">♡</button>
           </div>
         </div>
@@ -42,6 +50,7 @@ const router = useRouter()
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
+
 import scooter1 from '@/assets/img/catalogo motos/scooters/mecha-1-portada-640x0.jpg'
 import scooter2 from '@/assets/img/catalogo motos/scooters/morbidelli-sc125re-port-640x0.jpg'
 import scooter3 from '@/assets/img/catalogo motos/scooters/honda-forza-125-2026-port-640x0.jpg'
@@ -53,38 +62,51 @@ import scooter7 from '@/assets/img/catalogo motos/scooters/voge-sr16-125-2025-po
 const products = [
   {
     title: 'LETBE Mecha 125',
-    description: 'Cilindrada: 125 cc.',
+    displacement: '125',
     image: scooter1,
+    price: '30'
   },
   {
     title: 'Morbidelli SC125RE',
-    description: 'Potencia: 11cv - Cilindrada: 123.6 cc.',
+    power: '11',
+    displacement: '123.6',
     image: scooter2,
+    price: '32'
   },
   {
     title: 'Honda Forza 125 2026',
-    description: 'Potencia: 14.35cv - Cilindrada: 124.9 cc.',
+    power: '14.35',
+    displacement: '124.9',
     image: scooter3,
+    price: '35'
   },
   {
     title: 'Lambretta X Series 125 - 300SR',
-    description: 'Potencia: 14.3cv - Cilindrada: 125 cc.',
+    power: '14.3',
+    displacement: '125',
     image: scooter4,
+    price: '38'
   },
   {
     title: 'LETBE Island 125',
-    description: 'Potencia: 12cv - Cilindrada: 125 cc.',
+    power: '12',
+    displacement: '125',
     image: scooter5,
+    price: '28'
   },
   {
     title: 'LETBE Neon 125',
-    description: 'Potencia: 12cv - Cilindrada: 125 cc.',
+    power: '12',
+    displacement: '125',
     image: scooter6,
+    price: '27'
   },
   {
     title: 'VOGE SR16',
-    description: 'Potencia: 11.5cv - Cilindrada: 125 cc.',
+    power: '11.5',
+    displacement: '125',
     image: scooter7,
+    price: '29'
   }
 ]
 </script>

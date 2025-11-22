@@ -2,41 +2,44 @@
   <div>
     <!-- Section: Design Block -->
     <section class="text-center text-lg-start">
-
       <!-- Jumbotron -->
       <div class="container py-4">
         <div class="row g-0 align-items-center">
           <div class="col-lg-6 mb-5 mb-lg-0">
-            <div class="card cascading-right bg-body-tertiary" style="
-            backdrop-filter: blur(30px);
-            ">
+            <div class="card cascading-right bg-body-tertiary" style="backdrop-filter: blur(30px);">
               <div class="card-body p-5 shadow-5 text-center">
-                <h2 class="fw-bold mb-5">Inicia Sesión ahora!</h2>
+                <h2 class="fw-bold mb-5">{{ $t('auth.login') }}</h2>
                 <form>
-                  <!-- 2 column grid layout with text inputs for the first and last names -->
+                  <!-- Username input -->
                   <div data-mdb-input-init class="form-outline">
                     <input type="text" id="form3Example1" class="form-control" />
-                    <label class="form-label" for="form3Example1">Usuario</label>
+                    <label class="form-label" for="form3Example1">{{ $t('auth.username') }}</label>
                   </div>
 
                   <!-- Password input -->
                   <div data-mdb-input-init class="form-outline mb-4">
                     <input type="password" id="form3Example4" class="form-control" />
-                    <label class="form-label" for="form3Example4">Contraseña</label>
+                    <label class="form-label" for="form3Example4">{{ $t('auth.password') }}</label>
                   </div>
 
                   <!-- Submit button -->
                   <button type="submit" data-mdb-button-init data-mdb-ripple-init
                     class="btn btn-primary btn-block mb-4 boton_class">
-                    Iniciar sesión
+                    {{ $t('auth.loginButton') }}
                   </button>
+
                   <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4"
                     @click="volverAlMenu">
-                    Cancelar
+                    {{ $t('auth.cancelButton') }}
                   </button>
 
                   <div class="text-center">
-                    <p>No tienes una cuenta? <router-link to="/registrar-cliente">Registráte aquí!</router-link></p>
+                    <p>
+                      {{ $t('auth.noAccount') }}
+                      <router-link to="/registrar-cliente">
+                        {{ $t('auth.registerHere') }}
+                      </router-link>
+                    </p>
                   </div>
                 </form>
               </div>
@@ -54,6 +57,7 @@
     <!-- Section: Design Block -->
   </div>
 </template>
+
 <style>
 .cascading-right {
   margin-right: -50px;
@@ -73,6 +77,7 @@
   margin-right: 70px;
 }
 </style>
+
 <script setup>
 import { useRouter } from 'vue-router'
 
@@ -80,4 +85,5 @@ const router = useRouter()
 
 function volverAlMenu() {
   router.push('/')
-}</script>
+}
+</script>

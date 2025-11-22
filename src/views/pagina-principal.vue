@@ -3,45 +3,58 @@
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
       <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="#page-top">Renta de Motos Habana</a>
+        <a class="navbar-brand" href="#page-top">{{ $t('navbar.brand') }}</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse"
           data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
           aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto my-2 my-lg-0">
-            <li class="nav-item"><a class="nav-link" href="#about">Acerca</a></li>
-            <li class="nav-item"><a class="nav-link" href="#services">Servicios</a></li>
-            <li class="nav-item"><a class="nav-link" href="#portfolio">Catálogo</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">Contacto</a></li>
+            <li class="nav-item"><a class="nav-link" href="#about">{{ $t('navbar.about') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="#services">{{ $t('navbar.services') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="#portfolio">{{ $t('navbar.catalog') }}</a></li>
+            <li class="nav-item"><a class="nav-link" href="#contact">{{ $t('navbar.contact') }}</a></li>
+
+            <!-- 🔽 Dropdown de idiomas -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="Dropdown" role="button" data-bs-toggle="dropdown">
+                {{ $t('navbar.language') }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="Dropdown">
+                <li><a class="dropdown-item" @click="setLocale('en')">English</a></li>
+                <li><a class="dropdown-item" @click="setLocale('es')">Español</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
+
     <!-- Masthead-->
     <header class="masthead">
       <div class="container px-4 px-lg-5 h-100">
         <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
           <div class="col-lg-8 align-self-end">
-            <h1 class="text-white font-weight-bold">Tu sitio de renta de motos favorito</h1>
+            <h1 class="text-white font-weight-bold">{{ $t('masthead.title') }}</h1>
             <hr class="divider" />
           </div>
           <div class="col-lg-8 align-self-baseline">
-            <p class="text-white-75 mb-5">Un espacio para los amantes de las dos ruedas, donde la velocidad y la
-              libertad se encuentran.!</p>
-            <a class="btn btn-primary btn-xl" href="#about">Descubre más</a>
+            <p class="text-white-75 mb-5">{{ $t('masthead.subtitle') }}</p>
+            <a class="btn btn-primary btn-xl" href="#about">{{ $t('masthead.discoverButton') }}</a>
           </div>
         </div>
       </div>
     </header>
+
     <!-- About-->
     <section class="page-section bg-primary" id="about">
       <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
           <div class="col-lg-8 text-center">
-            <h2 class="text-white mt-0">Tenemos lo que necesitas!</h2>
+            <h2 class="text-white mt-0">{{ $t('about.title') }}</h2>
             <hr class="divider divider-light" />
             <p class="text-white-75 mb-4">
-              La moto que necesitas, lista para ti. Renta fácil, rápida y segura.
+              {{ $t('about.description') }}
             </p>
           </div>
         </div>
@@ -51,69 +64,48 @@
           <!-- Seguridad Primero -->
           <div class="col-md-4 mb-4">
             <div class="feature-card h-100">
-              <h3>Seguridad Primero</h3>
-              <p>
-                Cada moto pasa por rigurosas revisiones técnicas antes de cada renta. Incluimos equipos
-                de protección certificados y seguro contra accidentes. Tu tranquilidad es nuestra máxima
-                prioridad en cada kilómetro.
-              </p>
+              <h3>{{ $t('about.features.security.title') }}</h3>
+              <p>{{ $t('about.features.security.description') }}</p>
             </div>
           </div>
 
           <!-- Cobertura Nacional -->
           <div class="col-md-4 mb-4">
             <div class="feature-card h-100">
-              <h3>Cobertura Nacional</h3>
-              <p>
-                ¿Planeas un viaje interestatal? Tenemos alianzas en múltiples ciudades. Devuelve tu moto
-                en cualquiera de nuestras sucursales asociadas. Viaja sin límites por todo el territorio
-                nacional.
-              </p>
+              <h3>{{ $t('about.features.coverage.title') }}</h3>
+              <p>{{ $t('about.features.coverage.description') }}</p>
             </div>
           </div>
 
           <!-- Reserva Instantánea -->
           <div class="col-md-4 mb-4">
             <div class="feature-card h-100">
-              <h3>Reserva Instantánea</h3>
-              <p>
-                Olvídate de trámites interminables y papeleos complicados. Con nuestro sistema online,
-                reserva tu moto en menos de 3 minutos. Recibe confirmación inmediata y prepárate para
-                rodar.
-              </p>
+              <h3>{{ $t('about.features.reservation.title') }}</h3>
+              <p>{{ $t('about.features.reservation.description') }}</p>
             </div>
           </div>
 
           <!-- Precios Sin Sorpresas -->
           <div class="col-md-4 mb-4">
             <div class="feature-card h-100">
-              <h3>Precios Sin Sorpresas</h3>
-              <p>
-                Todo incluido en tu tarifa: seguro, casco, guantes y asistencia vial. Sin costos ocultos
-                ni cargos adicionales al finalizar. Transparencia total desde el momento de tu cotización.
-              </p>
+              <h3>{{ $t('about.features.pricing.title') }}</h3>
+              <p>{{ $t('about.features.pricing.description') }}</p>
             </div>
           </div>
 
           <!-- Flota Actualizada -->
           <div class="col-md-4 mb-4">
             <div class="feature-card h-100">
-              <h3>Flota Actualizada</h3>
-              <p>
-                Motos de última generación con tecnología de punta. Desde scooters urbanos hasta adventure
-                para terracería. Encuentra la compañera perfecta para cada tipo de viaje.
-              </p>
+              <h3>{{ $t('about.features.fleet.title') }}</h3>
+              <p>{{ $t('about.features.fleet.description') }}</p>
             </div>
           </div>
 
           <!-- Experiencia Premium -->
           <div class="col-md-4 mb-4">
             <div class="feature-card h-100">
-              <h3>Experiencia Premium</h3>
-              <p>
-                Asesoramiento personalizado para elegir la moto ideal. Kit de bienvenida con mapas y rutas
-                recomendadas. Hacemos de tu viaje una experiencia inolvidable.
-              </p>
+              <h3>{{ $t('about.features.experience.title') }}</h3>
+              <p>{{ $t('about.features.experience.description') }}</p>
             </div>
           </div>
         </div>
@@ -123,48 +115,49 @@
     <!-- Services-->
     <section class="page-section" id="services">
       <div class="container px-4 px-lg-5">
-        <h2 class="text-center mt-0">Servicios que ofrecemos</h2>
+        <h2 class="text-center mt-0">{{ $t('services.title') }}</h2>
         <hr class="divider" />
         <div class="row gx-4 gx-lg-5">
           <div class="col-lg-3 col-md-6 text-center">
             <div class="mt-5">
               <div class="mb-2"><i class="bi-gem fs-1 text-primary"></i></div>
-              <h3 class="h4 mb-2">Reserva en línea</h3>
-              <p class="text-muted mb-0">Sistema de reservas desde la web o aplicación móvil.</p>
-              <p class="text-muted mb-0">Confirmación inmediata y opción de pago seguro en línea.</p>
+              <h3 class="h4 mb-2">{{ $t('services.onlineBooking.title') }}</h3>
+              <p class="text-muted mb-0">{{ $t('services.onlineBooking.description1') }}</p>
+              <p class="text-muted mb-0">{{ $t('services.onlineBooking.description2') }}</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="mt-5">
               <div class="mb-2"><i class="bi-laptop fs-1 text-primary"></i></div>
-              <h3 class="h4 mb-2">Entrega y recogida a domicilio</h3>
-              <p class="text-muted mb-0">Servicio de entrega de la moto en la ubicación del cliente.</p>
-              <p class="text-muted mb-0">Recogida al finalizar el contrato, ahorrando tiempo y desplazamientos.</p>
+              <h3 class="h4 mb-2">{{ $t('services.delivery.title') }}</h3>
+              <p class="text-muted mb-0">{{ $t('services.delivery.description1') }}</p>
+              <p class="text-muted mb-0">{{ $t('services.delivery.description2') }}</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="mt-5">
               <div class="mb-2"><i class="bi-globe fs-1 text-primary"></i></div>
-              <h3 class="h4 mb-2">Renta por horas, días o semanas</h3>
-              <p class="text-muted mb-0">Flexibilidad en los tiempos de alquiler según la necesidad del usuario.</p>
-              <p class="text-muted mb-0">Tarifas dinámicas y transparentes.</p>
+              <h3 class="h4 mb-2">{{ $t('services.rental.title') }}</h3>
+              <p class="text-muted mb-0">{{ $t('services.rental.description1') }}</p>
+              <p class="text-muted mb-0">{{ $t('services.rental.description2') }}</p>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 text-center">
             <div class="mt-5">
               <div class="mb-2"><i class="bi-heart fs-1 text-primary"></i></div>
-              <h3 class="h4 mb-2">Guías y rutas recomendadas</h3>
-              <p class="text-muted mb-0">Mapas digitales con rutas seguras y turísticas.</p>
-              <p class="text-muted mb-0">Consejos de conducción en la ciudad o carretera.</p>
+              <h3 class="h4 mb-2">{{ $t('services.guides.title') }}</h3>
+              <p class="text-muted mb-0">{{ $t('services.guides.description1') }}</p>
+              <p class="text-muted mb-0">{{ $t('services.guides.description2') }}</p>
             </div>
           </div>
         </div>
       </div>
     </section>
+
     <!-- Portfolio-->
     <div id="portfolio">
       <div class="container-fluid p-0">
-        <h2 class="text-center mt-0">Nuestro catalogo</h2>
+        <h2 class="text-center mt-0">{{ $t('portfolio.title') }}</h2>
         <div class="row g-0">
           <div class="col-lg-4 col-sm-6">
             <a class="portfolio-box" href="../assets/img/catalogo motos/scooters/mecha-1-portada-640x0.jpg"
@@ -172,7 +165,7 @@
                 <img class="img-fluid" src="../assets/img/catalogo motos/scooters/mecha-1-portada-640x0.jpg"
                   alt="..." />
                 <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">Scooters</div>
+                  <div class="project-category text-white-50">{{ $t('portfolio.scooters') }}</div>
                 </div>
               </router-link>
             </a>
@@ -183,7 +176,7 @@
                 <img class="img-fluid" src="../assets/img/catalogo motos/de calle/yamaha_ys125_54703_4_600.webp"
                   alt="..." />
                 <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">Motos de calle</div>
+                  <div class="project-category text-white-50">{{ $t('portfolio.street') }}</div>
                 </div>
               </router-link>
             </a>
@@ -194,7 +187,7 @@
                 <img class="img-fluid" src="../assets/img/catalogo motos/deportivas/voge-rr660s-2026-port-640x0.jpg"
                   alt="..." />
                 <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">Deportivas</div>
+                  <div class="project-category text-white-50">{{ $t('portfolio.sport') }}</div>
                 </div>
               </router-link>
             </a>
@@ -205,7 +198,7 @@
                 <img class="img-fluid" src="../assets/img/catalogo motos/motocross/suzuki-rm-z450-2023-640x0.jpg"
                   alt="..." />
                 <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">Motocross</div>
+                  <div class="project-category text-white-50">{{ $t('portfolio.motocross') }}</div>
                 </div>
               </router-link>
             </a>
@@ -216,7 +209,7 @@
                 <img class="img-fluid" src="../assets/img/catalogo motos/touring/yamaha-tracer-7-2025-port-640x0.jpg"
                   alt="..." />
                 <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">Touring</div>
+                  <div class="project-category text-white-50">{{ $t('portfolio.touring') }}</div>
                 </div>
               </router-link>
             </a>
@@ -227,7 +220,7 @@
                 <img class="img-fluid" src="../assets/img/catalogo motos/custom/voge-cu625-2026-port-640x0.jpg"
                   alt="..." />
                 <div class="portfolio-box-caption p-3">
-                  <div class="project-category text-white-50">Custom</div>
+                  <div class="project-category text-white-50">{{ $t('portfolio.custom') }}</div>
                 </div>
               </router-link>
             </a>
@@ -235,108 +228,90 @@
         </div>
       </div>
     </div>
+
     <!-- Call to action-->
     <section class="page-section bg-dark text-white">
       <div class="container px-4 px-lg-5 text-center">
-        <h2 class="mb-4">Con tu cuenta, guarda tus rutas favoritas y accede más rápido a tus motos preferidas!</h2>
-        <router-link to="/iniciar-sesion" class="btn btn-light btn-xl">Iniciar sesión!</router-link>
+        <h2 class="mb-4">{{ $t('callToAction.title') }}</h2>
+        <router-link to="/iniciar-sesion" class="btn btn-light btn-xl">{{ $t('callToAction.loginButton')
+          }}</router-link>
       </div>
     </section>
+
     <!-- Contact-->
     <section class="page-section" id="contact">
       <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
           <div class="col-lg-8 col-xl-6 text-center">
-            <h2 class="mt-0">Mantengámonos en contacto!</h2>
+            <h2 class="mt-0">{{ $t('contact.title') }}</h2>
             <hr class="divider" />
-            <p class="text-muted mb-5">Tienes sugerencias de como podriamos mejorar nuestros servicios, o dudas e
-              inconvenientes, no dudes en contactarnos!</p>
+            <p class="text-muted mb-5">{{ $t('contact.description') }}</p>
           </div>
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
           <div class="col-lg-6">
-            <!-- * * * * * * * * * * * * * * *-->
-            <!-- * * SB Forms Contact Form * *-->
-            <!-- * * * * * * * * * * * * * * *-->
-            <!-- This form is pre-integrated with SB Forms.-->
-            <!-- To make this form functional, sign up at-->
-            <!-- https://startbootstrap.com/solution/contact-forms-->
-            <!-- to get an API token!-->
             <form id="contactForm" data-sb-form-api-token="API_TOKEN">
               <!-- Name input-->
               <div class="form-floating mb-3">
-                <input class="form-control" id="name" type="text" placeholder="Escribe tu nombre..."
+                <input class="form-control" id="name" type="text" :placeholder="$t('contact.form.namePlaceholder')"
                   data-sb-validations="required" />
-                <label for="name">Nombre completo</label>
-                <div class="invalid-feedback" data-sb-feedback="name:required">Es requerido un nombre.</div>
+                <label for="name">{{ $t('contact.form.name') }}</label>
+                <div class="invalid-feedback" data-sb-feedback="name:required">{{
+                  $t('contact.form.validations.nameRequired') }}</div>
               </div>
               <!-- Email address input-->
               <div class="form-floating mb-3">
-                <input class="form-control" id="email" type="email" placeholder="name@example.com"
+                <input class="form-control" id="email" type="email" :placeholder="$t('contact.form.emailPlaceholder')"
                   data-sb-validations="required,email" />
-                <label for="email">Dirección email</label>
-                <div class="invalid-feedback" data-sb-feedback="email:required">Es requerido un email.</div>
-                <div class="invalid-feedback" data-sb-feedback="email:email">Email no válido.</div>
+                <label for="email">{{ $t('contact.form.email') }}</label>
+                <div class="invalid-feedback" data-sb-feedback="email:required">{{
+                  $t('contact.form.validations.emailRequired') }}</div>
+                <div class="invalid-feedback" data-sb-feedback="email:email">{{
+                  $t('contact.form.validations.emailInvalid') }}</div>
               </div>
               <!-- Phone number input-->
               <div class="form-floating mb-3">
-                <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890"
+                <input class="form-control" id="phone" type="tel" :placeholder="$t('contact.form.phonePlaceholder')"
                   data-sb-validations="required" />
-                <label for="phone">Número telefónico</label>
-                <div class="invalid-feedback" data-sb-feedback="phone:required">Un número de telefono es requerido.
-                </div>
+                <label for="phone">{{ $t('contact.form.phone') }}</label>
+                <div class="invalid-feedback" data-sb-feedback="phone:required">{{
+                  $t('contact.form.validations.phoneRequired') }}</div>
               </div>
               <!-- Message input-->
               <div class="form-floating mb-3">
-                <textarea class="form-control" id="message" type="text" placeholder="Escribe tu mensaje aqui..."
-                  style="height: 10rem" data-sb-validations="required"></textarea>
-                <label for="message">Mensaje</label>
-                <div class="invalid-feedback" data-sb-feedback="message:required">Un mensaje es requerido.</div>
-              </div>
-              <!-- Submit success message-->
-              <!---->
-              <!-- This is what your users will see when the form-->
-              <!-- has successfully submitted-->
-              <div class="d-none" id="submitSuccessMessage">
-                <div class="text-center mb-3">
-                  <div class="fw-bolder">Form submission successful!</div>
-                  To activate this form, sign up at
-                  <br />
-                  <a
-                    href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                </div>
-              </div>
-              <!-- Submit error message-->
-              <!---->
-              <!-- This is what your users will see when there is-->
-              <!-- an error submitting the form-->
-              <div class="d-none" id="submitErrorMessage">
-                <div class="text-center text-danger mb-3">Error sending message!</div>
+                <textarea class="form-control" id="message" type="text"
+                  :placeholder="$t('contact.form.messagePlaceholder')" style="height: 10rem"
+                  data-sb-validations="required"></textarea>
+                <label for="message">{{ $t('contact.form.message') }}</label>
+                <div class="invalid-feedback" data-sb-feedback="message:required">{{
+                  $t('contact.form.validations.messageRequired') }}</div>
               </div>
               <!-- Submit Button-->
-              <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton"
-                  type="submit">Enviar</button></div>
+              <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">{{
+                $t('contact.form.submitButton') }}</button></div>
             </form>
           </div>
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center">
           <div class="col-lg-4 text-center mb-5 mb-lg-0">
             <i class="bi-phone fs-2 mb-3 text-muted"></i>
-            <div class="small text-center text-muted">Calle Albear entre Colmenares y Pozito, Vedado</div>
-            <div class="small text-center text-muted"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+            <div class="small text-center text-muted">{{ $t('contact.location') }}</div>
+            <div class="small text-center text-muted">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone"
+                viewBox="0 0 16 16">
                 <path
                   d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-              </svg> 7-647-6798</div>
+              </svg> {{ $t('contact.phone') }}
+            </div>
           </div>
         </div>
       </div>
     </section>
+
     <!-- Footer-->
     <footer class="bg-light py-5">
       <div class="container px-4 px-lg-5">
-
-        <div class="small text-center text-muted">Copyright &copy; 2024 - Renta de Motos Habana</div>
+        <div class="small text-center text-muted">{{ $t('footer.copyright') }}</div>
       </div>
     </footer>
   </div>
@@ -13118,8 +13093,13 @@ header.masthead .h1 {
   opacity: 1;
 }
 </style>
-<script>
-export default {
-  name: "pagina-principal"
+<script setup>
+import { useI18n } from 'vue-i18n'
+
+const { locale } = useI18n()
+
+function setLocale(lang) {
+  locale.value = lang
+  localStorage.setItem('locale', lang)
 }
 </script>

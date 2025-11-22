@@ -1,23 +1,24 @@
 <template>
   <div class="contenedor-general">
-
     <!-- Main content -->
     <div class="popular-products">
       <div class="header">
         <!-- Botón con cruz -->
-        <button class="btn btn-link text-danger" @click="goHome">
+        <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
-      <h2 class="section-title">Catálogo de motos touring</h2>
+      <h2 class="section-title">{{ $t('catalog.touringCatalog') }}</h2>
       <div class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
           <img :src="product.image" class="product-image" :alt="product.title" />
           <div class="product-body">
             <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ product.description }}</p>
+            <p class="product-description">{{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
+              - {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}</p>
             <div class="product-info">
-              <span class="product-price">{{ product.price }}</span>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
+                }}</span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -26,7 +27,7 @@
             </div>
           </div>
           <div class="product-footer">
-            <button class="btn primary">Reservar</button>
+            <button class="btn primary">{{ $t('catalog.reserve') }}</button>
             <button class="btn secondary">♡</button>
           </div>
         </div>
@@ -42,6 +43,7 @@ const router = useRouter()
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
+
 import moto1 from '@/assets/img/catalogo motos/touring/mv-agusta-turismo-veloce-2023-640x0.jpg'
 import moto2 from '@/assets/img/catalogo motos/touring/suzuki-sv-7gx-2026-port-640x0.jpg'
 import moto3 from '@/assets/img/catalogo motos/touring/yamaha-tracer-7-2025-port-640x0.jpg'
@@ -49,18 +51,24 @@ import moto3 from '@/assets/img/catalogo motos/touring/yamaha-tracer-7-2025-port
 const products = [
   {
     title: 'MV Agusta Turismo Veloce R',
-    description: 'Potencia: 110 cv - Cilindrada: 798 cc.',
+    power: '110',
+    displacement: '798',
     image: moto1,
+    price: '130'
   },
   {
     title: 'Suzuki SV-7GX-2026',
-    description: 'Potencia: 73 cv - Cilindrada: 645cc.',
+    power: '73',
+    displacement: '645',
     image: moto2,
+    price: '85'
   },
   {
     title: 'Yamaha Tracer 7 / GT 2025',
-    description: 'Potencia: 72 cv - Cilindrada: 689 cc.',
+    power: '72',
+    displacement: '689',
     image: moto3,
+    price: '90'
   }
 ]
 </script>
