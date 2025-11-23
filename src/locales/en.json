@@ -135,7 +135,14 @@
     "idNumber": "ID Number",
     "repeatPassword": "Repeat Password",
     "registerButton": "Sign Up",
-    "loginHere": "Login here"
+    "loginHere": "Login here",
+    "phoneNumber": "Phone number",
+    "age": "Age",
+    "loginSuccess": "Login successful 🎉",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "registerSuccess": "Registration successful 🎉"
   },
   "catalog": {
     "title": "Motorcycle Catalog",
@@ -184,5 +191,20 @@
     "personalInfo": "Personal Information",
     "rentalHistory": "Rental History",
     "preferences": "Preferences"
+  },
+  "validation": {
+    "requiredField": "This field is required.",
+    "usernameRules": "Minimum 3 characters. Letters and numbers allowed.",
+    "passwordRules": "Minimum 8 characters and at least 1 number.",
+    "nameMinLength": "Name must be at least 2 characters.",
+    "lastNameMinLength": "Last name must be at least 2 characters.",
+    "emailInvalid": "Email is not valid.",
+    "phoneLength": "Phone must have 8 digits.",
+    "minAge": "You must be over 18 years old.",
+    "maxAge": "Invalid age.",
+    "idNumberLength": "ID card must have 11 digits.",
+    "passwordsMustMatch": "Passwords must match.",
+    "idNumberInvalidDate": "Invalid date in ID card.",
+    "idNumberAgeMismatch": "ID card does not match the provided age."
   }
 }

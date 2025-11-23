@@ -135,7 +135,14 @@
         "idNumber": "CI",
         "repeatPassword": "Repita la contraseña",
         "registerButton": "Registrarse",
-        "loginHere": "Inicia sesión aquí"
+        "loginHere": "Inicia sesión aquí",
+        "phoneNumber": "Numero telefónico",
+        "age": "Edad",
+        "loginSuccess": "Inicio de sesión exitoso 🎉",
+        "gender": "Sexo",
+        "male": "Hombre",
+        "female": "Mujer",
+        "registerSuccess": "Registro exitoso 🎉"
     },
     "catalog": {
         "title": "Catálogo de Motos",
@@ -184,5 +191,20 @@
         "personalInfo": "Información Personal",
         "rentalHistory": "Historial de Rentas",
         "preferences": "Preferencias"
+    },
+    "validation": {
+        "requiredField": "Este campo es obligatorio.",
+        "usernameRules": "Mínimo 3 caracteres. Se permiten letras y números.",
+        "passwordRules": "Mínimo 8 caracteres y al menos 1 número.",
+        "nameMinLength": "El nombre debe tener al menos 2 caracteres.",
+        "lastNameMinLength": "Los apellidos deben tener al menos 2 caracteres.",
+        "emailInvalid": "Email no válido.",
+        "phoneLength": "El teléfono debe tener 8 dígitos.",
+        "minAge": "Debes ser mayor de 18 años.",
+        "maxAge": "Edad no válida.",
+        "idNumberLength": "El carnet debe tener 11 dígitos.",
+        "passwordsMustMatch": "Las contraseñas deben coincidir.",
+        "idNumberInvalidDate": "Fecha en el carnet no válida.",
+        "idNumberAgeMismatch": "El carnet no coincide con la edad proporcionada."
     }
 }
