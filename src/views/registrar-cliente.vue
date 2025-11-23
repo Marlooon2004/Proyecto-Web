@@ -1,13 +1,13 @@
 <template>
   <div>
     <section class="text-center text-lg-start">
-      <div class="container py-4">
+      <div class="container py-3 py-md-4">
         <div class="row g-0 align-items-center">
-          <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="col-lg-6 mb-4 mb-lg-0 order-2 order-lg-1">
             <div class="card cascading-right bg-body-tertiary" style="backdrop-filter: blur(30px);">
-              <div class="card-body p-5 shadow-5 text-center">
-                <h2 class="fw-bold mb-5">{{ $t('auth.register') }}</h2>
-                <form @submit.prevent="registrarUsuario">
+              <div class="card-body p-3 p-md-4 p-lg-5 shadow-5 text-center">
+                <h2 class="fw-bold mb-4 mb-md-5">{{ $t('auth.register') }}</h2>
+                <form @submit.prevent="registrarUsuario" class="form-register">
 
                   <!-- Nombre -->
                   <div class="form-outline">
@@ -94,17 +94,19 @@
                     <span class="mensaje" :class="validacionRepetirContrasenya">{{ mensajeRepetirContrasenya }}</span>
                   </div>
 
-                  <!-- Submit button -->
-                  <button type="submit" class="btn btn-primary btn-block mb-4 boton_class">
-                    {{ $t('auth.registerButton') }}
-                  </button>
+                  <!-- Submit buttons -->
+                  <div class="d-flex flex-column flex-md-row gap-2 gap-md-3 justify-content-center mt-4">
+                    <button type="submit" class="btn btn-primary btn-block flex-fill">
+                      {{ $t('auth.registerButton') }}
+                    </button>
 
-                  <button type="button" class="btn btn-primary btn-block mb-4" @click="volverAlMenu">
-                    {{ $t('auth.cancelButton') }}
-                  </button>
+                    <button type="button" class="btn btn-primary btn-block flex-fill" @click="volverAlMenu">
+                      {{ $t('auth.cancelButton') }}
+                    </button>
+                  </div>
 
-                  <div class="text-center">
-                    <p>
+                  <div class="text-center mt-3 mt-md-4">
+                    <p class="mb-0">
                       {{ $t('auth.hasAccount') }}
                       <router-link to="/iniciar-sesion">
                         {{ $t('auth.loginHere') }}
@@ -116,9 +118,9 @@
             </div>
           </div>
 
-          <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="col-lg-6 mb-4 mb-lg-0 order-1 order-lg-2">
             <img src="../assets/img/BMW_Motorcycle_Roads_2020_S_1000_XR_Motorcyclist_591906_600x800.jpg"
-              class="w-100 rounded-4 shadow-4" alt="" />
+              class="w-100 rounded-4 shadow-4 img-fluid" alt="" />
           </div>
         </div>
       </div>
@@ -198,7 +200,7 @@ watch([edad, carnet], () => {
   }
 })
 
-// Funciones de validación
+// Funciones de validación (mantener igual)
 function validarNombre() {
   if (!nombre.value) {
     mensajeNombre.value = t('validation.requiredField')
@@ -254,7 +256,6 @@ function validarEmail() {
 }
 
 function validarTelefono() {
-  // Solo permite números
   telefono.value = telefono.value.replace(/\D/g, '')
 
   if (!telefono.value) {
@@ -306,7 +307,6 @@ function validarMunicipio() {
 }
 
 function validarCarnet() {
-  // Solo permite números
   carnet.value = carnet.value.replace(/\D/g, '')
 
   if (!carnet.value) {
@@ -321,19 +321,16 @@ function validarCarnet() {
     return
   }
 
-  // Extraer componentes de la fecha del carnet
   const añoCarnet = parseInt(carnet.value.substring(0, 2))
   const mesCarnet = parseInt(carnet.value.substring(2, 4))
   const diaCarnet = parseInt(carnet.value.substring(4, 6))
 
-  // Validar fecha
   if (!esFechaValida(añoCarnet, mesCarnet, diaCarnet)) {
     mensajeCarnet.value = t('validation.idNumberInvalidDate')
     validacionCarnet.value = 'invalido'
     return
   }
 
-  // Validar coincidencia EXACTA con la edad
   if (edad.value && !coincideEdadConCarnet(edad.value, añoCarnet, mesCarnet, diaCarnet)) {
     mensajeCarnet.value = t('validation.idNumberAgeMismatch')
     validacionCarnet.value = 'invalido'
@@ -345,14 +342,11 @@ function validarCarnet() {
 }
 
 function esFechaValida(año, mes, dia) {
-  // Validar mes
   if (mes < 1 || mes > 12) return false
 
-  // Validar día
   const diasPorMes = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   if (dia < 1 || dia > diasPorMes[mes - 1]) return false
 
-  // Validar febrero en años no bisiestos
   if (mes === 2 && dia === 29) {
     const añoCompleto = año <= new Date().getFullYear() % 100 ? 2000 + año : 1900 + año
     if (!esBisiesto(añoCompleto)) return false
@@ -371,19 +365,14 @@ function coincideEdadConCarnet(edad, añoCarnet, mesCarnet, diaCarnet) {
   const mesActual = ahora.getMonth() + 1
   const diaActual = ahora.getDate()
 
-  // Determinar el siglo (1900 o 2000)
-  // Si el año del carnet es mayor que el año actual en 2 dígitos, es 1900, sino 2000
   let añoNacimiento = añoCarnet > (añoActual % 100) ? 1900 + añoCarnet : 2000 + añoCarnet
 
-  // Calcular edad exacta basada en el carnet
   let edadCalculada = añoActual - añoNacimiento
 
-  // Ajustar si aún no ha cumplido años este año
   if (mesActual < mesCarnet || (mesActual === mesCarnet && diaActual < diaCarnet)) {
     edadCalculada--
   }
 
-  // Validación EXACTA - sin tolerancia
   return edadCalculada === parseInt(edad)
 }
 
@@ -399,7 +388,6 @@ function validarContrasenya() {
     mensajeContrasenya.value = ''
     validacionContrasenya.value = 'valido'
   }
-  // Validar también la contraseña repetida cuando cambia la original
   validarRepetirContrasenya()
 }
 
@@ -464,15 +452,54 @@ function volverAlMenu() {
 @media (max-width: 991.98px) {
   .cascading-right {
     margin-right: 0;
+    margin-top: 20px;
+  }
+
+  .card-body {
+    padding: 2rem 1.5rem !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .card-body {
+    padding: 1.5rem 1rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .container.py-3 {
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .card-body {
+    padding: 1rem 0.75rem !important;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem !important;
   }
 }
 
 .form-outline {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
-.boton_class {
-  margin-right: 70px;
+@media (max-width: 767.98px) {
+  .form-outline {
+    margin-bottom: 15px;
+  }
 }
 
 .valido {
@@ -484,9 +511,15 @@ function volverAlMenu() {
 }
 
 .mensaje {
-  font-size: 0.875rem;
+  font-size: 0.8rem;
   margin-top: 0.25rem;
   display: block;
+}
+
+@media (max-width: 767.98px) {
+  .mensaje {
+    font-size: 0.75rem;
+  }
 }
 
 .valido.mensaje {
@@ -499,5 +532,41 @@ function volverAlMenu() {
 
 .mensaje:empty {
   display: none;
+}
+
+/* Botones responsive */
+@media (max-width: 767.98px) {
+  .btn {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+}
+
+/* Mejorar select en móviles */
+@media (max-width: 767.98px) {
+  select.form-control {
+    font-size: 16px;
+    /* Previene zoom en iOS */
+  }
+}
+
+/* Asegurar que la imagen sea responsive */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Scroll suave para formularios largos en móviles */
+.form-register {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 991.98px) {
+  .form-register {
+    max-height: none;
+    overflow-y: visible;
+  }
 }
 </style>

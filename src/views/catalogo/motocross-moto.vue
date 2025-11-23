@@ -1,9 +1,7 @@
 <template>
   <div class="contenedor-general">
-    <!-- Main content -->
     <div class="popular-products">
       <div class="header">
-        <!-- Botón con cruz -->
         <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
@@ -16,7 +14,8 @@
             <h5 class="product-title">{{ product.title }}</h5>
             <p class="product-description">
               <template v-if="product.power && product.displacement">
-                {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }} - {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
+                {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }} - {{
+                  $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
               </template>
               <template v-else-if="product.power">
                 {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
@@ -26,7 +25,8 @@
               </template>
             </p>
             <div class="product-info">
-              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay') }}</span>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
+                }}</span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -35,7 +35,21 @@
             </div>
           </div>
           <div class="product-footer">
-            <button class="btn primary">{{ $t('catalog.reserve') }}</button>
+            <router-link :to="{
+              name: 'ReservarMoto',
+              query: {
+                id: index + 1,
+                nombre: product.title,
+                categoria: 'motocross',
+                imagen: product.image,
+                precio: product.price,
+                potencia: product.power || '0',
+                cilindrada: product.displacement || '0',
+                rating: '4.5'
+              }
+            }" class="btn primary">
+              {{ $t('catalog.reserve') }}
+            </router-link>
             <button class="btn secondary">♡</button>
           </div>
         </div>
@@ -91,7 +105,6 @@ const products = [
   padding: 1rem;
 }
 
-/* Sidebar toggle button */
 .sidebar-toggle {
   position: fixed;
   top: 1rem;
@@ -106,7 +119,6 @@ const products = [
   cursor: pointer;
 }
 
-/* Offcanvas sidebar */
 .offcanvas {
   position: fixed;
   top: 0;
@@ -168,7 +180,6 @@ const products = [
   color: #00bfff;
 }
 
-/* Product styles (ya existentes) */
 .popular-products {
   max-width: 1200px;
   margin: 3rem auto;
@@ -286,6 +297,9 @@ const products = [
 .btn.primary {
   background-color: #007bff;
   color: white;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
 }
 
 .btn.primary:hover {

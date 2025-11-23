@@ -3,10 +3,10 @@
     <section class="text-center text-lg-start">
       <div class="container py-4">
         <div class="row g-0 align-items-center">
-          <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="col-lg-6 mb-5 mb-lg-0 order-2 order-lg-1">
             <div class="card cascading-right bg-body-tertiary" style="backdrop-filter: blur(30px);">
-              <div class="card-body p-5 shadow-5 text-center">
-                <h2 class="fw-bold mb-5">{{ $t('auth.login') }}</h2>
+              <div class="card-body p-4 p-md-5 shadow-5 text-center">
+                <h2 class="fw-bold mb-4 mb-md-5">{{ $t('auth.login') }}</h2>
                 <form @submit.prevent="iniciarSesion">
 
                   <!-- Username input -->
@@ -24,16 +24,19 @@
                   </div>
 
                   <!-- Submit button -->
-                  <button type="submit" class="btn btn-primary btn-block mb-4 boton_class">
-                    {{ $t('auth.loginButton') }}
-                  </button>
+                  <div class="d-flex flex-column flex-md-row gap-2 gap-md-3 justify-content-center">
+                    <button type="submit" class="btn btn-primary btn-block mb-2 mb-md-0 flex-fill">
+                      {{ $t('auth.loginButton') }}
+                    </button>
 
-                  <button type="button" class="btn btn-primary btn-block mb-4" @click="volverAlMenu">
-                    {{ $t('auth.cancelButton') }}
-                  </button>
+                    <button type="button" class="btn btn-primary btn-block mb-2 mb-md-0 flex-fill"
+                      @click="volverAlMenu">
+                      {{ $t('auth.cancelButton') }}
+                    </button>
+                  </div>
 
-                  <div class="text-center">
-                    <p>
+                  <div class="text-center mt-3 mt-md-4">
+                    <p class="mb-0">
                       {{ $t('auth.noAccount') }}
                       <router-link to="/registrar-cliente">
                         {{ $t('auth.registerHere') }}
@@ -45,9 +48,9 @@
             </div>
           </div>
 
-          <div class="col-lg-6 mb-5 mb-lg-0">
+          <div class="col-lg-6 mb-5 mb-lg-0 order-1 order-lg-2">
             <img src="../assets/img/BMW_Motorcycle_Roads_2020_S_1000_XR_Motorcyclist_591906_600x800.jpg"
-              class="w-100 rounded-4 shadow-4" alt="" />
+              class="w-100 rounded-4 shadow-4 img-fluid" alt="" />
           </div>
         </div>
       </div>
@@ -120,15 +123,37 @@ function volverAlMenu() {
 @media (max-width: 991.98px) {
   .cascading-right {
     margin-right: 0;
+    margin-top: 20px;
+  }
+
+  .card-body {
+    padding: 2rem 1.5rem !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .card-body {
+    padding: 1.5rem 1rem !important;
+  }
+
+  h2 {
+    font-size: 1.5rem;
   }
 }
 
 .form-outline {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
-.boton_class {
-  margin-right: 70px;
+@media (max-width: 767.98px) {
+  .form-outline {
+    margin-bottom: 20px;
+  }
 }
 
 .valido {
@@ -151,5 +176,31 @@ function volverAlMenu() {
 
 .invalido.mensaje {
   color: #dc3545;
+}
+
+/* Mejoras para botones en móviles */
+@media (max-width: 767.98px) {
+  .btn {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+}
+
+/* Asegurar que la imagen sea responsive */
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Mejorar espaciado en móviles */
+@media (max-width: 575.98px) {
+  .container.py-4 {
+    padding-top: 1rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  .card-body {
+    padding: 1rem 0.75rem !important;
+  }
 }
 </style>

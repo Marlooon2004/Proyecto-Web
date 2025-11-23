@@ -12,6 +12,8 @@ import MotoCalle from '@/views/catalogo/moto-calle.vue'
 import MotocrossMoto from '@/views/catalogo/motocross-moto.vue'
 import ScootersMoto from '@/views/catalogo/scooters-moto.vue'
 import TouringMoto from '@/views/catalogo/touring-moto.vue'
+// Reservar moto
+import ReservarMoto from '@/views/catalogo/reservar-moto.vue'
 
 const routes = [
   { path: '/', redirect: '/pagina-principal' },
@@ -24,6 +26,12 @@ const routes = [
   { path: '/motocross-moto', name: 'MotocrossMoto', component: MotocrossMoto },
   { path: '/scooters-moto', name: 'ScootersMoto', component: ScootersMoto },
   { path: '/touring-moto', name: 'TouringMoto', component: TouringMoto },
+  // Cambia esta ruta para usar params
+  {
+    path: '/reservar-moto',
+    name: 'ReservarMoto',
+    component: ReservarMoto,
+  },
 ]
 
 const router = createRouter({

@@ -1,9 +1,7 @@
 <template>
   <div class="contenedor-general">
-    <!-- Main content -->
     <div class="popular-products">
       <div class="header">
-        <!-- Botón con cruz -->
         <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
@@ -25,7 +23,7 @@
             </p>
             <div class="product-info">
               <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
-                }}</span>
+              }}</span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -34,7 +32,21 @@
             </div>
           </div>
           <div class="product-footer">
-            <button class="btn primary">{{ $t('catalog.reserve') }}</button>
+            <router-link :to="{
+              name: 'ReservarMoto',
+              query: {
+                id: index + 1,
+                nombre: product.title,
+                categoria: 'scooters',
+                imagen: product.image,
+                precio: product.price,
+                potencia: product.power || '0',
+                cilindrada: product.displacement,
+                rating: '4.5'
+              }
+            }" class="btn primary">
+              {{ $t('catalog.reserve') }}
+            </router-link>
             <button class="btn secondary">♡</button>
           </div>
         </div>

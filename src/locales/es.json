@@ -184,7 +184,17 @@
         "endDate": "Fecha de fin",
         "total": "Total",
         "confirm": "Confirmar Reserva",
-        "success": "Reserva confirmada"
+        "success": "Reserva confirmada exitosamente",
+        "selectDates": "Por favor selecciona las fechas de inicio y fin",
+        "includeInsurance": "Incluir seguro",
+        "paymentMethod": "Forma de pago",
+        "cash": "Efectivo",
+        "card": "Tarjeta",
+        "cardNumber": "Número de tarjeta",
+        "expiryDate": "Fecha de expiración",
+        "cvv": "CVV",
+        "completeCardDetails": "Por favor completa todos los detalles de la tarjeta",
+        "price": "Precio"
     },
     "profile": {
         "title": "Mi Perfil",
