@@ -11,13 +11,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto my-2 my-lg-0">
             <li class="nav-item"><a class="nav-link" @click="scrollToSection('about')">{{ $t('navbar.about')
-                }}</a></li>
+            }}</a></li>
             <li class="nav-item"><a class="nav-link" @click="scrollToSection('services')">{{
               $t('navbar.services') }}</a></li>
             <li class="nav-item"><a class="nav-link" @click="scrollToSection('portfolio')">{{
               $t('navbar.catalog') }}</a></li>
             <li class="nav-item"><a class="nav-link" @click="scrollToSection('contact')">{{ $t('navbar.contact')
-                }}</a></li>
+            }}</a></li>
 
             <!-- 🔽 Dropdown de idiomas -->
             <li class="nav-item dropdown">
@@ -238,7 +238,7 @@
       <div class="container px-4 px-lg-5 text-center">
         <h2 class="mb-4">{{ $t('callToAction.title') }}</h2>
         <router-link to="/iniciar-sesion" class="btn btn-light btn-xl">{{ $t('callToAction.loginButton')
-          }}</router-link>
+        }}</router-link>
       </div>
     </section>
 
@@ -254,45 +254,50 @@
         </div>
         <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
           <div class="col-lg-6">
-            <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+            <form id="contactForm" @submit.prevent="submitContactForm">
               <!-- Name input-->
               <div class="form-floating mb-3">
-                <input class="form-control" id="name" type="text" :placeholder="$t('contact.form.namePlaceholder')"
-                  data-sb-validations="required" />
+                <input class="form-control" id="name" type="text" v-model="contactForm.name"
+                  :placeholder="$t('contact.form.namePlaceholder')" :class="{ 'is-invalid': contactErrors.name }" />
                 <label for="name">{{ $t('contact.form.name') }}</label>
-                <div class="invalid-feedback" data-sb-feedback="name:required">{{
-                  $t('contact.form.validations.nameRequired') }}</div>
+                <div class="invalid-feedback" v-if="contactErrors.name">
+                  {{ contactErrors.name }}
+                </div>
               </div>
               <!-- Email address input-->
               <div class="form-floating mb-3">
-                <input class="form-control" id="email" type="email" :placeholder="$t('contact.form.emailPlaceholder')"
-                  data-sb-validations="required,email" />
+                <input class="form-control" id="email" type="email" v-model="contactForm.email"
+                  :placeholder="$t('contact.form.emailPlaceholder')" :class="{ 'is-invalid': contactErrors.email }" />
                 <label for="email">{{ $t('contact.form.email') }}</label>
-                <div class="invalid-feedback" data-sb-feedback="email:required">{{
-                  $t('contact.form.validations.emailRequired') }}</div>
-                <div class="invalid-feedback" data-sb-feedback="email:email">{{
-                  $t('contact.form.validations.emailInvalid') }}</div>
+                <div class="invalid-feedback" v-if="contactErrors.email">
+                  {{ contactErrors.email }}
+                </div>
               </div>
               <!-- Phone number input-->
               <div class="form-floating mb-3">
-                <input class="form-control" id="phone" type="tel" :placeholder="$t('contact.form.phonePlaceholder')"
-                  data-sb-validations="required" />
+                <input class="form-control" id="phone" type="tel" v-model="contactForm.phone"
+                  :placeholder="$t('contact.form.phonePlaceholder')" :class="{ 'is-invalid': contactErrors.phone }" />
                 <label for="phone">{{ $t('contact.form.phone') }}</label>
-                <div class="invalid-feedback" data-sb-feedback="phone:required">{{
-                  $t('contact.form.validations.phoneRequired') }}</div>
+                <div class="invalid-feedback" v-if="contactErrors.phone">
+                  {{ contactErrors.phone }}
+                </div>
               </div>
               <!-- Message input-->
               <div class="form-floating mb-3">
-                <textarea class="form-control" id="message" type="text"
+                <textarea class="form-control" id="message" v-model="contactForm.message"
                   :placeholder="$t('contact.form.messagePlaceholder')" style="height: 10rem"
-                  data-sb-validations="required"></textarea>
+                  :class="{ 'is-invalid': contactErrors.message }"></textarea>
                 <label for="message">{{ $t('contact.form.message') }}</label>
-                <div class="invalid-feedback" data-sb-feedback="message:required">{{
-                  $t('contact.form.validations.messageRequired') }}</div>
+                <div class="invalid-feedback" v-if="contactErrors.message">
+                  {{ contactErrors.message }}
+                </div>
               </div>
               <!-- Submit Button-->
-              <div class="d-grid"><button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">{{
-                $t('contact.form.submitButton') }}</button></div>
+              <div class="d-grid">
+                <button class="btn btn-primary btn-xl" type="submit" :disabled="isSubmitting">
+                  {{ isSubmitting ? $t('common.loading') : $t('contact.form.submitButton') }}
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -300,12 +305,13 @@
           <div class="col-lg-4 text-center mb-5 mb-lg-0">
             <i class="bi-phone fs-2 mb-3 text-muted"></i>
             <div class="small text-center text-muted">{{ $t('contact.location') }}</div>
-            <div class="small text-center text-muted">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone"
-                viewBox="0 0 16 16">
+            <div class="small text-center text-muted mt-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                class="bi bi-telephone me-1" viewBox="0 0 16 16">
                 <path
                   d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
-              </svg> {{ $t('contact.phone') }}
+              </svg>
+              {{ $t('contact.phone') }}
             </div>
           </div>
         </div>
@@ -13104,9 +13110,11 @@ header.masthead .h1 {
 }
 </style>
 <script setup>
+import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { locale } = useI18n()
+const { t } = useI18n()
 
 function setLocale(lang) {
   locale.value = lang
@@ -13121,5 +13129,90 @@ function scrollToSection(sectionId) {
 }
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+// Datos del formulario de contacto
+const contactForm = reactive({
+  name: '',
+  email: '',
+  phone: '',
+  message: ''
+})
+
+const contactErrors = reactive({
+  name: '',
+  email: '',
+  phone: '',
+  message: ''
+})
+
+const isSubmitting = ref(false)
+
+// Validación del formulario de contacto
+function validateContactForm() {
+  let isValid = true
+
+  // Reset errors
+  Object.keys(contactErrors).forEach(key => contactErrors[key] = '')
+
+  // Validar nombre
+  if (!contactForm.name.trim()) {
+    contactErrors.name = t('contact.form.validations.nameRequired')
+    isValid = false
+  }
+
+  // Validar email
+  if (!contactForm.email.trim()) {
+    contactErrors.email = t('contact.form.validations.emailRequired')
+    isValid = false
+  } else if (!isValidEmail(contactForm.email)) {
+    contactErrors.email = t('contact.form.validations.emailInvalid')
+    isValid = false
+  }
+
+  // Validar teléfono
+  if (!contactForm.phone.trim()) {
+    contactErrors.phone = t('contact.form.validations.phoneRequired')
+    isValid = false
+  }
+
+  // Validar mensaje
+  if (!contactForm.message.trim()) {
+    contactErrors.message = t('contact.form.validations.messageRequired')
+    isValid = false
+  }
+
+  return isValid
+}
+
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
+async function submitContactForm() {
+  if (!validateContactForm()) {
+    return
+  }
+
+  isSubmitting.value = true
+
+  try {
+    // Aquí iría la lógica para enviar el formulario
+    console.log('Formulario enviado:', contactForm)
+
+    // Simular envío
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    alert('Mensaje enviado correctamente')
+
+    // Reset form
+    Object.keys(contactForm).forEach(key => contactForm[key] = '')
+
+  } catch (error) {
+    console.error('Error al enviar el formulario:', error)
+    alert('Error al enviar el mensaje. Por favor, intente nuevamente.')
+  } finally {
+    isSubmitting.value = false
+  }
 }
 </script>
