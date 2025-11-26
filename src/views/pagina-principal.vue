@@ -18,6 +18,12 @@
               $t('navbar.catalog') }}</a></li>
             <li class="nav-item"><a class="nav-link" @click="scrollToSection('contact')">{{ $t('navbar.contact')
             }}</a></li>
+            <li class="nav-item">
+              <a class="nav-link" @click="goToProfile" title="Mi Perfil">
+                <i class="bi bi-person"></i>
+                <span class="ms-1">{{ $t('navbar.profile') }}</span>
+              </a>
+            </li>
 
             <!-- 🔽 Dropdown de idiomas -->
             <li class="nav-item dropdown">
@@ -29,6 +35,7 @@
                 <li><a class="dropdown-item" @click="setLocale('es')">Español</a></li>
               </ul>
             </li>
+
           </ul>
         </div>
       </div>
@@ -13112,9 +13119,11 @@ header.masthead .h1 {
 <script setup>
 import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 const { locale } = useI18n()
 const { t } = useI18n()
+const router = useRouter()
 
 function setLocale(lang) {
   locale.value = lang
@@ -13127,9 +13136,16 @@ function scrollToSection(sectionId) {
     element.scrollIntoView({ behavior: 'smooth' });
   }
 }
+
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// Método para redirigir al perfil
+function goToProfile() {
+  router.push('cuenta-usuario')
+}
+
 // Datos del formulario de contacto
 const contactForm = reactive({
   name: '',

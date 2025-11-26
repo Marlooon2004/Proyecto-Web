@@ -18,6 +18,8 @@ import { createI18n } from 'vue-i18n'
 import es from './locales/es.json'
 import en from './locales/en.json'
 
+import './assets/styles/globals.css'
+
 const savedLocale = localStorage.getItem('locale') || 'es'
 
 const i18n = createI18n({

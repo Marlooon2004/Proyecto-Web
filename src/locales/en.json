@@ -5,7 +5,8 @@
     "about": "About",
     "services": "Services",
     "catalog": "Catalog",
-    "contact": "Contact"
+    "contact": "Contact",
+    "profile": "Profile"
   },
   "masthead": {
     "title": "Your favorite motorcycle rental site",
@@ -200,7 +201,9 @@
     "title": "My Profile",
     "personalInfo": "Personal Information",
     "rentalHistory": "Rental History",
-    "preferences": "Preferences"
+    "preferences": "Preferences",
+    "saveButton": "Save",
+    "deleteButton": "Delete profile"
   },
   "validation": {
     "requiredField": "This field is required.",
@@ -215,6 +218,7 @@
     "idNumberLength": "ID card must have 11 digits.",
     "passwordsMustMatch": "Passwords must match.",
     "idNumberInvalidDate": "Invalid date in ID card.",
-    "idNumberAgeMismatch": "ID card does not match the provided age."
+    "idNumberAgeMismatch": "ID card does not match the provided age.",
+    "formErrors": "Please correct the errors in the form"
   }
 }

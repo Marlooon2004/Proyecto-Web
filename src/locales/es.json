@@ -5,7 +5,8 @@
         "about": "Acerca",
         "services": "Servicios",
         "catalog": "Catálogo",
-        "contact": "Contacto"
+        "contact": "Contacto",
+        "profile": "Perfil"
     },
     "masthead": {
         "title": "Tu sitio de renta de motos favorito",
@@ -197,10 +198,12 @@
         "price": "Precio"
     },
     "profile": {
-        "title": "Mi Perfil",
+        "title": "Configuración de perfil",
         "personalInfo": "Información Personal",
         "rentalHistory": "Historial de Rentas",
-        "preferences": "Preferencias"
+        "preferences": "Preferencias",
+        "saveButton": "Guardar cambios",
+        "deleteButton": "Eliminar perfil"
     },
     "validation": {
         "requiredField": "Este campo es obligatorio.",
@@ -215,6 +218,7 @@
         "idNumberLength": "El carnet debe tener 11 dígitos.",
         "passwordsMustMatch": "Las contraseñas deben coincidir.",
         "idNumberInvalidDate": "Fecha en el carnet no válida.",
-        "idNumberAgeMismatch": "El carnet no coincide con la edad proporcionada."
+        "idNumberAgeMismatch": "El carnet no coincide con la edad proporcionada.",
+        "formErrors": "Por favor, corrige los errores en el formulario"
     }
 }

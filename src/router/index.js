@@ -14,6 +14,8 @@ import ScootersMoto from '@/views/catalogo/scooters-moto.vue'
 import TouringMoto from '@/views/catalogo/touring-moto.vue'
 // Reservar moto
 import ReservarMoto from '@/views/catalogo/reservar-moto.vue'
+//cuenta de usuario
+import CuentaUsuario from '@/views/cuenta-usuario.vue'
 
 const routes = [
   { path: '/', redirect: '/pagina-principal' },
@@ -26,7 +28,7 @@ const routes = [
   { path: '/motocross-moto', name: 'MotocrossMoto', component: MotocrossMoto },
   { path: '/scooters-moto', name: 'ScootersMoto', component: ScootersMoto },
   { path: '/touring-moto', name: 'TouringMoto', component: TouringMoto },
-  // Cambia esta ruta para usar params
+  { path: '/cuenta-usuario', name: 'CuentaUsuario', component: CuentaUsuario },
   {
     path: '/reservar-moto',
     name: 'ReservarMoto',
