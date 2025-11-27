@@ -434,40 +434,57 @@ function validarFormularioCompleto() {
 
 //registrar usuario
 async function registrarUsuario() {
-  if (validarFormularioCompleto()) {
-    try {
-      //llamada al backend
-      const response = await fetch('http://localhost:3000/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          firstName: document.getElementById('nombre_id').value,
-          lastName: document.getElementById('apellidos_id').value,
-          username: document.getElementById('usuario_id').value,
-          email: document.getElementById('email_id').value,
-          phoneNumber: document.getElementById('telefono_id').value,
-          age: document.getElementById('edad_id').value,
-          sex: document.getElementById('sexo_id').value,
-          municipality: document.getElementById('municipios_lista').value,
-          CI: document.getElementById('carnet_id').value,
-          password: document.getElementById('contrasenya_id').value,
-        })
-      });
+  if (!validarFormularioCompleto()) {
+    return;
+  }
 
-      if (!response.ok) {
-        throw new Error('Error en la peticion');
+  try {
+    const userData = {
+      firstName: document.getElementById('nombre_id').value,
+      lastName: document.getElementById('apellidos_id').value,
+      username: document.getElementById('usuario_id').value,
+      email: document.getElementById('email_id').value,
+      phoneNumber: document.getElementById('telefono_id').value,
+      age: parseInt(document.getElementById('edad_id').value),
+      sex: document.getElementById('sexo_id').value,
+      municipality: document.getElementById('municipios_lista').value,
+      CI: document.getElementById('carnet_id').value,
+      password: document.getElementById('contrasenya_id').value,
+    };
+
+    console.log('Enviando datos:', userData);
+
+    // Llamada al backend
+    const response = await fetch('http://localhost:3000/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    });
+
+    const data = await response.json();
+
+    // Manejar errores específicos del backend
+    if (!response.ok) {
+      if (response.status === 409) {
+        throw new Error(data.message || 'El usuario ya existe');
       }
-
-      const data = await response.json();
-      console.log('Usuario creado', data);
-      volverAlMenu()
-
-    } catch (error) {
-      console.error('Error al crear usuario:', error);
-      alert('Hubo un problema al registrar el usuario');
+      if (response.status === 400) {
+        // Mostrar errores de validación de NestJS
+        const errorMsg = data.message?.join?.(', ') || data.message || 'Datos inválidos';
+        throw new Error(`Error de validación: ${errorMsg}`);
+      }
+      throw new Error(data.message || `Error del servidor: ${response.status}`);
     }
+
+    console.log('Usuario creado', data);
+    alert('¡Usuario registrado exitosamente!');
+    volverAlMenu();
+
+  } catch (error) {
+    console.error('Error al crear usuario:', error);
+    alert(`Error: ${error.message}`);
   }
 }
 
