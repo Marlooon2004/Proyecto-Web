@@ -432,16 +432,50 @@ function validarFormularioCompleto() {
   )
 }
 
-function registrarUsuario() {
+//registrar usuario
+async function registrarUsuario() {
   if (validarFormularioCompleto()) {
-    alert(t('auth.registerSuccess'))
-    volverAlMenu()
+    try {
+      //llamada al backend
+      const response = await fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName: document.getElementById('nombre_id').value,
+          lastName: document.getElementById('apellidos_id').value,
+          username: document.getElementById('usuario_id').value,
+          email: document.getElementById('email_id').value,
+          phoneNumber: document.getElementById('telefono_id').value,
+          age: document.getElementById('edad_id').value,
+          sex: document.getElementById('sexo_id').value,
+          municipality: document.getElementById('municipios_lista').value,
+          CI: document.getElementById('carnet_id').value,
+          password: document.getElementById('contrasenya_id').value,
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la peticion');
+      }
+
+      const data = await response.json();
+      console.log('Usuario creado', data);
+      volverAlMenu()
+
+    } catch (error) {
+      console.error('Error al crear usuario:', error);
+      alert('Hubo un problema al registrar el usuario');
+    }
   }
 }
 
 function volverAlMenu() {
   router.push('/')
 }
+
+
 </script>
 
 <style scoped>
