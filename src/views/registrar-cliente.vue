@@ -480,7 +480,7 @@ async function registrarUsuario() {
 
     console.log('Usuario creado', data);
     alert('¡Usuario registrado exitosamente!');
-    volverAlMenu();
+    irAIniciarSesion();
 
   } catch (error) {
     console.error('Error al crear usuario:', error);
@@ -488,8 +488,8 @@ async function registrarUsuario() {
   }
 }
 
-function volverAlMenu() {
-  router.push('/')
+function irAIniciarSesion() {
+  router.push({ name: 'IniciarSesion'})
 }
 
 

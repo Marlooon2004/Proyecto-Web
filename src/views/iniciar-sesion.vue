@@ -101,10 +101,18 @@ function validarContrasenya() {
   }
 }
 
-function iniciarSesion() {
+function validarFormularioCompleto() {
   validarUsuario()
   validarContrasenya()
-  if (validacionUsuario.value === 'valido' && validacionContrasenya.value === 'valido') {
+
+  return (
+    validacionUsuario.value === 'valido' &&
+    validacionContrasenya.value === 'valido'
+  )
+}
+
+function iniciarSesion() {
+  if (validarFormularioCompleto()) {
     alert(t('auth.loginSuccess'))
     volverAlMenu()
   }
