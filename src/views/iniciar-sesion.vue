@@ -111,10 +111,49 @@ function validarFormularioCompleto() {
   )
 }
 
-function iniciarSesion() {
-  if (validarFormularioCompleto()) {
-    alert(t('auth.loginSuccess'))
-    volverAlMenu()
+async function iniciarSesion() {
+  if (!validarFormularioCompleto()) {
+    return;
+  }
+
+  try {
+    const username = document.getElementById('usuario_id').value;
+    const password = document.getElementById('contrasenya_id').value;
+
+    console.log('Intentando login con:', { username, password });
+
+    // Llamada al backend
+    const response = await fetch('http://localhost:3000/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password
+      })
+    });
+
+    const data = await response.json();
+
+    // Manejar respuesta
+    if (!response.ok) {
+      throw new Error(data.message || 'Error en el login');
+    }
+
+    // Guardar token y datos del usuario
+    localStorage.setItem('authToken', data.access_token);
+    localStorage.setItem('userData', JSON.stringify(data.user));
+
+    console.log('Login exitoso:', data.user);
+    alert(t('auth.loginSuccess'));
+
+    // Redirigir al menú principal o perfil
+    volverAlMenu();
+
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    alert(`Error: ${error.message}`);
   }
 }
 
