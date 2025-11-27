@@ -203,7 +203,10 @@
         "rentalHistory": "Historial de Rentas",
         "preferences": "Preferencias",
         "saveButton": "Guardar cambios",
-        "deleteButton": "Eliminar perfil"
+        "deleteButton": "Eliminar perfil",
+        "changePassword": "Cambiar contraseña",
+        "currentPassword": "Contraseña actual",
+        "newPassword": "Nueva contraseña"
     },
     "validation": {
         "requiredField": "Este campo es obligatorio.",

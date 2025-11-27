@@ -203,7 +203,10 @@
     "rentalHistory": "Rental History",
     "preferences": "Preferences",
     "saveButton": "Save",
-    "deleteButton": "Delete profile"
+    "deleteButton": "Delete profile",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password"
   },
   "validation": {
     "requiredField": "This field is required.",

@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col-md-3 border-right">
         <div class="d-flex flex-column align-items-center text-center p-3 py-5">
-          <img class="rounded-circle mt-5" width="150px"
-            src="@/assets/img/cuenta-usuario/icono-perfil-avatar_188544-4755.avif">
+          <!-- ERROR: Ruta de imagen incorrecta -->
+          <img class="rounded-circle mt-5" width="150px" :src="avatarImage">
           <span class="font-weight-bold">{{ nombre }} {{ apellidos }}</span>
           <span class="text-black-50">{{ email }}</span>
           <span></span>
@@ -80,18 +80,6 @@
                 class="form-control" maxlength="11" />
               <small class="text-danger" v-if="mensajeCarnet">{{ mensajeCarnet }}</small>
             </div>
-            <div class="col-md-12">
-              <label class="labels">{{ $t('auth.password') }}</label>
-              <input type="password" id="contrasenya_id" v-model="contrasenya" @input="validarContrasenya"
-                :class="validacionContrasenya" class="form-control" />
-              <small class="text-danger" v-if="mensajeContrasenya">{{ mensajeContrasenya }}</small>
-            </div>
-            <div class="col-md-12">
-              <label class="labels">{{ $t('auth.confirmPassword') }}</label>
-              <input type="password" id="repetirContrasenya_id" v-model="repetirContrasenya"
-                @input="validarRepetirContrasenya" :class="validacionRepetirContrasenya" class="form-control" />
-              <small class="text-danger" v-if="mensajeRepetirContrasenya">{{ mensajeRepetirContrasenya }}</small>
-            </div>
           </div>
           <div class="mt-5 text-center">
             <button class="btn btn-primary profile-button" type="button" @click="saveProfile">
@@ -106,20 +94,82 @@
           </div>
         </div>
       </div>
-    </div>
+
+      <div class="col-md-4">
+        <div class="p-3 py-5">
+          <div class="d-flex justify-content-between align-items-center experience">
+            <span>{{ $t('profile.changePassword') }}</span>
+          </div>
+          <div class="col-md-12">
+            <label class="labels">{{ $t('profile.currentPassword') }}</label>
+            <input type="password" id="contrasenya_id" v-model="contrasenya" @input="validarContrasenya"
+              :class="validacionContrasenya" class="form-control" />
+            <small class="text-danger" v-if="mensajeContrasenya">{{ mensajeContrasenya }}</small>
+          </div>
+          <div class="col-md-12">
+            <label class="labels">{{ $t('profile.newPassword') }}</label>
+            <input type="password" id="repetirContrasenya_id" v-model="repetirContrasenya"
+              @input="validarRepetirContrasenya" :class="validacionRepetirContrasenya" class="form-control" />
+            <small class="text-danger" v-if="mensajeRepetirContrasenya">{{ mensajeRepetirContrasenya }}</small>
+          </div>
+          <div class="mt-5 text-center">
+            <button class="btn btn-primary profile-button" type="button" @click="saveProfile">
+              {{ $t('profile.saveButton') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> <!-- FALTABA CERRAR ESTE DIV -->
   </div>
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import avatarImage from '@/assets/img/cuenta-usuario/icono-perfil-avatar_188544-4755.avif'
+import { ref, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 const { t } = useI18n()
 
-
 const router = useRouter()
+
+// Función para cargar datos del usuario
+function cargarDatosUsuario() {
+  try {
+    const userData = localStorage.getItem('userData');
+
+    if (!userData) {
+      router.push('/login');
+      return;
+    }
+
+    const user = JSON.parse(userData);
+
+    // Cargar datos en los campos
+    nombre.value = user.firstName || '';
+    apellidos.value = user.lastName || '';
+    usuario.value = user.username || '';
+    email.value = user.email || '';
+    telefono.value = user.phoneNumber || '';
+    edad.value = user.age || '';
+    sexo.value = user.sex || '';
+    municipio.value = user.municipality || '';
+    carnet.value = user.id || ''; // Recuerda que en tu backend id = CI
+
+    console.log('Datos del usuario cargados:', user);
+
+  } catch (error) {
+    console.error('Error cargando datos del usuario:', error);
+    router.push('/login');
+  }
+}
+
+// Cargar datos cuando el componente se monta
+onMounted(() => {
+  cargarDatosUsuario();
+});
+
 function goHome() {
-  router.push({ name: 'PaginaPrincipal'})
+  router.push({ name: 'PaginaPrincipal' })
 }
 
 // Datos reactivos del perfil
@@ -185,33 +235,6 @@ watch([edad, carnet], () => {
     validarCarnet()
   }
 })
-
-//Cambiar imagen segun sexo('')
-const avatarImage = ref('')
-const defaultAvatar = '../assets/img/cuenta-usuario/persona-desconocido.webp'
-const maleAvatar = '../assets/img/cuenta-usuario/hombre-icono.webp'
-const femaleAvatar = '../assets/img/cuenta-usuario/mujer-icono-usuario.webp'
-
-// Computed para la imagen del avatar
-const avatarComputed = computed(() => {
-  switch (sexo.value) {
-    case 'male':
-      return maleAvatar
-    case 'female':
-      return femaleAvatar
-    default:
-      return defaultAvatar
-  }
-})
-
-// Método para cambiar el avatar
-function cambiarAvatar() {
-  avatarImage.value = avatarComputed.value
-  validarSexo()
-}
-
-// Inicializar con imagen por defecto
-avatarImage.value = defaultAvatar
 
 // Funciones de validación
 function validarNombre() {
