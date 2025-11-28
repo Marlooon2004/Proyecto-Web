@@ -7,7 +7,20 @@
           <img class="rounded-circle mt-5" width="150px" :src="avatarImage">
           <span class="font-weight-bold">{{ nombre }} {{ apellidos }}</span>
           <span class="text-black-50">{{ email }}</span>
-          <span></span>
+          <div class="mt-5 text-center">
+            <button class="btn btn-primary profile-button" type="button" @click="goToExistingContracts">
+              {{ $t('profile.existingContracts') }}
+            </button>
+            <button class="btn btn-primary profile-button" type="button" @click="deleteProfile">
+              {{ $t('profile.deleteButton') }}
+            </button>
+            <button class="btn btn-primary profile-button" @click="goHome">
+              {{ $t('common.cancel') }}
+            </button>
+            <button class="btn btn-primary profile-button" @click="closeSesion">
+              {{ $t('common.closeSesion') }}
+            </button>
+          </div>
         </div>
       </div>
       <div class="col-md-5 border-right">
@@ -38,7 +51,7 @@
           <div class="row mt-2">
             <div class="col-md-6">
               <label class="labels">{{ $t('auth.gender') }}</label>
-              <select id="sexo_id" v-model="sexo" @change="cambiarAvatar" class="form-control" :class="validacionSexo">
+              <select id="sexo_id" v-model="sexo" class="form-control" :class="validacionSexo">
                 <option value="" disabled selected>{{ $t('auth.gender') }}</option>
                 <option value="male">{{ $t('auth.male') }}</option>
                 <option value="female">{{ $t('auth.female') }}</option>
@@ -83,15 +96,6 @@
             <div class="button-group">
               <button class="btn btn-primary profile-button" type="button" @click="saveProfile">
                 {{ $t('profile.saveButton') }}
-              </button>
-              <button class="btn btn-primary profile-button" type="button" @click="deleteProfile">
-                {{ $t('profile.deleteButton') }}
-              </button>
-              <button class="btn btn-primary profile-button" @click="goHome">
-                {{ $t('common.cancel') }}
-              </button>
-              <button class="btn btn-primary profile-button" @click="closeSesion">
-                {{ $t('common.closeSesion') }}
               </button>
             </div>
           </div>
@@ -243,6 +247,10 @@ onMounted(() => {
 
 function goHome() {
   router.push({ name: 'PaginaPrincipal' })
+}
+
+function goToExistingContracts(){
+  router.push({ name: 'ContractsUser' })
 }
 
 // Watch para validar carnet cuando cambia la edad y viceversa

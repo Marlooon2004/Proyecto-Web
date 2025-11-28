@@ -211,7 +211,8 @@
         "passwordChangeSuccess": "Contraseña cambiada exitosamente",
         "deleteSuccess": "Cuenta borrada exitosamente",
         "deleteConfirmation": "Esta seguro que desea eliminar su cuenta?",
-        "ActualizationSuccess": "Cuenta actualizada correctamente"
+        "ActualizationSuccess": "Cuenta actualizada correctamente",
+        "existingContracts": "Contratos existentes"
     },
     "validation": {
         "requiredField": "Este campo es obligatorio.",
@@ -229,5 +230,14 @@
         "idNumberInvalidDate": "Fecha en el carnet no válida.",
         "idNumberAgeMismatch": "El carnet no coincide con la edad proporcionada.",
         "formErrors": "Por favor, corrige los errores en el formulario"
+    },
+    "contracts": {
+        "registration": "Matricula",
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de fin",
+        "extensionDays": "Dias de prorroga",
+        "paymentMethod": "Forma de pago",
+        "insurance": "Seguro",
+        "title": "Contratos activos"
     }
 }

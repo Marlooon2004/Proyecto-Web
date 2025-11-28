@@ -16,6 +16,7 @@ import TouringMoto from '@/views/catalogo/touring-moto.vue'
 import ReservarMoto from '@/views/catalogo/reservar-moto.vue'
 //cuenta de usuario
 import CuentaUsuario from '@/views/cuenta-usuario.vue'
+import ContractsUser from '@/views/contracts-user.vue'
 
 const routes = [
   { path: '/', redirect: '/pagina-principal' },
@@ -29,6 +30,7 @@ const routes = [
   { path: '/scooters-moto', name: 'ScootersMoto', component: ScootersMoto },
   { path: '/touring-moto', name: 'TouringMoto', component: TouringMoto },
   { path: '/cuenta-usuario', name: 'CuentaUsuario', component: CuentaUsuario },
+  { path: '/contracts-user', name: 'ContractsUser', component: ContractsUser },
   {
     path: '/reservar-moto',
     name: 'ReservarMoto',

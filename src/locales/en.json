@@ -211,7 +211,8 @@
     "passwordChangeSuccess": "Password change successfully",
     "deleteSuccess": "Account deleted",
     "deleteConfirmation": "Are you sure you want to delete your account?",
-    "ActualizationSuccess": "Account updated"
+    "ActualizationSuccess": "Account updated",
+    "existingContracts": "Existing contracts"
   },
   "validation": {
     "requiredField": "This field is required.",
@@ -229,5 +230,14 @@
     "idNumberInvalidDate": "Invalid date in ID card.",
     "idNumberAgeMismatch": "ID card does not match the provided age.",
     "formErrors": "Please correct the errors in the form"
+  },
+  "contracts": {
+    "registration": "License plate",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "extensionDays": "Extension days",
+    "paymentMethod": "Payment method",
+    "insurance": "Insurance",
+    "title": "Active contracts"
   }
 }
