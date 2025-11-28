@@ -200,6 +200,10 @@ watch([edad, carnet], () => {
   }
 })
 
+function volverAlMenu() {
+  router.push('/')
+}
+
 // Funciones de validación (mantener igual)
 function validarNombre() {
   if (!nombre.value) {
@@ -489,7 +493,7 @@ async function registrarUsuario() {
 }
 
 function irAIniciarSesion() {
-  router.push({ name: 'IniciarSesion'})
+  router.push({ name: 'IniciarSesion' })
 }
 
 

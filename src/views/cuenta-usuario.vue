@@ -76,9 +76,7 @@
             </div>
             <div class="col-md-12">
               <label class="labels">{{ $t('auth.idNumber') }}</label>
-              <input type="text" id="carnet_id" v-model="carnet" @input="validarCarnet" :class="validacionCarnet"
-                class="form-control" maxlength="11" />
-              <small class="text-danger" v-if="mensajeCarnet">{{ mensajeCarnet }}</small>
+              <input type="text" id="carnet_id" v-model="carnet" class="form-control" readonly disabled />
             </div>
           </div>
           <div class="mt-5 text-center">
@@ -553,9 +551,73 @@ async function savePassword() {
 }
 
 
-function saveProfile() {
-  if (validarFormularioCompleto()) {
-    //logica
+async function saveProfile() {
+  if (!validarFormularioCompleto()) {
+    return;
+  }
+
+  try {
+    const userData = localStorage.getItem('userData');
+    const token = localStorage.getItem('authToken') ||
+      localStorage.getItem('token') ||
+      localStorage.getItem('userToken');
+
+    const updateData = {
+      username: usuario.value,
+      email: email.value,
+      firstName: nombre.value,
+      lastName: apellidos.value,
+      municipality: municipio.value,
+      phoneNumber: telefono.value,
+      age: edad.value,
+      sex: sexo.value
+    };
+
+    console.log('Enviando datos de actualización:', updateData);
+
+    if (!token) {
+      throw new Error('No hay token de autenticación');
+    }
+
+    const user = JSON.parse(userData);
+    const userId = user.id;
+
+    if (!userId) {
+      throw new Error('No se pudo obtener el ID del usuario');
+    }
+
+    console.log('Actualizando usuario con ID:', userId);
+
+    const response = await fetch(`http://localhost:3000/users/${userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(updateData)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al actualizar la cuenta');
+    }
+
+    const updatedUser = await response.json();
+    localStorage.setItem('userData', JSON.stringify(updatedUser));
+
+    console.log('Perfil actualizado exitosamente:', updatedUser);
+    alert(t('profile.ActualizationSuccess') || 'Cuenta actualizada correctamente');
+
+  } catch (error) {
+    console.error('Error al actualizar la cuenta:', error);
+
+    if (error.message.includes('token') || error.message.includes('autenticación')) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userData');
+      router.push({ name: 'IniciarSesion' });
+    } else {
+      alert(error.message || 'Error al actualizar la cuenta');
+    }
   }
 }
 
