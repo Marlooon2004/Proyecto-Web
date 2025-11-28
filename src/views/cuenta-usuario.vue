@@ -91,6 +91,9 @@
             <button class="btn btn-primary profile-button separator" @click="goHome">
               {{ $t('common.cancel') }}
             </button>
+            <button class="btn btn-primary profile-button separator" @click="closeSesion">
+              {{ $t('common.closeSesion') }}
+            </button>
           </div>
         </div>
       </div>
@@ -108,12 +111,12 @@
           </div>
           <div class="col-md-12">
             <label class="labels">{{ $t('profile.newPassword') }}</label>
-            <input type="password" id="repetirContrasenya_id" v-model="repetirContrasenya"
-              @input="validarRepetirContrasenya" :class="validacionRepetirContrasenya" class="form-control" />
-            <small class="text-danger" v-if="mensajeRepetirContrasenya">{{ mensajeRepetirContrasenya }}</small>
+            <input type="password" id="nuevaContrasenya_id" v-model="nuevaContrasenya" @input="validarNuevaContrasenya"
+              :class="validacionNuevaContrasenya" class="form-control" />
+            <small class="text-danger" v-if="mensajeNuevaContrasenya">{{ mensajeNuevaContrasenya }}</small>
           </div>
           <div class="mt-5 text-center">
-            <button class="btn btn-primary profile-button" type="button" @click="saveProfile">
+            <button class="btn btn-primary profile-button" type="button" @click="savePassword">
               {{ $t('profile.saveButton') }}
             </button>
           </div>
@@ -128,9 +131,79 @@ import avatarImage from '@/assets/img/cuenta-usuario/icono-perfil-avatar_188544-
 import { ref, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-const { t } = useI18n()
 
+const { t } = useI18n()
 const router = useRouter()
+
+// Datos reactivos del perfil
+const nombre = ref('')
+const apellidos = ref('')
+const usuario = ref('')
+const email = ref('')
+const telefono = ref('')
+const edad = ref('')
+const sexo = ref('')
+const municipio = ref('')
+const carnet = ref('')
+
+//Cambio contrasenya
+const contrasenya = ref('')
+const nuevaContrasenya = ref('')
+
+// Mensajes y validaciones
+const mensajeNombre = ref('')
+const mensajeApellidos = ref('')
+const mensajeUsuario = ref('')
+const mensajeEmail = ref('')
+const mensajeTelefono = ref('')
+const mensajeEdad = ref('')
+const mensajeSexo = ref('')
+const mensajeMunicipio = ref('')
+const mensajeCarnet = ref('')
+
+//Mensajes y validaciones de contrasenya
+const mensajeContrasenya = ref('')
+const mensajeNuevaContrasenya = ref('')
+
+const validacionNombre = ref('')
+const validacionApellidos = ref('')
+const validacionUsuario = ref('')
+const validacionEmail = ref('')
+const validacionTelefono = ref('')
+const validacionEdad = ref('')
+const validacionSexo = ref('')
+const validacionMunicipio = ref('')
+const validacionCarnet = ref('')
+const validacionContrasenya = ref('')
+const validacionNuevaContrasenya = ref('')
+
+// Municipios de La Habana
+const municipios = ref([
+  'Arroyo Naranjo',
+  'Boyeros',
+  'Centro Habana',
+  'Cerro',
+  'Cotorro',
+  'Diez de Octubre',
+  'Guanabacoa',
+  'Habana del Este',
+  'Habana Vieja',
+  'La Lisa',
+  'Marianao',
+  'Playa',
+  'Plaza de la Revolución',
+  'Regla',
+  'San Miguel del Padrón'
+])
+
+function closeSesion() {
+  if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('token');
+    router.push({ name: 'IniciarSesion' })
+  }
+}
+
 
 // Función para cargar datos del usuario
 function cargarDatosUsuario() {
@@ -138,7 +211,7 @@ function cargarDatosUsuario() {
     const userData = localStorage.getItem('userData');
 
     if (!userData) {
-      router.push('/login');
+      router.push({ name: 'IniciarSesion' })
       return;
     }
 
@@ -171,63 +244,6 @@ onMounted(() => {
 function goHome() {
   router.push({ name: 'PaginaPrincipal' })
 }
-
-// Datos reactivos del perfil
-const nombre = ref('')
-const apellidos = ref('')
-const usuario = ref('')
-const email = ref('')
-const telefono = ref('')
-const edad = ref('')
-const sexo = ref('')
-const municipio = ref('')
-const carnet = ref('')
-const contrasenya = ref('')
-const repetirContrasenya = ref('')
-
-// Mensajes y validaciones
-const mensajeNombre = ref('')
-const mensajeApellidos = ref('')
-const mensajeUsuario = ref('')
-const mensajeEmail = ref('')
-const mensajeTelefono = ref('')
-const mensajeEdad = ref('')
-const mensajeSexo = ref('')
-const mensajeMunicipio = ref('')
-const mensajeCarnet = ref('')
-const mensajeContrasenya = ref('')
-const mensajeRepetirContrasenya = ref('')
-
-const validacionNombre = ref('')
-const validacionApellidos = ref('')
-const validacionUsuario = ref('')
-const validacionEmail = ref('')
-const validacionTelefono = ref('')
-const validacionEdad = ref('')
-const validacionSexo = ref('')
-const validacionMunicipio = ref('')
-const validacionCarnet = ref('')
-const validacionContrasenya = ref('')
-const validacionRepetirContrasenya = ref('')
-
-// Municipios de La Habana
-const municipios = ref([
-  'Arroyo Naranjo',
-  'Boyeros',
-  'Centro Habana',
-  'Cerro',
-  'Cotorro',
-  'Diez de Octubre',
-  'Guanabacoa',
-  'Habana del Este',
-  'Habana Vieja',
-  'La Lisa',
-  'Marianao',
-  'Playa',
-  'Plaza de la Revolución',
-  'Regla',
-  'San Miguel del Padrón'
-])
 
 // Watch para validar carnet cuando cambia la edad y viceversa
 watch([edad, carnet], () => {
@@ -424,19 +440,24 @@ function validarContrasenya() {
     mensajeContrasenya.value = ''
     validacionContrasenya.value = 'valido'
   }
-  validarRepetirContrasenya()
 }
 
-function validarRepetirContrasenya() {
-  if (!repetirContrasenya.value) {
-    mensajeRepetirContrasenya.value = t('validation.requiredField')
-    validacionRepetirContrasenya.value = 'invalido'
-  } else if (repetirContrasenya.value !== contrasenya.value) {
-    mensajeRepetirContrasenya.value = t('validation.passwordsMustMatch')
-    validacionRepetirContrasenya.value = 'invalido'
+function validarNuevaContrasenya() {
+  const regex = /^(?=.*\d).{8,}$/
+  if (!nuevaContrasenya.value) {
+    mensajeNuevaContrasenya.value = t('validation.requiredField')
+    validacionNuevaContrasenya.value = 'invalido'
+  } else if (!regex.test(nuevaContrasenya.value)) {
+    mensajeNuevaContrasenya.value = t('validation.passwordRules')
+    validacionNuevaContrasenya.value = 'invalido'
   } else {
-    mensajeRepetirContrasenya.value = ''
-    validacionRepetirContrasenya.value = 'valido'
+    mensajeNuevaContrasenya.value = ''
+    validacionNuevaContrasenya.value = 'valido'
+  }
+  if (validacionNuevaContrasenya.value == 'valido') {
+    if (contrasenya.value == nuevaContrasenya.value) {
+      mensajeNuevaContrasenya.value = t('validation.passwordsNotMatch')
+    }
   }
 }
 
@@ -450,8 +471,6 @@ function validarFormularioCompleto() {
   validarSexo()
   validarMunicipio()
   validarCarnet()
-  validarContrasenya()
-  validarRepetirContrasenya()
 
   return (
     validacionNombre.value === 'valido' &&
@@ -462,31 +481,76 @@ function validarFormularioCompleto() {
     validacionEdad.value === 'valido' &&
     validacionSexo.value === 'valido' &&
     validacionMunicipio.value === 'valido' &&
-    validacionCarnet.value === 'valido' &&
-    validacionContrasenya.value === 'valido' &&
-    validacionRepetirContrasenya.value === 'valido'
+    validacionCarnet.value === 'valido'
+  )
+}
+
+function validarContrasenyas() {
+  validarContrasenya()
+  validarNuevaContrasenya()
+
+  return (
+    validarContrasenya.value === 'valido' &&
+    validarNuevaContrasenya.value === 'valido'
   )
 }
 
 function saveProfile() {
   if (validarFormularioCompleto()) {
-    // Aquí iría la lógica para guardar el perfil
-    console.log('Perfil guardado:', {
-      nombre: nombre.value,
-      apellidos: apellidos.value,
-      usuario: usuario.value,
-      email: email.value,
-      telefono: telefono.value,
-      edad: edad.value,
-      sexo: sexo.value,
-      municipio: municipio.value,
-      carnet: carnet.value
-    })
-    alert(t('profile.saveSuccess'))
-  } else {
-    alert(t('validation.formErrors'))
+    //logica
   }
 }
+
+async function savePassword() {
+  if (!validarContrasenyas()) {
+    alert(t('validation.formErrors') || 'Por favor, corrige los errores en el formulario');
+    return;
+  }
+
+  try {
+    const changePasswordDto = {
+      currentPassword: contrasenya.value,
+      newPassword: nuevaContrasenya.value
+    };
+
+    console.log('Enviando cambio de contraseña:', changePasswordDto);
+
+    const token = localStorage.getItem('token') || localStorage.getItem('userToken');
+
+    if (!token) {
+      throw new Error('No hay token de autenticación');
+    }
+
+    const response = await fetch('http://localhost:3000/users/password', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(changePasswordDto)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al cambiar la contraseña');
+    }
+    alert(t('profile.passwordChangeSuccess') || 'Contraseña cambiada correctamente');
+
+    contrasenya.value = '';
+    nuevaContrasenya.value = '';
+
+  } catch (error) {
+    console.error('Error al cambiar contraseña:', error);
+    if (error.message.includes('token') || error.message.includes('autenticación')) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userData');
+      router.push('/login');
+    }
+
+    alert(error.message || 'Error al cambiar la contraseña');
+  }
+}
+
 </script>
 
 <style scoped>

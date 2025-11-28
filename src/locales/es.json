@@ -115,7 +115,8 @@
         "edit": "Editar",
         "view": "Ver",
         "search": "Buscar",
-        "loading": "Cargando..."
+        "loading": "Cargando...",
+        "closeSesion": "Cerrar sesión"
     },
     "auth": {
         "login": "Inicia sesión ahora",
@@ -220,6 +221,7 @@
         "maxAge": "Edad no válida.",
         "idNumberLength": "El carnet debe tener 11 dígitos.",
         "passwordsMustMatch": "Las contraseñas deben coincidir.",
+        "passwordsNotMatch": "Las contraseñas no deben coincidir.",
         "idNumberInvalidDate": "Fecha en el carnet no válida.",
         "idNumberAgeMismatch": "El carnet no coincide con la edad proporcionada.",
         "formErrors": "Por favor, corrige los errores en el formulario"

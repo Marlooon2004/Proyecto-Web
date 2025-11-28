@@ -115,7 +115,8 @@
     "edit": "Edit",
     "view": "View",
     "search": "Search",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "closeSesion": "Close sesion"
   },
   "auth": {
     "login": "Login now",
@@ -220,6 +221,7 @@
     "maxAge": "Invalid age.",
     "idNumberLength": "ID card must have 11 digits.",
     "passwordsMustMatch": "Passwords must match.",
+    "passwordsNotMatch": "Passwords must be diferent.",
     "idNumberInvalidDate": "Invalid date in ID card.",
     "idNumberAgeMismatch": "ID card does not match the provided age.",
     "formErrors": "Please correct the errors in the form"
