@@ -238,6 +238,7 @@
     "extensionDays": "Extension days",
     "paymentMethod": "Payment method",
     "insurance": "Insurance",
-    "title": "Active contracts"
+    "title": "Active contracts",
+    "cancel": "Go back"
   }
 }

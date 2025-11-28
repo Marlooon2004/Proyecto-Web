@@ -39,6 +39,11 @@
         </div>
       </div>
     </div>
+    <div class="mt-5 text-center">
+      <button class="btn btn-primary profile-button" type="button" @click="goToProfile">
+        {{ $t('contracts.cancel') }}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -76,6 +81,9 @@ export default {
         'badge badge-success': hasInsurance,
         'badge badge-secondary': !hasInsurance
       }
+    },
+    goToProfile() {
+      this.$router.push({ name: 'CuentaUsuario' })
     }
   }
 }
@@ -86,6 +94,29 @@ export default {
 
 .container {
   margin-top: 100px;
+}
+
+.profile-button {
+  min-width: 140px;
+  margin: 5px;
+  flex-shrink: 0;
+  background: rgb(99, 39, 120);
+  box-shadow: none;
+  border: none
+}
+
+.profile-button:hover {
+  background: #682773
+}
+
+.profile-button:focus {
+  background: #682773;
+  box-shadow: none
+}
+
+.profile-button:active {
+  background: #682773;
+  box-shadow: none
 }
 
 .card {

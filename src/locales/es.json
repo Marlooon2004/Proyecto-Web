@@ -238,6 +238,7 @@
         "extensionDays": "Dias de prorroga",
         "paymentMethod": "Forma de pago",
         "insurance": "Seguro",
-        "title": "Contratos activos"
+        "title": "Contratos activos",
+        "cancel": "Volver atras"
     }
 }
