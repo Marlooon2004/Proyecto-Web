@@ -207,7 +207,10 @@
         "deleteButton": "Eliminar perfil",
         "changePassword": "Cambiar contraseña",
         "currentPassword": "Contraseña actual",
-        "newPassword": "Nueva contraseña"
+        "newPassword": "Nueva contraseña",
+        "passwordChangeSuccess": "Contraseña cambiada exitosamente",
+        "deleteSuccess": "Cuenta borrada exitosamente",
+        "deleteConfirmation": "Esta seguro que desea eliminar su cuenta?"
     },
     "validation": {
         "requiredField": "Este campo es obligatorio.",

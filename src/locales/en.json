@@ -207,7 +207,10 @@
     "deleteButton": "Delete profile",
     "changePassword": "Change password",
     "currentPassword": "Current password",
-    "newPassword": "New password"
+    "newPassword": "New password",
+    "passwordChangeSuccess": "Password change successfully",
+    "deleteSuccess": "Account deleted",
+    "deleteConfirmation": "Are you sure you want to delete your account?"
   },
   "validation": {
     "requiredField": "This field is required.",

@@ -82,18 +82,20 @@
             </div>
           </div>
           <div class="mt-5 text-center">
-            <button class="btn btn-primary profile-button" type="button" @click="saveProfile">
-              {{ $t('profile.saveButton') }}
-            </button>
-            <button class="btn btn-primary profile-button separator" type="button" @click="deleteProfile">
-              {{ $t('profile.deleteButton') }}
-            </button>
-            <button class="btn btn-primary profile-button separator" @click="goHome">
-              {{ $t('common.cancel') }}
-            </button>
-            <button class="btn btn-primary profile-button separator" @click="closeSesion">
-              {{ $t('common.closeSesion') }}
-            </button>
+            <div class="button-group">
+              <button class="btn btn-primary profile-button" type="button" @click="saveProfile">
+                {{ $t('profile.saveButton') }}
+              </button>
+              <button class="btn btn-primary profile-button" type="button" @click="deleteProfile">
+                {{ $t('profile.deleteButton') }}
+              </button>
+              <button class="btn btn-primary profile-button" @click="goHome">
+                {{ $t('common.cancel') }}
+              </button>
+              <button class="btn btn-primary profile-button" @click="closeSesion">
+                {{ $t('common.closeSesion') }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -232,7 +234,7 @@ function cargarDatosUsuario() {
 
   } catch (error) {
     console.error('Error cargando datos del usuario:', error);
-    router.push('/login');
+    router.push({ name: 'IniciarSesion' })
   }
 }
 
@@ -430,6 +432,9 @@ function coincideEdadConCarnet(edad, añoCarnet, mesCarnet, diaCarnet) {
 
 function validarContrasenya() {
   const regex = /^(?=.*\d).{8,}$/
+  mensajeContrasenya.value = ''
+  validacionContrasenya.value = ''
+
   if (!contrasenya.value) {
     mensajeContrasenya.value = t('validation.requiredField')
     validacionContrasenya.value = 'invalido'
@@ -437,27 +442,27 @@ function validarContrasenya() {
     mensajeContrasenya.value = t('validation.passwordRules')
     validacionContrasenya.value = 'invalido'
   } else {
-    mensajeContrasenya.value = ''
     validacionContrasenya.value = 'valido'
   }
 }
 
 function validarNuevaContrasenya() {
   const regex = /^(?=.*\d).{8,}$/
+
+  mensajeNuevaContrasenya.value = ''
+  validacionNuevaContrasenya.value = ''
+
   if (!nuevaContrasenya.value) {
     mensajeNuevaContrasenya.value = t('validation.requiredField')
     validacionNuevaContrasenya.value = 'invalido'
   } else if (!regex.test(nuevaContrasenya.value)) {
     mensajeNuevaContrasenya.value = t('validation.passwordRules')
     validacionNuevaContrasenya.value = 'invalido'
+  } else if (contrasenya.value && nuevaContrasenya.value === contrasenya.value) {
+    mensajeNuevaContrasenya.value = t('validation.passwordsNotMatch') || 'La nueva contraseña no puede ser igual a la actual'
+    validacionNuevaContrasenya.value = 'invalido'
   } else {
-    mensajeNuevaContrasenya.value = ''
     validacionNuevaContrasenya.value = 'valido'
-  }
-  if (validacionNuevaContrasenya.value == 'valido') {
-    if (contrasenya.value == nuevaContrasenya.value) {
-      mensajeNuevaContrasenya.value = t('validation.passwordsNotMatch')
-    }
   }
 }
 
@@ -490,15 +495,9 @@ function validarContrasenyas() {
   validarNuevaContrasenya()
 
   return (
-    validarContrasenya.value === 'valido' &&
-    validarNuevaContrasenya.value === 'valido'
+    validacionContrasenya.value === 'valido' &&  // ✅ CORREGIDO: usa las variables, no las funciones
+    validacionNuevaContrasenya.value === 'valido'
   )
-}
-
-function saveProfile() {
-  if (validarFormularioCompleto()) {
-    //logica
-  }
 }
 
 async function savePassword() {
@@ -515,7 +514,9 @@ async function savePassword() {
 
     console.log('Enviando cambio de contraseña:', changePasswordDto);
 
-    const token = localStorage.getItem('token') || localStorage.getItem('userToken');
+    const token = localStorage.getItem('authToken') ||
+      localStorage.getItem('token') ||
+      localStorage.getItem('userToken');
 
     if (!token) {
       throw new Error('No hay token de autenticación');
@@ -544,13 +545,82 @@ async function savePassword() {
     if (error.message.includes('token') || error.message.includes('autenticación')) {
       localStorage.removeItem('token');
       localStorage.removeItem('userData');
-      router.push('/login');
+      router.push({ name: 'IniciarSesion' })
     }
 
     alert(error.message || 'Error al cambiar la contraseña');
   }
 }
 
+
+function saveProfile() {
+  if (validarFormularioCompleto()) {
+    //logica
+  }
+}
+
+async function deleteProfile() {
+  const confirmationMessage = t('profile.deleteConfirmation');
+
+  const confirmDelete = confirm(confirmationMessage);
+
+  if (!confirmDelete) {
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem('authToken');
+    const userData = localStorage.getItem('userData');
+
+    if (!token) {
+      throw new Error('No hay sesión activa');
+    }
+
+    if (!userData) {
+      throw new Error('No se encontraron datos del usuario');
+    }
+
+    const user = JSON.parse(userData);
+    const userId = user.id;
+
+    if (!userId) {
+      throw new Error('No se pudo obtener el ID del usuario');
+    }
+
+    console.log('Eliminando usuario con ID:', userId);
+
+    const response = await fetch(`http://localhost:3000/users/${userId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Error al eliminar la cuenta');
+    }
+
+    alert(t('profile.deleteSuccess') || 'Cuenta eliminada correctamente');
+
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userData');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userToken');
+
+    router.push({ name: 'PaginaPrincipal' })
+
+  } catch (error) {
+    console.error('Error al eliminar cuenta:', error);
+    if (error.message.includes('token') || error.message.includes('sesión')) {
+      localStorage.clear();
+      router.push({ name: 'PaginaPrincipal' })
+    } else {
+      alert(error.message || 'Error al eliminar la cuenta');
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -563,7 +633,19 @@ body {
   border-color: #BA68C8
 }
 
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
 .profile-button {
+  min-width: 140px;
+  margin: 5px;
+  flex-shrink: 0;
   background: rgb(99, 39, 120);
   box-shadow: none;
   border: none
@@ -615,5 +697,17 @@ body {
 .text-danger {
   font-size: 0.875rem;
   margin-top: 0.25rem;
+}
+
+/* Para móviles */
+@media (max-width: 576px) {
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-button {
+    width: 200px;
+  }
 }
 </style>
