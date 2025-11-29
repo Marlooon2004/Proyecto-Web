@@ -380,8 +380,6 @@ body {
   line-height: 1.4;
 }
 
-
-
 hr {
   margin: 1rem 0;
   color: inherit;
@@ -763,14 +761,6 @@ legend+* {
   appearance: textfield;
 }
 
-/* rtl:raw:
-[type="tel"],
-[type="url"],
-[type="email"],
-[type="number"] {
-  direction: ltr;
-}
-*/
 ::-webkit-search-decoration {
   appearance: none;
 }
@@ -5032,6 +5022,35 @@ fieldset:disabled .btn {
   --bs-navbar-brand-hover-color: #fff;
   --bs-navbar-toggler-border-color: rgba(255, 255, 255, 0.1);
   --bs-navbar-toggler-icon-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+
+  --bs-navbar-color: rgba(255, 255, 255, 0.9) !important;
+  --bs-navbar-hover-color: rgba(255, 255, 255, 1) !important;
+  --bs-navbar-active-color: #ffffff !important;
+  --bs-navbar-brand-color: #ffffff !important;
+  --bs-navbar-brand-hover-color: #ffffff !important;
+}
+
+.navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8) !important;
+  font-weight: 500;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: #ffffff !important;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 1) !important;
+}
+
+.navbar-nav .nav-link.active {
+  color: #ffffff !important;
+  font-weight: 600;
 }
 
 .card {
