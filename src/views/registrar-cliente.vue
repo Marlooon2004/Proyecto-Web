@@ -49,8 +49,8 @@
                     <select id="sexo_id" v-model="sexo" :class="validacionSexo" @change="validarSexo"
                       class="form-control">
                       <option value="" disabled selected>{{ $t('auth.gender') }}</option>
-                      <option value="male">{{ $t('auth.male') }}</option>
-                      <option value="female">{{ $t('auth.female') }}</option>
+                      <option value="Male">{{ $t('auth.male') }}</option>
+                      <option value="Female">{{ $t('auth.female') }}</option>
                     </select>
                     <span class="mensaje" :class="validacionSexo">{{ mensajeSexo }}</span>
                   </div>
@@ -402,25 +402,28 @@ function validarFormularioCompleto() {
     validacionRepetirContrasenya.value === 'valido'
   )
 }
-
 async function registrarUsuario() {
   if (!validarFormularioCompleto()) {
-    return
+    return;
   }
 
   try {
+    const sexoClienteRegistrar = sexo.value === 'male' ? 'M' : 'F';
+
     const userData = {
+      CI: carnet.value,
       firstName: nombre.value,
       lastName: apellidos.value,
-      username: usuario.value,
-      email: email.value,
-      phoneNumber: telefono.value,
       age: parseInt(edad.value),
-      sex: sexo.value,
+      sex: sexoClienteRegistrar,
+      phoneNumber: telefono.value,
       municipality: municipio.value,
-      CI: carnet.value,
+      email: email.value,
+      username: usuario.value,
       password: contrasenya.value,
-    }
+    };
+
+    console.log('DATOS ENVIADOS:', userData);
 
     const response = await fetch('http://localhost:3000/users', {
       method: 'POST',
@@ -428,29 +431,31 @@ async function registrarUsuario() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(userData)
-    })
+    });
 
-    const data = await response.json()
+    const data = await response.json();
 
     if (!response.ok) {
       if (response.status === 409) {
-        throw new Error(data.message || 'El usuario ya existe')
+        throw new Error(data.message || 'El usuario ya existe');
       }
       if (response.status === 400) {
-        const errorMsg = data.message?.join?.(', ') || data.message || 'Datos inválidos'
-        throw new Error(`Error de validación: ${errorMsg}`)
+        const errorMsg = data.message?.join?.(', ') || data.message || 'Datos inválidos';
+        throw new Error(`Error de validación: ${errorMsg}`);
       }
-      throw new Error(data.message || `Error del servidor: ${response.status}`)
+      throw new Error(data.message || `Error del servidor: ${response.status}`);
     }
 
-    alert('¡Usuario registrado exitosamente!')
-    irAIniciarSesion()
+    console.log('✅ Usuario creado exitosamente:', data);
+    alert('¡Usuario registrado exitosamente!');
+    irAIniciarSesion();
 
   } catch (error) {
-    console.error('Error al crear usuario:', error)
-    alert(`Error: ${error.message}`)
+    console.error('❌ Error al crear usuario:', error);
+    alert(`Error: ${error.message}`);
   }
 }
+
 
 function irAIniciarSesion() {
   router.push({ name: 'IniciarSesion' })
