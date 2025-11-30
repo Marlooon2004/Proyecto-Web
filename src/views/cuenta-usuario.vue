@@ -539,6 +539,9 @@ async function savePassword() {
       localStorage.getItem('token') ||
       localStorage.getItem('userToken');
 
+      console.log('token' + token);
+
+
     if (!token) {
       throw new Error('No hay token de autenticación');
     }
