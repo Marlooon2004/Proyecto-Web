@@ -408,7 +408,7 @@ async function registrarUsuario() {
   }
 
   try {
-    const sexoClienteRegistrar = sexo.value === 'male' ? 'M' : 'F';
+    const sexoClienteRegistrar = sexo.value === 'Male' ? 'M' : 'F';
 
     const userData = {
       CI: carnet.value,

@@ -11,9 +11,6 @@
             <button class="btn btn-primary profile-button" type="button" @click="goToExistingContracts">
               {{ $t('profile.existingContracts') }}
             </button>
-            <button class="btn btn-primary profile-button" type="button" @click="deleteProfile">
-              {{ $t('profile.deleteButton') }}
-            </button>
             <button class="btn btn-primary profile-button" @click="goHome">
               {{ $t('common.cancel') }}
             </button>
@@ -51,10 +48,10 @@
           <div class="row mt-2">
             <div class="col-md-6">
               <label class="labels">{{ $t('auth.gender') }}</label>
-              <select id="sexo_id" v-model="sexo" class="form-control" :class="validacionSexo">
+              <select id="sexo_id" v-model="sexo" class="form-select" :class="validacionSexo">
                 <option value="" disabled selected>{{ $t('auth.gender') }}</option>
-                <option value="male">{{ $t('auth.male') }}</option>
-                <option value="female">{{ $t('auth.female') }}</option>
+                <option value="Male">{{ $t('auth.male') }}</option>
+                <option value="Female">{{ $t('auth.female') }}</option>
               </select>
               <small class="text-danger" v-if="mensajeSexo">{{ mensajeSexo }}</small>
             </div>
@@ -80,7 +77,7 @@
             </div>
             <div class="col-md-12">
               <label class="labels">{{ $t('auth.municipality') }}</label>
-              <select id="municipios_lista" v-model="municipio" @change="validarMunicipio" class="form-control"
+              <select id="municipios_lista" v-model="municipio" @change="validarMunicipio" class="form-select"
                 :class="validacionMunicipio">
                 <option value="" disabled selected>{{ $t('auth.municipality') }}</option>
                 <option v-for="m in municipios" :key="m" :value="m">{{ m }}</option>
@@ -89,7 +86,7 @@
             </div>
             <div class="col-md-12">
               <label class="labels">{{ $t('auth.idNumber') }}</label>
-              <input type="text" id="carnet_id" v-model="carnet" class="form-control" readonly disabled />
+              <input type="text" id="carnet_id" v-model="carnet" class="form-control" />
             </div>
           </div>
           <div class="mt-5 text-center">
@@ -200,47 +197,67 @@ const cargarMunicipios = async () => {
     console.error('Error:', err)
   }
 }
+onMounted(async () => {
+  await cargarMunicipios();
+  const perfilCompleto = await cargarDatosUsuario();
 
-onMounted(() => {
-  cargarMunicipios()
-})
-
-
+  if (perfilCompleto) {
+    nombre.value = perfilCompleto.nombre || '';
+    apellidos.value = perfilCompleto.apellidos || '';
+    usuario.value = perfilCompleto.usuario?.usuario || '';
+    email.value = perfilCompleto.correo || '';
+    telefono.value = perfilCompleto.telef_contacto || '';
+    edad.value = perfilCompleto.edad || '';
+    sexo.value = perfilCompleto.sexo === 'M' ? 'Male' : 'Female';
+    municipio.value = perfilCompleto.nombre_mun || '';
+    carnet.value = perfilCompleto.carnet || '';
+    console.log('Datos cargados en formulario:', perfilCompleto);
+  }
+});
 // Función para cargar datos del usuario
-function cargarDatosUsuario() {
+async function cargarDatosUsuario() {
   try {
     const userData = localStorage.getItem('userData');
+    const token = localStorage.getItem('authToken');
 
-    if (!userData) {
-      router.push({ name: 'IniciarSesion' })
-      return;
+    if (!userData || !token) {
+      router.push({ name: 'IniciarSesion' });
+      return null;
     }
 
     const user = JSON.parse(userData);
 
-    // Cargar datos en los campos
-    nombre.value = user.firstName || '';
-    apellidos.value = user.lastName || '';
-    usuario.value = user.username || '';
-    email.value = user.email || '';
-    telefono.value = user.phoneNumber || '';
-    edad.value = user.age || '';
-    sexo.value = user.sex || '';
-    municipio.value = user.municipality || '';
-    carnet.value = user.id || ''; // Recuerda que en tu backend id = CI
+    const response = await fetch(`http://localhost:3000/users/usuario/${user.id_generated}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    if (response.status === 404) {
+      console.log('Cliente no encontrado para este usuario');
+      return user;
+    }
 
-    console.log('Datos del usuario cargados:', user);
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${await response.text()}`);
+    }
 
+    const cliente = await response.json();
+    console.log('Datos del cliente:', cliente);
+
+    const perfilCompleto = {
+      ...user,
+      ...cliente
+    };
+
+    return perfilCompleto;
   } catch (error) {
     console.error('Error cargando datos del usuario:', error);
-    router.push({ name: 'IniciarSesion' })
+    router.push({ name: 'IniciarSesion' });
+    return null;
   }
 }
-
-// Cargar datos cuando el componente se monta
-onMounted(() => {
-  cargarDatosUsuario();
-});
 
 function goHome() {
   router.push({ name: 'PaginaPrincipal' })
@@ -498,11 +515,12 @@ function validarContrasenyas() {
   validarNuevaContrasenya()
 
   return (
-    validacionContrasenya.value === 'valido' &&  // ✅ CORREGIDO: usa las variables, no las funciones
+    validacionContrasenya.value === 'valido' &&
     validacionNuevaContrasenya.value === 'valido'
   )
 }
 
+//cambiar contrasenya
 async function savePassword() {
   if (!validarContrasenyas()) {
     alert(t('validation.formErrors') || 'Por favor, corrige los errores en el formulario');
@@ -555,7 +573,7 @@ async function savePassword() {
   }
 }
 
-
+//modificar perfil
 async function saveProfile() {
   if (!validarFormularioCompleto()) {
     return;
@@ -622,69 +640,6 @@ async function saveProfile() {
       router.push({ name: 'IniciarSesion' });
     } else {
       alert(error.message || 'Error al actualizar la cuenta');
-    }
-  }
-}
-
-async function deleteProfile() {
-  const confirmationMessage = t('profile.deleteConfirmation');
-
-  const confirmDelete = confirm(confirmationMessage);
-
-  if (!confirmDelete) {
-    return;
-  }
-
-  try {
-    const token = localStorage.getItem('authToken');
-    const userData = localStorage.getItem('userData');
-
-    if (!token) {
-      throw new Error('No hay sesión activa');
-    }
-
-    if (!userData) {
-      throw new Error('No se encontraron datos del usuario');
-    }
-
-    const user = JSON.parse(userData);
-    const userId = user.id;
-
-    if (!userId) {
-      throw new Error('No se pudo obtener el ID del usuario');
-    }
-
-    console.log('Eliminando usuario con ID:', userId);
-
-    const response = await fetch(`http://localhost:3000/users/${userId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Error al eliminar la cuenta');
-    }
-
-    alert(t('profile.deleteSuccess') || 'Cuenta eliminada correctamente');
-
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('userData');
-    localStorage.removeItem('token');
-    localStorage.removeItem('userToken');
-
-    router.push({ name: 'PaginaPrincipal' })
-
-  } catch (error) {
-    console.error('Error al eliminar cuenta:', error);
-    if (error.message.includes('token') || error.message.includes('sesión')) {
-      localStorage.clear();
-      router.push({ name: 'PaginaPrincipal' })
-    } else {
-      alert(error.message || 'Error al eliminar la cuenta');
     }
   }
 }
