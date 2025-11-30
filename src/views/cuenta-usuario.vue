@@ -226,8 +226,9 @@ async function cargarDatosUsuario() {
     }
 
     const user = JSON.parse(userData);
+    const usuarioId = user.usuario?.id_generated || user.id_generated;
 
-    const response = await fetch(`http://localhost:3000/users/usuario/${user.id_generated}`, {
+    const response = await fetch(`http://localhost:3000/users/usuario/${usuarioId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -539,9 +540,6 @@ async function savePassword() {
       localStorage.getItem('token') ||
       localStorage.getItem('userToken');
 
-      console.log('token' + token);
-
-
     if (!token) {
       throw new Error('No hay token de autenticación');
     }
@@ -584,9 +582,12 @@ async function saveProfile() {
 
   try {
     const userData = localStorage.getItem('userData');
-    const token = localStorage.getItem('authToken') ||
-      localStorage.getItem('token') ||
-      localStorage.getItem('userToken');
+    const token = localStorage.getItem('token') || localStorage.getItem('authToken');
+
+    if (!userData || !token) {
+      router.push({ name: 'IniciarSesion' });
+      return;
+    }
 
     const updateData = {
       username: usuario.value,
@@ -596,25 +597,13 @@ async function saveProfile() {
       municipality: municipio.value,
       phoneNumber: telefono.value,
       age: edad.value,
-      sex: sexo.value
+      sex: sexo.value,
+      CI: carnet.value,
     };
 
     console.log('Enviando datos de actualización:', updateData);
 
-    if (!token) {
-      throw new Error('No hay token de autenticación');
-    }
-
-    const user = JSON.parse(userData);
-    const userId = user.id;
-
-    if (!userId) {
-      throw new Error('No se pudo obtener el ID del usuario');
-    }
-
-    console.log('Actualizando usuario con ID:', userId);
-
-    const response = await fetch(`http://localhost:3000/users/${userId}`, {
+    const response = await fetch('http://localhost:3000/users/profile', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -628,17 +617,24 @@ async function saveProfile() {
       throw new Error(errorData.message || 'Error al actualizar la cuenta');
     }
 
-    const updatedUser = await response.json();
-    localStorage.setItem('userData', JSON.stringify(updatedUser));
+    const result = await response.json();
+    console.log('Perfil actualizado exitosamente:', result);
 
-    console.log('Perfil actualizado exitosamente:', updatedUser);
-    alert(t('profile.ActualizationSuccess') || 'Cuenta actualizada correctamente');
+    const currentUserData = JSON.parse(localStorage.getItem('userData') || '{}');
+    const updatedUserData = {
+      ...currentUserData,
+      usuario: updateData.username,
+    };
+
+    localStorage.setItem('userData', JSON.stringify(updatedUserData));
+
+    alert('Cuenta actualizada correctamente');
 
   } catch (error) {
     console.error('Error al actualizar la cuenta:', error);
-
     if (error.message.includes('token') || error.message.includes('autenticación')) {
       localStorage.removeItem('token');
+      localStorage.removeItem('authToken');
       localStorage.removeItem('userData');
       router.push({ name: 'IniciarSesion' });
     } else {
