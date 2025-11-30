@@ -9,49 +9,42 @@
                 <h2 class="fw-bold mb-4 mb-md-5">{{ $t('auth.register') }}</h2>
                 <form @submit.prevent="registrarUsuario" class="form-register">
 
-                  <!-- Nombre -->
                   <div class="form-outline">
                     <input type="text" id="nombre_id" v-model="nombre" class="form-control" :class="validacionNombre"
                       @input="validarNombre" :placeholder="$t('auth.firstName')" />
                     <span class="mensaje" :class="validacionNombre">{{ mensajeNombre }}</span>
                   </div>
 
-                  <!-- Apellidos -->
                   <div class="form-outline">
                     <input type="text" id="apellidos_id" v-model="apellidos" :class="validacionApellidos"
                       @input="validarApellidos" class="form-control" :placeholder="$t('auth.lastName')" />
                     <span class="mensaje" :class="validacionApellidos">{{ mensajeApellidos }}</span>
                   </div>
 
-                  <!-- Usuario -->
                   <div class="form-outline">
                     <input type="text" id="usuario_id" class="form-control" v-model="usuario" @input="validarUsuario"
                       :class="validacionUsuario" :placeholder="$t('auth.username')" />
                     <span class="mensaje" :class="validacionUsuario">{{ mensajeUsuario }}</span>
                   </div>
 
-                  <!-- Email -->
                   <div class="form-outline">
                     <input type="email" id="email_id" class="form-control" v-model="email" @input="validarEmail"
                       :class="validacionEmail" :placeholder="$t('auth.email')" />
                     <span class="mensaje" :class="validacionEmail">{{ mensajeEmail }}</span>
                   </div>
 
-                  <!-- Teléfono -->
                   <div class="form-outline">
                     <input type="text" id="telefono_id" class="form-control" v-model="telefono" @input="validarTelefono"
                       :class="validacionTelefono" :placeholder="$t('auth.phoneNumber')" />
                     <span class="mensaje" :class="validacionTelefono">{{ mensajeTelefono }}</span>
                   </div>
 
-                  <!-- Edad -->
                   <div class="form-outline">
                     <input type="number" id="edad_id" class="form-control" v-model="edad" @input="validarEdad"
                       :class="validacionEdad" :placeholder="$t('auth.age')" />
                     <span class="mensaje" :class="validacionEdad">{{ mensajeEdad }}</span>
                   </div>
 
-                  <!-- Sexo -->
                   <div class="form-outline">
                     <select id="sexo_id" v-model="sexo" :class="validacionSexo" @change="validarSexo"
                       class="form-control">
@@ -62,7 +55,6 @@
                     <span class="mensaje" :class="validacionSexo">{{ mensajeSexo }}</span>
                   </div>
 
-                  <!-- Municipio -->
                   <div class="form-outline">
                     <select id="municipios_lista" v-model="municipio" :class="validacionMunicipio"
                       @change="validarMunicipio" class="form-control">
@@ -72,21 +64,18 @@
                     <span class="mensaje" :class="validacionMunicipio">{{ mensajeMunicipio }}</span>
                   </div>
 
-                  <!-- Carnet de Identidad -->
                   <div class="form-outline">
                     <input type="text" id="carnet_id" v-model="carnet" @input="validarCarnet" :class="validacionCarnet"
                       class="form-control" :placeholder="$t('auth.idNumber')" maxlength="11" />
                     <span class="mensaje" :class="validacionCarnet">{{ mensajeCarnet }}</span>
                   </div>
 
-                  <!-- Contraseña -->
                   <div class="form-outline">
                     <input type="password" id="contrasenya_id" v-model="contrasenya" @input="validarContrasenya"
                       class="form-control" :class="validacionContrasenya" :placeholder="$t('auth.password')" />
                     <span class="mensaje" :class="validacionContrasenya">{{ mensajeContrasenya }}</span>
                   </div>
 
-                  <!-- Repetir Contraseña -->
                   <div class="form-outline">
                     <input type="password" id="repetir_contrasenya_id" v-model="repetirContrasenya"
                       @input="validarRepetirContrasenya" class="form-control" :class="validacionRepetirContrasenya"
@@ -94,7 +83,6 @@
                     <span class="mensaje" :class="validacionRepetirContrasenya">{{ mensajeRepetirContrasenya }}</span>
                   </div>
 
-                  <!-- Submit buttons -->
                   <div class="d-flex flex-column flex-md-row gap-2 gap-md-3 justify-content-center mt-4">
                     <button type="submit" class="btn btn-primary btn-block flex-fill">
                       {{ $t('auth.registerButton') }}
@@ -129,14 +117,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
 const { t } = useI18n()
 
-// Datos reactivos
+const municipios = ref([])
 const nombre = ref('')
 const apellidos = ref('')
 const usuario = ref('')
@@ -149,7 +137,6 @@ const carnet = ref('')
 const contrasenya = ref('')
 const repetirContrasenya = ref('')
 
-// Mensajes y validaciones
 const mensajeNombre = ref('')
 const mensajeApellidos = ref('')
 const mensajeUsuario = ref('')
@@ -174,26 +161,21 @@ const validacionCarnet = ref('')
 const validacionContrasenya = ref('')
 const validacionRepetirContrasenya = ref('')
 
-// Municipios de La Habana
-const municipios = ref([
-  'Arroyo Naranjo',
-  'Boyeros',
-  'Centro Habana',
-  'Cerro',
-  'Cotorro',
-  'Diez de Octubre',
-  'Guanabacoa',
-  'Habana del Este',
-  'Habana Vieja',
-  'La Lisa',
-  'Marianao',
-  'Playa',
-  'Plaza de la Revolución',
-  'Regla',
-  'San Miguel del Padrón'
-])
+const cargarMunicipios = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/users/municipios')
+    if (!response.ok) throw new Error('Error al cargar municipios')
+    const data = await response.json()
+    municipios.value = data.map(item => item.nombre_mun)
+  } catch (err) {
+    console.error('Error:', err)
+  }
+}
 
-// Watch para validar carnet cuando cambia la edad y viceversa
+onMounted(() => {
+  cargarMunicipios()
+})
+
 watch([edad, carnet], () => {
   if (edad.value && carnet.value.length === 11) {
     validarCarnet()
@@ -204,7 +186,6 @@ function volverAlMenu() {
   router.push('/')
 }
 
-// Funciones de validación (mantener igual)
 function validarNombre() {
   if (!nombre.value) {
     mensajeNombre.value = t('validation.requiredField')
@@ -261,7 +242,6 @@ function validarEmail() {
 
 function validarTelefono() {
   telefono.value = telefono.value.replace(/\D/g, '')
-
   if (!telefono.value) {
     mensajeTelefono.value = t('validation.requiredField')
     validacionTelefono.value = 'invalido'
@@ -312,50 +292,41 @@ function validarMunicipio() {
 
 function validarCarnet() {
   carnet.value = carnet.value.replace(/\D/g, '')
-
   if (!carnet.value) {
     mensajeCarnet.value = t('validation.requiredField')
     validacionCarnet.value = 'invalido'
     return
   }
-
   if (carnet.value.length !== 11) {
     mensajeCarnet.value = t('validation.idNumberLength')
     validacionCarnet.value = 'invalido'
     return
   }
-
   const añoCarnet = parseInt(carnet.value.substring(0, 2))
   const mesCarnet = parseInt(carnet.value.substring(2, 4))
   const diaCarnet = parseInt(carnet.value.substring(4, 6))
-
   if (!esFechaValida(añoCarnet, mesCarnet, diaCarnet)) {
     mensajeCarnet.value = t('validation.idNumberInvalidDate')
     validacionCarnet.value = 'invalido'
     return
   }
-
   if (edad.value && !coincideEdadConCarnet(edad.value, añoCarnet, mesCarnet, diaCarnet)) {
     mensajeCarnet.value = t('validation.idNumberAgeMismatch')
     validacionCarnet.value = 'invalido'
     return
   }
-
   mensajeCarnet.value = ''
   validacionCarnet.value = 'valido'
 }
 
 function esFechaValida(año, mes, dia) {
   if (mes < 1 || mes > 12) return false
-
   const diasPorMes = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
   if (dia < 1 || dia > diasPorMes[mes - 1]) return false
-
   if (mes === 2 && dia === 29) {
     const añoCompleto = año <= new Date().getFullYear() % 100 ? 2000 + año : 1900 + año
     if (!esBisiesto(añoCompleto)) return false
   }
-
   return true
 }
 
@@ -368,15 +339,11 @@ function coincideEdadConCarnet(edad, añoCarnet, mesCarnet, diaCarnet) {
   const añoActual = ahora.getFullYear()
   const mesActual = ahora.getMonth() + 1
   const diaActual = ahora.getDate()
-
   let añoNacimiento = añoCarnet > (añoActual % 100) ? 1900 + añoCarnet : 2000 + añoCarnet
-
   let edadCalculada = añoActual - añoNacimiento
-
   if (mesActual < mesCarnet || (mesActual === mesCarnet && diaActual < diaCarnet)) {
     edadCalculada--
   }
-
   return edadCalculada === parseInt(edad)
 }
 
@@ -436,67 +403,58 @@ function validarFormularioCompleto() {
   )
 }
 
-//registrar usuario
 async function registrarUsuario() {
   if (!validarFormularioCompleto()) {
-    return;
+    return
   }
 
   try {
     const userData = {
-      firstName: document.getElementById('nombre_id').value,
-      lastName: document.getElementById('apellidos_id').value,
-      username: document.getElementById('usuario_id').value,
-      email: document.getElementById('email_id').value,
-      phoneNumber: document.getElementById('telefono_id').value,
-      age: parseInt(document.getElementById('edad_id').value),
-      sex: document.getElementById('sexo_id').value,
-      municipality: document.getElementById('municipios_lista').value,
-      CI: document.getElementById('carnet_id').value,
-      password: document.getElementById('contrasenya_id').value,
-    };
+      firstName: nombre.value,
+      lastName: apellidos.value,
+      username: usuario.value,
+      email: email.value,
+      phoneNumber: telefono.value,
+      age: parseInt(edad.value),
+      sex: sexo.value,
+      municipality: municipio.value,
+      CI: carnet.value,
+      password: contrasenya.value,
+    }
 
-    console.log('Enviando datos:', userData);
-
-    // Llamada al backend
     const response = await fetch('http://localhost:3000/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(userData)
-    });
+    })
 
-    const data = await response.json();
+    const data = await response.json()
 
-    // Manejar errores específicos del backend
     if (!response.ok) {
       if (response.status === 409) {
-        throw new Error(data.message || 'El usuario ya existe');
+        throw new Error(data.message || 'El usuario ya existe')
       }
       if (response.status === 400) {
-        // Mostrar errores de validación de NestJS
-        const errorMsg = data.message?.join?.(', ') || data.message || 'Datos inválidos';
-        throw new Error(`Error de validación: ${errorMsg}`);
+        const errorMsg = data.message?.join?.(', ') || data.message || 'Datos inválidos'
+        throw new Error(`Error de validación: ${errorMsg}`)
       }
-      throw new Error(data.message || `Error del servidor: ${response.status}`);
+      throw new Error(data.message || `Error del servidor: ${response.status}`)
     }
 
-    console.log('Usuario creado', data);
-    alert('¡Usuario registrado exitosamente!');
-    irAIniciarSesion();
+    alert('¡Usuario registrado exitosamente!')
+    irAIniciarSesion()
 
   } catch (error) {
-    console.error('Error al crear usuario:', error);
-    alert(`Error: ${error.message}`);
+    console.error('Error al crear usuario:', error)
+    alert(`Error: ${error.message}`)
   }
 }
 
 function irAIniciarSesion() {
   router.push({ name: 'IniciarSesion' })
 }
-
-
 </script>
 
 <style scoped>
@@ -589,7 +547,6 @@ function irAIniciarSesion() {
   display: none;
 }
 
-/* Botones responsive */
 @media (max-width: 767.98px) {
   .btn {
     padding: 0.75rem 1rem;
@@ -598,21 +555,17 @@ function irAIniciarSesion() {
   }
 }
 
-/* Mejorar select en móviles */
 @media (max-width: 767.98px) {
   select.form-control {
     font-size: 16px;
-    /* Previene zoom en iOS */
   }
 }
 
-/* Asegurar que la imagen sea responsive */
 .img-fluid {
   max-width: 100%;
   height: auto;
 }
 
-/* Scroll suave para formularios largos en móviles */
 .form-register {
   max-height: 70vh;
   overflow-y: auto;
