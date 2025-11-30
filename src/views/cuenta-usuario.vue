@@ -86,7 +86,8 @@
             </div>
             <div class="col-md-12">
               <label class="labels">{{ $t('auth.idNumber') }}</label>
-              <input type="text" id="carnet_id" v-model="carnet" class="form-control" />
+              <input type="text" id="carnet_id" v-model="carnet" @change="validarCarnet" class="form-control" :class="validacionCarnet" />
+              <small class="text-danger" v-if="mensajeCarnet">{{ mensajeCarnet }}</small>
             </div>
           </div>
           <div class="mt-5 text-center">
