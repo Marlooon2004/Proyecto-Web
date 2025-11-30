@@ -140,6 +140,7 @@ const { t } = useI18n()
 const router = useRouter()
 
 // Datos reactivos del perfil
+const municipios = ref([])
 const nombre = ref('')
 const apellidos = ref('')
 const usuario = ref('')
@@ -181,25 +182,6 @@ const validacionCarnet = ref('')
 const validacionContrasenya = ref('')
 const validacionNuevaContrasenya = ref('')
 
-// Municipios de La Habana
-const municipios = ref([
-  'Arroyo Naranjo',
-  'Boyeros',
-  'Centro Habana',
-  'Cerro',
-  'Cotorro',
-  'Diez de Octubre',
-  'Guanabacoa',
-  'Habana del Este',
-  'Habana Vieja',
-  'La Lisa',
-  'Marianao',
-  'Playa',
-  'Plaza de la Revolución',
-  'Regla',
-  'San Miguel del Padrón'
-])
-
 function closeSesion() {
   if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
     localStorage.removeItem('userData');
@@ -207,6 +189,21 @@ function closeSesion() {
     router.push({ name: 'IniciarSesion' })
   }
 }
+
+const cargarMunicipios = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/users/municipios')
+    if (!response.ok) throw new Error('Error al cargar municipios')
+    const data = await response.json()
+    municipios.value = data.map(item => item.nombre_mun)
+  } catch (err) {
+    console.error('Error:', err)
+  }
+}
+
+onMounted(() => {
+  cargarMunicipios()
+})
 
 
 // Función para cargar datos del usuario
@@ -249,7 +246,7 @@ function goHome() {
   router.push({ name: 'PaginaPrincipal' })
 }
 
-function goToExistingContracts(){
+function goToExistingContracts() {
   router.push({ name: 'ContractsUser' })
 }
 
