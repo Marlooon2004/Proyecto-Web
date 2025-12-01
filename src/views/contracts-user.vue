@@ -1,41 +1,61 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body text-center">
-          <h5 class="card-title m-b-0">{{ displayTitle }}</h5>
-        </div>
-        <div class="table-responsive">
-          <table class="table">
-            <thead class="thead-light">
-              <tr>
-                <th scope="col">{{ $t('contracts.registration') }}</th>
-                <th scope="col">{{ $t('contracts.startDate') }}</th>
-                <th scope="col">{{ $t('contracts.endDate') }}</th>
-                <th scope="col">{{ $t('contracts.extensionDays') }}</th>
-                <th scope="col">{{ $t('contracts.paymentMethod') }}</th>
-                <th scope="col">{{ $t('contracts.insurance') }}</th>
-              </tr>
-            </thead>
-            <tbody class="customtable">
-              <tr v-for="(contract, index) in contracts" :key="index">
-                <td>{{ contract.registration }}</td>
-                <td>{{ formatDate(contract.startDate) }}</td>
-                <td>{{ formatDate(contract.endDate) }}</td>
-                <td>{{ contract.extensionDays }}</td>
-                <td>
-                  <span :class="getPaymentMethodClass(contract.paymentMethod)">
-                    {{ $t(`contracts.${contract.paymentMethod}`) }}
-                  </span>
-                </td>
-                <td>
-                  <span :class="getInsuranceClass(contract.insurance)">
-                    {{ $t(`contracts.${contract.insurance ? 'yes' : 'no'}`) }}
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+  <div class="container rounded bg-white mt-5 mb-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body text-center">
+            <h4 class="card-title m-b-0">{{ $t('contracts.myContracts') }}</h4>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">{{ $t('contracts.registration') }}</th>
+                  <th scope="col">{{ $t('contracts.motorcycle') }}</th>
+                  <th scope="col">{{ $t('contracts.startDate') }}</th>
+                  <th scope="col">{{ $t('contracts.endDate') }}</th>
+                  <th scope="col">{{ $t('contracts.extensionDays') }}</th>
+                  <th scope="col">{{ $t('contracts.paymentMethod') }}</th>
+                  <th scope="col">{{ $t('contracts.insurance') }}</th>
+                  <th scope="col">{{ $t('contracts.status') }}</th>
+                </tr>
+              </thead>
+              <tbody class="customtable">
+                <tr v-for="(contract, index) in contratos" :key="index">
+                  <td>{{ contract.matricula }}</td>
+                  <td>
+                    <div class="moto-info">
+                      <strong>{{ contract.marca }}</strong> {{ contract.modelo }}
+                    </div>
+                  </td>
+                  <td>{{ formatDate(contract.fechaInicio) }}</td>
+                  <td>{{ formatDate(contract.fechaFin) }}</td>
+                  <td>{{ contract.diasProrroga }}</td>
+                  <td>
+                    <span :class="getPaymentMethodClass(contract.formaPago)">
+                      {{ getPaymentMethodText(contract.formaPago) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span :class="getInsuranceClass(contract.seguro)">
+                      {{ getInsuranceText(contract.seguro) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span :class="getStatusClass(contract.activo)">
+                      {{ getStatusText(contract.activo) }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div v-if="contratos.length === 0 && !cargando" class="text-center p-4">
+            <p>{{ $t('contracts.noContracts') }}</p>
+          </div>
+          <div v-if="cargando" class="text-center p-4">
+            <p>{{ $t('common.loading') }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -47,46 +67,133 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'ContractsTable',
-  props: {
-    title: {
-      type: String,
-      default: 'contracts.title'
-    },
-    contracts: {
-      type: Array,
-      required: true,
-      default: () => []
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+
+const { t } = useI18n()
+const router = useRouter()
+
+const contratos = ref([])
+const cargando = ref(false)
+
+async function cargarContratos() {
+  try {
+    cargando.value = true
+    const userData = localStorage.getItem('userData')
+    const token = localStorage.getItem('authToken') || localStorage.getItem('token')
+
+    if (!userData || !token) {
+      router.push({ name: 'IniciarSesion' })
+      return
     }
-  },
-  computed: {
-    displayTitle() {
-      return this.$t(this.title)
-    }
-  },
-  methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleDateString('es-ES')
-    },
-    getPaymentMethodClass(method) {
-      return {
-        'badge badge-success': method === 'card',
-        'badge badge-primary': method === 'cash'
+
+    const user = JSON.parse(userData)
+    const usuarioId = user.usuario?.id_generated || user.id_generated
+
+    console.log('Cargando contratos para usuario:', usuarioId)
+
+    const response = await fetch(`http://localhost:3000/contratos/${usuarioId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       }
-    },
-    getInsuranceClass(hasInsurance) {
-      return {
-        'badge badge-success': hasInsurance,
-        'badge badge-secondary': !hasInsurance
+    })
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        console.log('No se encontraron contratos')
+        contratos.value = []
+        return
       }
-    },
-    goToProfile() {
-      this.$router.push({ name: 'CuentaUsuario' })
+      throw new Error(`Error ${response.status}: ${await response.text()}`)
     }
+
+    const datosContratos = await response.json()
+    console.log('Contratos cargados:', datosContratos)
+
+    contratos.value = datosContratos.map(contrato => ({
+      matricula: contrato.moto?.matricula || '-',
+      marca: contrato.moto?.modelo?.marca?.marca || '-',
+      modelo: contrato.moto?.modelo?.modelo || '-',
+      fechaInicio: contrato.fecha_inicio,
+      fechaFin: contrato.fecha_fin,
+      diasProrroga: contrato.dias_prorroga || 0,
+      formaPago: contrato.forma_pago,
+      seguro: contrato.seguro,
+      activo: contrato.contrato_activo,
+      tarifaContrato: contrato.tarifa?.tarifa_contrato || 0,
+      tarifaProrroga: contrato.tarifa?.tarifa_prorroga || 0
+    }))
+
+  } catch (error) {
+    console.error('Error cargando contratos:', error)
+    contratos.value = []
+
+    if (error.message.includes('token') || error.message.includes('autenticación')) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('authToken')
+      localStorage.removeItem('userData')
+      router.push({ name: 'IniciarSesion' })
+    }
+  } finally {
+    cargando.value = false
   }
 }
+
+function formatDate(dateString) {
+  if (!dateString) return '-'
+  const date = new Date(dateString)
+  return date.toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  })
+}
+
+function getPaymentMethodClass(metodo) {
+  const clases = {
+    'T': 'badge bg-success',
+    'E': 'badge bg-primary',
+    'C': 'badge bg-warning'
+  }
+  return clases[metodo] || 'badge bg-secondary'
+}
+
+function getPaymentMethodText(metodo) {
+  const metodos = {
+    'T': t('contracts.transfer'),
+    'E': t('contracts.cash'),
+    'C': t('contracts.creditCard')
+  }
+  return metodos[metodo] || metodo
+}
+
+function getInsuranceClass(seguro) {
+  return seguro === 'Y' || seguro === 'S' ? 'badge bg-success' : 'badge bg-danger'
+}
+
+function getInsuranceText(seguro) {
+  return seguro === 'Y' || seguro === 'S' ? t('contracts.yes') : t('contracts.no')
+}
+
+function getStatusClass(activo) {
+  return activo ? 'badge bg-success' : 'badge bg-danger'
+}
+
+function getStatusText(activo) {
+  return activo ? t('contracts.active') : t('contracts.inactive')
+}
+
+function goToProfile() {
+  router.back()
+}
+
+onMounted(() => {
+  cargarContratos()
+})
 </script>
 
 <style scoped>

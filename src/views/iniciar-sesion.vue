@@ -136,7 +136,6 @@ async function iniciarSesion() {
 
     const data = await response.json();
 
-    // Manejar respuesta
     if (!response.ok) {
       throw new Error(data.message || 'Error en el login');
     }
@@ -147,8 +146,6 @@ async function iniciarSesion() {
 
     console.log('Login exitoso:', data.user);
     alert(t('auth.loginSuccess'));
-
-    // Redirigir al menú principal o perfil
     volverAlMenu();
 
   } catch (error) {
@@ -225,7 +222,6 @@ function volverAlMenu() {
   color: #dc3545;
 }
 
-/* Mejoras para botones en móviles */
 @media (max-width: 767.98px) {
   .btn {
     padding: 0.75rem 1rem;
@@ -233,13 +229,11 @@ function volverAlMenu() {
   }
 }
 
-/* Asegurar que la imagen sea responsive */
 .img-fluid {
   max-width: 100%;
   height: auto;
 }
 
-/* Mejorar espaciado en móviles */
 @media (max-width: 575.98px) {
   .container.py-4 {
     padding-top: 1rem !important;

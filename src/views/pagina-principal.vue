@@ -13232,7 +13232,7 @@ async function submitContactForm() {
   isSubmitting.value = true
 
   try {
-    // Aquí iría la lógica para enviar el formulario
+    //logica
     console.log('Formulario enviado:', contactForm)
 
     // Simular envío

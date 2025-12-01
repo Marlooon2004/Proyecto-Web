@@ -232,13 +232,22 @@
     "formErrors": "Please correct the errors in the form"
   },
   "contracts": {
-    "registration": "License plate",
-    "startDate": "Start date",
-    "endDate": "End date",
-    "extensionDays": "Extension days",
-    "paymentMethod": "Payment method",
+    "myContracts": "My Contracts",
+    "registration": "Registration",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "extensionDays": "Extension Days",
+    "paymentMethod": "Payment Method",
     "insurance": "Insurance",
-    "title": "Active contracts",
-    "cancel": "Go back"
+    "transfer": "Transfer",
+    "cash": "Cash",
+    "creditCard": "Credit Card",
+    "yes": "Yes",
+    "no": "No",
+    "noContracts": "No contracts found",
+    "cancel": "Back",
+    "status": "Status",
+    "active": "Active",
+    "motorcycle": "Motorcycle"
   }
 }

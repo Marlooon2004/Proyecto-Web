@@ -124,7 +124,7 @@
           </div>
         </div>
       </div>
-    </div> <!-- FALTABA CERRAR ESTE DIV -->
+    </div>
   </div>
 </template>
 
@@ -269,7 +269,7 @@ function goToExistingContracts() {
   router.push({ name: 'ContractsUser' })
 }
 
-// Watch para validar carnet cuando cambia la edad y viceversa
+// Watch para validar carnet cuando cambia la edad o el carnet
 watch([edad, carnet], () => {
   if (edad.value && carnet.value.length === 11) {
     validarCarnet()

@@ -116,7 +116,8 @@
         "view": "Ver",
         "search": "Buscar",
         "loading": "Cargando...",
-        "closeSesion": "Cerrar sesión"
+        "closeSesion": "Cerrar sesión",
+        "yes": "si"
     },
     "auth": {
         "login": "Inicia sesión ahora",
@@ -232,13 +233,22 @@
         "formErrors": "Por favor, corrige los errores en el formulario"
     },
     "contracts": {
-        "registration": "Matricula",
-        "startDate": "Fecha de inicio",
-        "endDate": "Fecha de fin",
-        "extensionDays": "Dias de prorroga",
-        "paymentMethod": "Forma de pago",
+        "myContracts": "Mis Contratos",
+        "registration": "Matrícula",
+        "motorcycle": "Moto",
+        "startDate": "Fecha Inicio",
+        "endDate": "Fecha Fin",
+        "extensionDays": "Días Prórroga",
+        "paymentMethod": "Forma de Pago",
         "insurance": "Seguro",
-        "title": "Contratos activos",
-        "cancel": "Volver atras"
+        "transfer": "Transferencia",
+        "cash": "Efectivo",
+        "creditCard": "Tarjeta Crédito",
+        "yes": "Sí",
+        "no": "No",
+        "noContracts": "No se encontraron contratos",
+        "cancel": "Volver",
+        "status": "Estado",
+        "active": "Activo"
     }
 }
