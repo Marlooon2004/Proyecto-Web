@@ -86,7 +86,8 @@
             </div>
             <div class="col-md-12">
               <label class="labels">{{ $t('auth.idNumber') }}</label>
-              <input type="text" id="carnet_id" v-model="carnet" @change="validarCarnet" class="form-control" :class="validacionCarnet" />
+              <input type="text" id="carnet_id" v-model="carnet" @change="validarCarnet" class="form-control"
+                :class="validacionCarnet" />
               <small class="text-danger" v-if="mensajeCarnet">{{ mensajeCarnet }}</small>
             </div>
           </div>
@@ -210,7 +211,9 @@ onMounted(async () => {
     telefono.value = perfilCompleto.telef_contacto || '';
     edad.value = perfilCompleto.edad || '';
     sexo.value = perfilCompleto.sexo === 'M' ? 'Male' : 'Female';
-    municipio.value = perfilCompleto.nombre_mun || '';
+    municipio.value = perfilCompleto.municipio?.nombre_mun ||
+      perfilCompleto.nombre_mun ||
+      ''
     carnet.value = perfilCompleto.carnet || '';
     console.log('Datos cargados en formulario:', perfilCompleto);
   }

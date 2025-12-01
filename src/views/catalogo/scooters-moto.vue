@@ -7,23 +7,47 @@
         </button>
       </div>
       <h2 class="section-title">{{ $t('catalog.scootersCatalog') }}</h2>
-      <div class="product-grid">
-        <div class="product-card" v-for="(product, index) in products" :key="index">
-          <img :src="product.image" class="product-image" :alt="product.title" />
+
+      <!-- Loading state -->
+      <div v-if="loading" class="loading">
+        <p>{{ $t('catalog.loading') }}</p>
+      </div>
+
+      <!-- Error state -->
+      <div v-else-if="error" class="error">
+        <p>{{ error }}</p>
+      </div>
+
+      <!-- Data loaded -->
+      <div v-else class="product-grid">
+        <div class="product-card" v-for="(product, index) in products" :key="product.id_generated">
+          <!-- Usa ruta de imagen desde la base de datos -->
+          <img :src="getImageUrl(product.ruta_imagen)" class="product-image" :alt="product.descripcion"
+            @error="handleImageError" />
           <div class="product-body">
-            <h5 class="product-title">{{ product.title }}</h5>
+            <!-- Muestra modelo y marca -->
+            <h5 class="product-title">
+              {{ product.modelo?.marca?.marca || 'Marca' }} {{ product.modelo?.modelo || 'Modelo' }}
+            </h5>
             <p class="product-description">
-              <template v-if="product.power && product.displacement">
-                {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }} - {{
-                  $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
-              </template>
-              <template v-else-if="product.displacement">
-                {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
-              </template>
+              <!-- Descripción desde la base de datos -->
+              {{ product.descripcion }}
             </p>
+            <div class="product-details">
+              <span class="detail-item">
+                <i class="bi bi-palette"></i> {{ product.color }}
+              </span>
+              <span class="detail-item">
+                <i class="bi bi-speedometer2"></i> {{ product.cantd_km }} km
+              </span>
+              <span class="detail-item">
+                <i class="bi bi-tag"></i> {{ product.situacion }}
+              </span>
+            </div>
             <div class="product-info">
-              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
-              }}</span>
+              <span class="product-price">
+                {{ $t('catalog.currency') }}{{ product.costo_dia }}{{ $t('catalog.perDay') }}
+              </span>
               <div class="product-rating">
                 <span v-for="n in 4" :key="n" class="star">★</span>
                 <span class="star half">☆</span>
@@ -35,13 +59,14 @@
             <router-link :to="{
               name: 'ReservarMoto',
               query: {
-                id: index + 1,
-                nombre: product.title,
-                categoria: 'scooters',
-                imagen: product.image,
-                precio: product.price,
-                potencia: product.power || '0',
-                cilindrada: product.displacement,
+                id: product.id_generated,
+                nombre: `${product.modelo?.marca?.marca || ''} ${product.modelo?.modelo || ''}`.trim(),
+                categoria: product.categoria,
+                imagen: product.ruta_imagen,
+                precio: product.costo_dia,
+                color: product.color,
+                kilometraje: product.cantd_km,
+                descripcion: product.descripcion,
                 rating: '4.5'
               }
             }" class="btn primary">
@@ -51,76 +76,124 @@
           </div>
         </div>
       </div>
+
+      <!-- No data message -->
+      <div v-if="!loading && !error && products.length === 0" class="no-data">
+        <p>{{ $t('catalog.noScooters') }}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
+
 const router = useRouter()
+const products = ref([])
+const loading = ref(true)
+const error = ref(null)
 
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
 
-import scooter1 from '@/assets/img/catalogo motos/scooters/mecha-1-portada-640x0.jpg'
-import scooter2 from '@/assets/img/catalogo motos/scooters/morbidelli-sc125re-port-640x0.jpg'
-import scooter3 from '@/assets/img/catalogo motos/scooters/honda-forza-125-2026-port-640x0.jpg'
-import scooter4 from '@/assets/img/catalogo motos/scooters/lambretta-x-series-125-300sr-port-640x0.jpg'
-import scooter5 from '@/assets/img/catalogo motos/scooters/letbe-island-125-2025-port-2-640x0.jpg'
-import scooter6 from '@/assets/img/catalogo motos/scooters/letbe-neon-125-port-640x0.jpg'
-import scooter7 from '@/assets/img/catalogo motos/scooters/voge-sr16-125-2025-port-640x0.jpg'
+// Función para construir la URL de la imagen
+function getImageUrl(imagePath) {
+  if (!imagePath) return '/img/placeholder.jpg'
 
-const products = [
-  {
-    title: 'LETBE Mecha 125',
-    displacement: '125',
-    image: scooter1,
-    price: '30'
-  },
-  {
-    title: 'Morbidelli SC125RE',
-    power: '11',
-    displacement: '123.6',
-    image: scooter2,
-    price: '32'
-  },
-  {
-    title: 'Honda Forza 125 2026',
-    power: '14.35',
-    displacement: '124.9',
-    image: scooter3,
-    price: '35'
-  },
-  {
-    title: 'Lambretta X Series 125 - 300SR',
-    power: '14.3',
-    displacement: '125',
-    image: scooter4,
-    price: '38'
-  },
-  {
-    title: 'LETBE Island 125',
-    power: '12',
-    displacement: '125',
-    image: scooter5,
-    price: '28'
-  },
-  {
-    title: 'LETBE Neon 125',
-    power: '12',
-    displacement: '125',
-    image: scooter6,
-    price: '27'
-  },
-  {
-    title: 'VOGE SR16',
-    power: '11.5',
-    displacement: '125',
-    image: scooter7,
-    price: '29'
+  // Si la ruta es una URL completa, úsala directamente
+  if (imagePath.startsWith('http')) {
+    return imagePath
   }
-]
+
+  // Si es una ruta relativa, asume que está en assets
+  // En producción, podrías servir las imágenes desde tu backend
+  return imagePath.startsWith('/') ? imagePath : `/img/${imagePath}`
+}
+
+// Función para manejar errores de carga de imágenes
+function handleImageError(event) {
+  event.target.src = '/img/placeholder.jpg'
+}
+
+// Obtener scooters desde el backend
+async function fetchScooters() {
+  try {
+    loading.value = true
+    error.value = null
+
+    // Ajusta la URL según tu configuración
+    const response = await axios.get('http://localhost:3000/contratos/scooters')
+
+    products.value = response.data
+
+  } catch (err) {
+    console.error('Error fetching scooters:', err)
+
+    if (err.response?.status === 404) {
+      error.value = 'No se encontraron scooters disponibles.'
+    } else if (err.response?.data?.message) {
+      error.value = err.response.data.message
+    } else {
+      error.value = 'Error al cargar los scooters. Por favor, intente nuevamente.'
+    }
+
+    // Para desarrollo, muestra datos de ejemplo si falla la conexión
+    if (import.meta.env.DEV) {
+      console.warn('Using mock data due to API error')
+      products.value = getMockData()
+    }
+
+  } finally {
+    loading.value = false
+  }
+}
+
+// Datos de ejemplo para desarrollo
+function getMockData() {
+  return [
+    {
+      id_generated: '1',
+      matricula: 'ABC123',
+      color: 'Rojo',
+      cantd_km: 5000,
+      modelo: {
+        modelo: 'Mecha 125',
+        marca: {
+          marca: 'LETBE'
+        }
+      },
+      situacion: 'Nueva',
+      ruta_imagen: 'catalogo motos/scooters/mecha-1-portada-640x0.jpg',
+      descripcion: 'Scooter deportivo con excelente rendimiento urbano',
+      categoria: 'Scooters',
+      costo_dia: 30
+    },
+    {
+      id_generated: '2',
+      matricula: 'DEF456',
+      color: 'Azul',
+      cantd_km: 3000,
+      modelo: {
+        modelo: 'Forza 125',
+        marca: {
+          marca: 'Honda'
+        }
+      },
+      situacion: 'Nueva',
+      ruta_imagen: 'catalogo motos/scooters/honda-forza-125-2026-port-640x0.jpg',
+      descripcion: 'Scooter premium con tecnología avanzada',
+      categoria: 'Scooters',
+      costo_dia: 35
+    }
+  ]
+}
+
+onMounted(() => {
+  fetchScooters()
+})
 </script>
 
 <style scoped>

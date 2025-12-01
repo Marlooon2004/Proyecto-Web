@@ -248,6 +248,7 @@
     "cancel": "Back",
     "status": "Status",
     "active": "Active",
-    "motorcycle": "Motorcycle"
+    "motorcycle": "Motorcycle",
+    "inactive": "Inactive"
   }
 }
