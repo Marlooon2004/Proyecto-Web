@@ -7,91 +7,135 @@
         </button>
       </div>
       <h2 class="section-title">{{ $t('catalog.motocrossCatalog') }}</h2>
-      <div class="product-grid">
+
+      <div v-if="loading" class="loading">
+        <p>Cargando motos de motocross...</p>
+      </div>
+
+      <div v-else-if="error" class="error">
+        <p>{{ error }}</p>
+      </div>
+
+      <div v-else class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
-          <img :src="product.image" class="product-image" :alt="product.title" />
+          <img :src="getImageUrl(product.imagen)" class="product-image" :alt="product.modelo" />
           <div class="product-body">
-            <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">
-              <template v-if="product.power && product.displacement">
-                {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }} - {{
-                  $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
-              </template>
-              <template v-else-if="product.power">
-                {{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
-              </template>
-              <template v-else-if="product.displacement">
-                {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}
-              </template>
-            </p>
+            <h5 class="product-title">{{ product.marca }} {{ product.modelo }}</h5>
+            <p class="product-description">{{ product.descripcion }}</p>
             <div class="product-info">
-              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
-                }}</span>
-              <div class="product-rating">
-                <span v-for="n in 4" :key="n" class="star">★</span>
-                <span class="star half">☆</span>
-                <small class="rating-text">(4.5)</small>
-              </div>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.costo }}{{ $t('catalog.perDay')
+              }}</span>
             </div>
           </div>
           <div class="product-footer">
             <router-link :to="{
               name: 'ReservarMoto',
               query: {
-                id: index + 1,
-                nombre: product.title,
-                categoria: 'motocross',
-                imagen: product.image,
-                precio: product.price,
-                potencia: product.power || '0',
-                cilindrada: product.displacement || '0',
-                rating: '4.5'
+                id: product.id,
+                marca: product.marca,
+                modelo: product.modelo,
+                categoria: product.categoria,
+                imagen: product.imagen,
+                precio: product.costo,
+                descripcion: product.descripcion,
               }
             }" class="btn primary">
               {{ $t('catalog.reserve') }}
             </router-link>
-            <button class="btn secondary">♡</button>
           </div>
         </div>
+      </div>
+
+      <div v-if="!loading && !error && products.length === 0" class="no-data">
+        <p>No se encontraron motos de categoria motocross disponibles</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
+const products = ref([])
+const loading = ref(true)
+const error = ref(null)
 
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
 
-import moto1 from '@/assets/img/catalogo motos/motocross/ducati-desmo450-mx-port-640x0.jpg'
-import moto2 from '@/assets/img/catalogo motos/motocross/ktm-freeride-e-xc-2023-640x0.jpg'
-import moto3 from '@/assets/img/catalogo motos/motocross/suzuki-rm-z450-2023-640x0.jpg'
+function getImageUrl(imagePath) {
+  const baseUrl = import.meta.env.BASE_URL || '/Proyecto-Web/'
 
-const products = [
-  {
-    title: 'Ducati Desmo450 MX',
-    power: '63.5',
-    displacement: '450',
-    image: moto1,
-    price: '90'
-  },
-  {
-    title: 'KTM Freeride E-XC',
-    power: '22',
-    image: moto2,
-    price: '70'
-  },
-  {
-    title: 'Suzuki RM-Z450',
-    displacement: '449',
-    image: moto3,
-    price: '85'
+  if (!imagePath || imagePath.trim() === '') {
+    return baseUrl + 'img/placeholder.png'
   }
-]
+
+  let cleanPath = imagePath
+
+  if (cleanPath.startsWith(baseUrl)) {
+    cleanPath = cleanPath.substring(baseUrl.length)
+  }
+
+  if (cleanPath.startsWith('/')) {
+    cleanPath = cleanPath.substring(1)
+  }
+
+  return baseUrl + cleanPath
+}
+
+async function cargarMotosMotocross() {
+  try {
+    loading.value = true
+    error.value = null
+
+    const response = await fetch(`http://localhost:3000/contratos/motocross`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        products.value = []
+        error.value = 'No se encontraron motos de categoria motocross'
+        return
+      }
+      throw new Error(`Error ${response.status}: ${await response.text()}`)
+    }
+
+    const dataMotocross = await response.json()
+    console.log('Datos recibidos del backend:', dataMotocross)
+
+    products.value = dataMotocross.map((moto, index) => ({
+      id: moto.id_generated || `motocross-${index}`,
+      marca: moto.marca || 'Marca no disponible',
+      modelo: moto.modelo || 'Modelo no disponible',
+      descripcion: moto.descripcion || 'Descripción no disponible',
+      imagen: moto.ruta_imagen || '',
+      costo: moto.costo_dia || moto.price || '0',
+      categoria: moto.categoria || 'Motocross',
+      color: moto.color || 'No especificado',
+      cantd_km: moto.cantd_km || 0,
+      situacion: moto.situacion || 'No especificado'
+    }))
+
+  } catch (err) {
+    console.error('Error cargando motos de categoria motocross:', err)
+    products.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  cargarMotosMotocross()
+})
 </script>
+
 
 <style scoped>
 .header {
@@ -105,6 +149,7 @@ const products = [
   padding: 1rem;
 }
 
+/* Sidebar toggle button */
 .sidebar-toggle {
   position: fixed;
   top: 1rem;
@@ -119,6 +164,7 @@ const products = [
   cursor: pointer;
 }
 
+/* Offcanvas sidebar */
 .offcanvas {
   position: fixed;
   top: 0;

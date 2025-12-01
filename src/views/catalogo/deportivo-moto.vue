@@ -7,107 +7,135 @@
         </button>
       </div>
       <h2 class="section-title">{{ $t('catalog.sportCatalog') }}</h2>
-      <div class="product-grid">
+
+      <div v-if="loading" class="loading">
+        <p>Cargando motos de sport...</p>
+      </div>
+
+      <div v-else-if="error" class="error">
+        <p>{{ error }}</p>
+      </div>
+
+      <div v-else class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
-          <img :src="product.image" class="product-image" :alt="product.title" />
+          <img :src="getImageUrl(product.imagen)" class="product-image" :alt="product.modelo" />
           <div class="product-body">
-            <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
-              - {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}</p>
+            <h5 class="product-title">{{ product.marca }} {{ product.modelo }}</h5>
+            <p class="product-description">{{ product.descripcion }}</p>
             <div class="product-info">
-              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.costo }}{{ $t('catalog.perDay')
               }}</span>
-              <div class="product-rating">
-                <span v-for="n in 4" :key="n" class="star">★</span>
-                <span class="star half">☆</span>
-                <small class="rating-text">(4.5)</small>
-              </div>
             </div>
           </div>
           <div class="product-footer">
             <router-link :to="{
               name: 'ReservarMoto',
               query: {
-                id: index + 1,
-                nombre: product.title,
-                categoria: 'sport',
-                imagen: product.image,
-                precio: product.price,
-                potencia: product.power,
-                cilindrada: product.displacement,
-                rating: '4.5'
+                id: product.id,
+                marca: product.marca,
+                modelo: product.modelo,
+                categoria: product.categoria,
+                imagen: product.imagen,
+                precio: product.costo,
+                descripcion: product.descripcion,
               }
             }" class="btn primary">
               {{ $t('catalog.reserve') }}
             </router-link>
-            <button class="btn secondary">♡</button>
           </div>
         </div>
+      </div>
+
+      <div v-if="!loading && !error && products.length === 0" class="no-data">
+        <p>No se encontraron motos de categoria sport disponibles</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
+const products = ref([])
+const loading = ref(true)
+const error = ref(null)
 
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
 
-import moto1 from '@/assets/img/catalogo motos/deportivas/voge-rr660s-2026-port-640x0.jpg'
-import moto2 from '@/assets/img/catalogo motos/deportivas/kawasaki-ninja-125-2026-port-640x0.jpg'
-import moto3 from '@/assets/img/catalogo motos/deportivas/kawasaki-ninja-zx-10rr-2023-640x0.jpg'
-import moto4 from '@/assets/img/catalogo motos/deportivas/ktm-990-rc-r-2026-port-640x0.jpg'
-import moto5 from '@/assets/img/catalogo motos/deportivas/yamaha-r7-2026-port-640x0.jpg'
-import moto6 from '@/assets/img/catalogo motos/deportivas/yamaha-xsr900-gp-2026-port-640x0.jpg'
+function getImageUrl(imagePath) {
+  const baseUrl = import.meta.env.BASE_URL || '/Proyecto-Web/'
 
-const products = [
-  {
-    title: 'VOGE RR660S 2026',
-    power: '99',
-    displacement: '663',
-    image: moto1,
-    price: '120'
-  },
-  {
-    title: 'Kawasaki Ninja 125 2026',
-    power: '14.75',
-    displacement: '125',
-    image: moto2,
-    price: '45'
-  },
-  {
-    title: 'Kawasaki ZX-10R / RR 2026',
-    power: '200',
-    displacement: '998',
-    image: moto3,
-    price: '180'
-  },
-  {
-    title: 'KTM 990 RC R',
-    power: '130',
-    displacement: '947',
-    image: moto4,
-    price: '150'
-  },
-  {
-    title: 'Yamaha R7 2026',
-    power: '73',
-    displacement: '698',
-    image: moto5,
-    price: '95'
-  },
-  {
-    title: 'Yamaha XSR900 GP 2026',
-    power: '118',
-    displacement: '890',
-    image: moto6,
-    price: '110'
+  if (!imagePath || imagePath.trim() === '') {
+    return baseUrl + 'img/placeholder.png'
   }
-]
+
+  let cleanPath = imagePath
+
+  if (cleanPath.startsWith(baseUrl)) {
+    cleanPath = cleanPath.substring(baseUrl.length)
+  }
+
+  if (cleanPath.startsWith('/')) {
+    cleanPath = cleanPath.substring(1)
+  }
+
+  return baseUrl + cleanPath
+}
+
+async function cargarMotosSports() {
+  try {
+    loading.value = true
+    error.value = null
+
+    const response = await fetch(`http://localhost:3000/contratos/sports`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        products.value = []
+        error.value = 'No se encontraron motos de categoria sports'
+        return
+      }
+      throw new Error(`Error ${response.status}: ${await response.text()}`)
+    }
+
+    const dataSports = await response.json()
+    console.log('Datos recibidos del backend:', dataSports)
+
+    products.value = dataSports.map((moto, index) => ({
+      id: moto.id_generated || `sport-${index}`,
+      marca: moto.marca || 'Marca no disponible',
+      modelo: moto.modelo || 'Modelo no disponible',
+      descripcion: moto.descripcion || 'Descripción no disponible',
+      imagen: moto.ruta_imagen || '',
+      costo: moto.costo_dia || moto.price || '0',
+      categoria: moto.categoria || 'Sports',
+      color: moto.color || 'No especificado',
+      cantd_km: moto.cantd_km || 0,
+      situacion: moto.situacion || 'No especificado'
+    }))
+
+  } catch (err) {
+    console.error('Error cargando motos de categoria sports:', err)
+    products.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  cargarMotosSports()
+})
 </script>
+
 
 <style scoped>
 .header {
@@ -121,6 +149,7 @@ const products = [
   padding: 1rem;
 }
 
+/* Sidebar toggle button */
 .sidebar-toggle {
   position: fixed;
   top: 1rem;
@@ -135,6 +164,7 @@ const products = [
   cursor: pointer;
 }
 
+/* Offcanvas sidebar */
 .offcanvas {
   position: fixed;
   top: 0;

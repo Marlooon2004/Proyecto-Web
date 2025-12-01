@@ -7,83 +7,135 @@
         </button>
       </div>
       <h2 class="section-title">{{ $t('catalog.customCatalog') }}</h2>
-      <div class="product-grid">
+
+      <div v-if="loading" class="loading">
+        <p>Cargando motos de custom...</p>
+      </div>
+
+      <div v-else-if="error" class="error">
+        <p>{{ error }}</p>
+      </div>
+
+      <div v-else class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
-          <img :src="product.image" class="product-image" :alt="product.title" />
+          <img :src="getImageUrl(product.imagen)" class="product-image" :alt="product.modelo" />
           <div class="product-body">
-            <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
-              - {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}</p>
+            <h5 class="product-title">{{ product.marca }} {{ product.modelo }}</h5>
+            <p class="product-description">{{ product.descripcion }}</p>
             <div class="product-info">
-              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
-              }}</span>
-              <div class="product-rating">
-                <span v-for="n in 4" :key="n" class="star">★</span>
-                <span class="star half">☆</span>
-                <small class="rating-text">(4.5)</small>
-              </div>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.costo }}{{ $t('catalog.perDay')
+                }}</span>
             </div>
           </div>
           <div class="product-footer">
             <router-link :to="{
               name: 'ReservarMoto',
               query: {
-                id: index + 1,
-                nombre: product.title,
-                categoria: 'custom',
-                imagen: product.image,
-                precio: product.price,
-                potencia: product.power,
-                cilindrada: product.displacement,
-                rating: '4.5'
+                id: product.id,
+                marca: product.marca,
+                modelo: product.modelo,
+                categoria: product.categoria,
+                imagen: product.imagen,
+                precio: product.costo,
+                descripcion: product.descripcion,
               }
             }" class="btn primary">
               {{ $t('catalog.reserve') }}
             </router-link>
-            <button class="btn secondary">♡</button>
           </div>
         </div>
+      </div>
+
+      <div v-if="!loading && !error && products.length === 0" class="no-data">
+        <p>No se encontraron motos de categoria custom disponibles</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
+const products = ref([])
+const loading = ref(true)
+const error = ref(null)
 
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
 
-import moto1 from '@/assets/img/catalogo motos/custom/morbidelli-c652v-2026-port-640x0.jpg'
-import moto2 from '@/assets/img/catalogo motos/custom/punk-500-4-portada-640x0.jpg'
-import moto3 from '@/assets/img/catalogo motos/custom/voge-cu625-2026-port-640x0.jpg'
+function getImageUrl(imagePath) {
+  const baseUrl = import.meta.env.BASE_URL || '/Proyecto-Web/'
 
-const products = [
-  {
-    title: 'Morbidelli C652V 2026',
-    power: '55.7',
-    displacement: '652',
-    image: moto1,
-    price: '85'
-  },
-  {
-    title: 'LETBE PUNK 500 ABS',
-    power: '54',
-    displacement: '500',
-    image: moto2,
-    price: '75'
-  },
-  {
-    title: 'Voge CU625 2026',
-    power: '60',
-    displacement: '578',
-    image: moto3,
-    price: '80'
+  if (!imagePath || imagePath.trim() === '') {
+    return baseUrl + 'img/placeholder.png'
   }
-]
+
+  let cleanPath = imagePath
+
+  if (cleanPath.startsWith(baseUrl)) {
+    cleanPath = cleanPath.substring(baseUrl.length)
+  }
+
+  if (cleanPath.startsWith('/')) {
+    cleanPath = cleanPath.substring(1)
+  }
+
+  return baseUrl + cleanPath
+}
+
+async function cargarMotosCustom() {
+  try {
+    loading.value = true
+    error.value = null
+
+    const response = await fetch(`http://localhost:3000/contratos/customs`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        products.value = []
+        error.value = 'No se encontraron motos de categoria custom'
+        return
+      }
+      throw new Error(`Error ${response.status}: ${await response.text()}`)
+    }
+
+    const dataCustom = await response.json()
+    console.log('Datos recibidos del backend:', dataCustom)
+
+    products.value = dataCustom.map((moto, index) => ({
+      id: moto.id_generated || `custom-${index}`,
+      marca: moto.marca || 'Marca no disponible',
+      modelo: moto.modelo || 'Modelo no disponible',
+      descripcion: moto.descripcion || 'Descripción no disponible',
+      imagen: moto.ruta_imagen || '',
+      costo: moto.costo_dia || moto.price || '0',
+      categoria: moto.categoria || 'Custom',
+      color: moto.color || 'No especificado',
+      cantd_km: moto.cantd_km || 0,
+      situacion: moto.situacion || 'No especificado'
+    }))
+
+  } catch (err) {
+    console.error('Error cargando motos de categoria custom:', err)
+    products.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  cargarMotosCustom()
+})
 </script>
+
 
 <style scoped>
 .header {
@@ -97,6 +149,7 @@ const products = [
   padding: 1rem;
 }
 
+/* Sidebar toggle button */
 .sidebar-toggle {
   position: fixed;
   top: 1rem;
@@ -111,6 +164,7 @@ const products = [
   cursor: pointer;
 }
 
+/* Offcanvas sidebar */
 .offcanvas {
   position: fixed;
   top: 0;

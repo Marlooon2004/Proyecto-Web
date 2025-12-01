@@ -8,78 +8,46 @@
       </div>
       <h2 class="section-title">{{ $t('catalog.scootersCatalog') }}</h2>
 
-      <!-- Loading state -->
       <div v-if="loading" class="loading">
-        <p>{{ $t('catalog.loading') }}</p>
+        <p>Cargando scooters...</p>
       </div>
 
-      <!-- Error state -->
       <div v-else-if="error" class="error">
         <p>{{ error }}</p>
       </div>
 
-      <!-- Data loaded -->
       <div v-else class="product-grid">
-        <div class="product-card" v-for="(product, index) in products" :key="product.id_generated">
-          <!-- Usa ruta de imagen desde la base de datos -->
-          <img :src="getImageUrl(product.ruta_imagen)" class="product-image" :alt="product.descripcion"
-            @error="handleImageError" />
+        <div class="product-card" v-for="(product, index) in products" :key="index">
+          <img :src="getImageUrl(product.imagen)" class="product-image" :alt="product.modelo" />
           <div class="product-body">
-            <!-- Muestra modelo y marca -->
-            <h5 class="product-title">
-              {{ product.modelo?.marca?.marca || 'Marca' }} {{ product.modelo?.modelo || 'Modelo' }}
-            </h5>
-            <p class="product-description">
-              <!-- Descripción desde la base de datos -->
-              {{ product.descripcion }}
-            </p>
-            <div class="product-details">
-              <span class="detail-item">
-                <i class="bi bi-palette"></i> {{ product.color }}
-              </span>
-              <span class="detail-item">
-                <i class="bi bi-speedometer2"></i> {{ product.cantd_km }} km
-              </span>
-              <span class="detail-item">
-                <i class="bi bi-tag"></i> {{ product.situacion }}
-              </span>
-            </div>
+            <h5 class="product-title">{{ product.marca }} {{ product.modelo }}</h5>
+            <p class="product-description">{{ product.descripcion }}</p>
             <div class="product-info">
-              <span class="product-price">
-                {{ $t('catalog.currency') }}{{ product.costo_dia }}{{ $t('catalog.perDay') }}
-              </span>
-              <div class="product-rating">
-                <span v-for="n in 4" :key="n" class="star">★</span>
-                <span class="star half">☆</span>
-                <small class="rating-text">(4.5)</small>
-              </div>
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.costo }}{{ $t('catalog.perDay')
+              }}</span>
             </div>
           </div>
           <div class="product-footer">
             <router-link :to="{
               name: 'ReservarMoto',
               query: {
-                id: product.id_generated,
-                nombre: `${product.modelo?.marca?.marca || ''} ${product.modelo?.modelo || ''}`.trim(),
+                id: product.id,
+                marca: product.marca,
+                modelo: product.modelo,
                 categoria: product.categoria,
-                imagen: product.ruta_imagen,
-                precio: product.costo_dia,
-                color: product.color,
-                kilometraje: product.cantd_km,
+                imagen: product.imagen,
+                precio: product.costo,
                 descripcion: product.descripcion,
-                rating: '4.5'
               }
             }" class="btn primary">
               {{ $t('catalog.reserve') }}
             </router-link>
-            <button class="btn secondary">♡</button>
           </div>
         </div>
       </div>
 
-      <!-- No data message -->
       <div v-if="!loading && !error && products.length === 0" class="no-data">
-        <p>{{ $t('catalog.noScooters') }}</p>
+        <p>No se encontraron scooters disponibles</p>
       </div>
     </div>
   </div>
@@ -88,7 +56,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
 
 const router = useRouter()
 const products = ref([])
@@ -99,100 +66,73 @@ function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
 
-// Función para construir la URL de la imagen
 function getImageUrl(imagePath) {
-  if (!imagePath) return '/img/placeholder.jpg'
+  const baseUrl = import.meta.env.BASE_URL || '/Proyecto-Web/'
 
-  // Si la ruta es una URL completa, úsala directamente
-  if (imagePath.startsWith('http')) {
-    return imagePath
+  if (!imagePath || imagePath.trim() === '') {
+    return baseUrl + 'img/placeholder.png'
   }
 
-  // Si es una ruta relativa, asume que está en assets
-  // En producción, podrías servir las imágenes desde tu backend
-  return imagePath.startsWith('/') ? imagePath : `/img/${imagePath}`
+  let cleanPath = imagePath
+
+  if (cleanPath.startsWith(baseUrl)) {
+    cleanPath = cleanPath.substring(baseUrl.length)
+  }
+
+  if (cleanPath.startsWith('/')) {
+    cleanPath = cleanPath.substring(1)
+  }
+
+  return baseUrl + cleanPath
 }
 
-// Función para manejar errores de carga de imágenes
-function handleImageError(event) {
-  event.target.src = '/img/placeholder.jpg'
-}
-
-// Obtener scooters desde el backend
-async function fetchScooters() {
+async function cargarScooters() {
   try {
     loading.value = true
     error.value = null
 
-    // Ajusta la URL según tu configuración
-    const response = await axios.get('http://localhost:3000/contratos/scooters')
+    const response = await fetch(`http://localhost:3000/contratos/scooters`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
 
-    products.value = response.data
+    if (!response.ok) {
+      if (response.status === 404) {
+        products.value = []
+        error.value = 'No se encontraron scooters'
+        return
+      }
+      throw new Error(`Error ${response.status}: ${await response.text()}`)
+    }
+
+    const dataScooters = await response.json()
+    console.log('Datos recibidos del backend:', dataScooters)
+
+    products.value = dataScooters.map((moto, index) => ({
+      id: moto.id_generated || `scooter-${index}`,
+      marca: moto.marca || 'Marca no disponible',
+      modelo: moto.modelo || 'Modelo no disponible',
+      descripcion: moto.descripcion || 'Descripción no disponible',
+      imagen: moto.ruta_imagen || '',
+      costo: moto.costo_dia || moto.price || '0',
+      categoria: moto.categoria || 'Scooters',
+      color: moto.color || 'No especificado',
+      cantd_km: moto.cantd_km || 0,
+      situacion: moto.situacion || 'No especificado'
+    }))
 
   } catch (err) {
-    console.error('Error fetching scooters:', err)
-
-    if (err.response?.status === 404) {
-      error.value = 'No se encontraron scooters disponibles.'
-    } else if (err.response?.data?.message) {
-      error.value = err.response.data.message
-    } else {
-      error.value = 'Error al cargar los scooters. Por favor, intente nuevamente.'
-    }
-
-    // Para desarrollo, muestra datos de ejemplo si falla la conexión
-    if (import.meta.env.DEV) {
-      console.warn('Using mock data due to API error')
-      products.value = getMockData()
-    }
-
+    console.error('Error cargando scooters:', err)
+    products.value = []
   } finally {
     loading.value = false
   }
 }
 
-// Datos de ejemplo para desarrollo
-function getMockData() {
-  return [
-    {
-      id_generated: '1',
-      matricula: 'ABC123',
-      color: 'Rojo',
-      cantd_km: 5000,
-      modelo: {
-        modelo: 'Mecha 125',
-        marca: {
-          marca: 'LETBE'
-        }
-      },
-      situacion: 'Nueva',
-      ruta_imagen: 'catalogo motos/scooters/mecha-1-portada-640x0.jpg',
-      descripcion: 'Scooter deportivo con excelente rendimiento urbano',
-      categoria: 'Scooters',
-      costo_dia: 30
-    },
-    {
-      id_generated: '2',
-      matricula: 'DEF456',
-      color: 'Azul',
-      cantd_km: 3000,
-      modelo: {
-        modelo: 'Forza 125',
-        marca: {
-          marca: 'Honda'
-        }
-      },
-      situacion: 'Nueva',
-      ruta_imagen: 'catalogo motos/scooters/honda-forza-125-2026-port-640x0.jpg',
-      descripcion: 'Scooter premium con tecnología avanzada',
-      categoria: 'Scooters',
-      costo_dia: 35
-    }
-  ]
-}
-
 onMounted(() => {
-  fetchScooters()
+  cargarScooters()
 })
 </script>
 
@@ -208,84 +148,6 @@ onMounted(() => {
   padding: 1rem;
 }
 
-/* Sidebar toggle button */
-.sidebar-toggle {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1001;
-  background-color: #ff6b00;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-size: 1.2rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-/* Offcanvas sidebar */
-.offcanvas {
-  position: fixed;
-  top: 0;
-  left: -300px;
-  width: 250px;
-  height: 100vh;
-  background-color: #333;
-  color: white;
-  padding: 1rem;
-  transition: left 0.3s ease;
-  z-index: 1000;
-}
-
-.offcanvas.open {
-  left: 0;
-}
-
-.offcanvas-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.offcanvas-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-.btn-close {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  color: white;
-  cursor: pointer;
-}
-
-.offcanvas-body {
-  margin-top: 1rem;
-}
-
-.menu {
-  list-style: none;
-  padding: 0;
-}
-
-.menu li {
-  margin-bottom: 1rem;
-}
-
-.menu a {
-  color: white;
-  text-decoration: none;
-  font-size: 1rem;
-  display: block;
-  transition: color 0.3s ease;
-}
-
-.menu a:hover {
-  color: #00bfff;
-}
-
-/* Product styles (ya existentes) */
 .popular-products {
   max-width: 1200px;
   margin: 3rem auto;
@@ -348,6 +210,7 @@ onMounted(() => {
   font-size: 0.95rem;
   color: #555;
   margin-bottom: 1rem;
+  line-height: 1.4;
 }
 
 .product-info {
@@ -360,27 +223,6 @@ onMounted(() => {
   font-size: 1.1rem;
   font-weight: bold;
   color: #333;
-}
-
-.product-rating {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.star {
-  color: #f5a623;
-  font-size: 1rem;
-}
-
-.star.half {
-  color: #f5a623;
-  opacity: 0.5;
-}
-
-.rating-text {
-  font-size: 0.8rem;
-  color: #888;
 }
 
 .product-footer {
@@ -409,13 +251,19 @@ onMounted(() => {
   background-color: #0056b3;
 }
 
-.btn.secondary {
-  background-color: transparent;
-  color: #555;
-  border: 1px solid #ccc;
+.loading,
+.error,
+.no-data {
+  text-align: center;
+  padding: 3rem;
+  color: #666;
 }
 
-.btn.secondary:hover {
-  background-color: #eee;
+.error {
+  color: #dc3545;
+}
+
+.no-data {
+  font-style: italic;
 }
 </style>

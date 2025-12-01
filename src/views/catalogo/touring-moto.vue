@@ -1,91 +1,141 @@
 <template>
   <div class="contenedor-general">
-    <!-- Main content -->
     <div class="popular-products">
       <div class="header">
-        <!-- Botón con cruz -->
         <button class="btn btn-link text-danger" @click="goHome" :title="$t('catalog.close')">
           <i class="bi bi-x-lg"></i>
         </button>
       </div>
       <h2 class="section-title">{{ $t('catalog.touringCatalog') }}</h2>
-      <div class="product-grid">
+
+      <div v-if="loading" class="loading">
+        <p>Cargando touring...</p>
+      </div>
+
+      <div v-else-if="error" class="error">
+        <p>{{ error }}</p>
+      </div>
+
+      <div v-else class="product-grid">
         <div class="product-card" v-for="(product, index) in products" :key="index">
-          <img :src="product.image" class="product-image" :alt="product.title" />
+          <img :src="getImageUrl(product.imagen)" class="product-image" :alt="product.modelo" />
           <div class="product-body">
-            <h5 class="product-title">{{ product.title }}</h5>
-            <p class="product-description">{{ $t('catalog.power') }}: {{ product.power }} {{ $t('catalog.horsepower') }}
-              - {{ $t('catalog.displacement') }}: {{ product.displacement }} {{ $t('catalog.cc') }}</p>
+            <h5 class="product-title">{{ product.marca }} {{ product.modelo }}</h5>
+            <p class="product-description">{{ product.descripcion }}</p>
             <div class="product-info">
-              <span class="product-price">{{ $t('catalog.currency') }}{{ product.price }}{{ $t('catalog.perDay')
+              <span class="product-price">{{ $t('catalog.currency') }}{{ product.costo }}{{ $t('catalog.perDay')
                 }}</span>
-              <div class="product-rating">
-                <span v-for="n in 4" :key="n" class="star">★</span>
-                <span class="star half">☆</span>
-                <small class="rating-text">(4.5)</small>
-              </div>
             </div>
           </div>
           <div class="product-footer">
             <router-link :to="{
               name: 'ReservarMoto',
               query: {
-                id: index + 1,
-                nombre: product.title,
-                categoria: 'touring',
-                imagen: product.image,
-                precio: product.price,
-                potencia: product.power,
-                cilindrada: product.displacement,
-                rating: '4.5'
+                id: product.id,
+                marca: product.marca,
+                modelo: product.modelo,
+                categoria: product.categoria,
+                imagen: product.imagen,
+                precio: product.costo,
+                descripcion: product.descripcion,
               }
             }" class="btn primary">
               {{ $t('catalog.reserve') }}
             </router-link>
-            <button class="btn secondary">♡</button>
           </div>
         </div>
+      </div>
+
+      <div v-if="!loading && !error && products.length === 0" class="no-data">
+        <p>No se encontraron motos touring disponibles</p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
+const products = ref([])
+const loading = ref(true)
+const error = ref(null)
 
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
 
-import moto1 from '@/assets/img/catalogo motos/touring/mv-agusta-turismo-veloce-2023-640x0.jpg'
-import moto2 from '@/assets/img/catalogo motos/touring/suzuki-sv-7gx-2026-port-640x0.jpg'
-import moto3 from '@/assets/img/catalogo motos/touring/yamaha-tracer-7-2025-port-640x0.jpg'
+function getImageUrl(imagePath) {
+  const baseUrl = import.meta.env.BASE_URL || '/Proyecto-Web/'
 
-const products = [
-  {
-    title: 'MV Agusta Turismo Veloce R',
-    power: '110',
-    displacement: '798',
-    image: moto1,
-    price: '130'
-  },
-  {
-    title: 'Suzuki SV-7GX-2026',
-    power: '73',
-    displacement: '645',
-    image: moto2,
-    price: '85'
-  },
-  {
-    title: 'Yamaha Tracer 7 / GT 2025',
-    power: '72',
-    displacement: '689',
-    image: moto3,
-    price: '90'
+  if (!imagePath || imagePath.trim() === '') {
+    return baseUrl + 'img/placeholder.png'
   }
-]
+
+  let cleanPath = imagePath
+
+  if (cleanPath.startsWith(baseUrl)) {
+    cleanPath = cleanPath.substring(baseUrl.length)
+  }
+
+  if (cleanPath.startsWith('/')) {
+    cleanPath = cleanPath.substring(1)
+  }
+
+  return baseUrl + cleanPath
+}
+
+async function cargarMotosTouring() {
+  try {
+    loading.value = true
+    error.value = null
+
+    const response = await fetch(`http://localhost:3000/contratos/tourings`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        products.value = []
+        error.value = 'No se encontraron motos touring'
+        return
+      }
+      throw new Error(`Error ${response.status}: ${await response.text()}`)
+    }
+
+    const dataTouring = await response.json()
+    console.log('Datos recibidos del backend:', dataTouring)
+
+    products.value = dataTouring.map((moto, index) => ({
+      id: moto.id_generated || `touring-${index}`,
+      marca: moto.marca || 'Marca no disponible',
+      modelo: moto.modelo || 'Modelo no disponible',
+      descripcion: moto.descripcion || 'Descripción no disponible',
+      imagen: moto.ruta_imagen || '',
+      costo: moto.costo_dia || moto.price || '0',
+      categoria: moto.categoria || 'Touring',
+      color: moto.color || 'No especificado',
+      cantd_km: moto.cantd_km || 0,
+      situacion: moto.situacion || 'No especificado'
+    }))
+
+  } catch (err) {
+    console.error('Error cargando motos touring:', err)
+    products.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(() => {
+  cargarMotosTouring()
+})
 </script>
+
 
 <style scoped>
 .header {
