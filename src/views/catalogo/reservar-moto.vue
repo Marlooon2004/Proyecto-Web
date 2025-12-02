@@ -2,7 +2,7 @@
   <div class="container d-flex justify-content-center">
     <figure class="card card-product-grid card-lg">
       <!-- Imagen de la moto -->
-      <a href="#" class="img-wrap" data-abc="true">
+      <a class="img-wrap" data-abc="true">
         <img :src="motoData.imagen" :alt="motoData.nombre">
       </a>
 
@@ -10,14 +10,7 @@
       <figcaption class="info-wrap">
         <div class="row">
           <div class="col-md-9 col-xs-9">
-            <a href="#" class="title" data-abc="true">{{ motoData.nombre }}</a>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <div class="rating text-right">
-              <i class="fa fa-star" v-for="n in 5" :key="n"
-                :class="{ 'fa-star': n <= motoData.rating, 'fa-star-o': n > motoData.rating }"></i>
-              <span class="rated">{{ $t('catalog.rating') }} {{ motoData.rating }}/5</span>
-            </div>
+            <a href="#" class="title" data-abc="true">{{ motoData.marca + " " + motoData.modelo }}</a>
           </div>
         </div>
       </figcaption>
@@ -26,12 +19,12 @@
       <div class="specs-wrap p-3">
         <div class="row text-center">
           <div class="col-4">
-            <small class="text-muted d-block">{{ $t('catalog.power') }}</small>
-            <strong>{{ motoData.potencia }} {{ $t('catalog.horsepower') }}</strong>
+            <small class="text-muted d-block">{{ $t('contracts.category') }}</small>
+            <strong>{{ motoData.categoria }}</strong>
           </div>
           <div class="col-4">
-            <small class="text-muted d-block">{{ $t('catalog.displacement') }}</small>
-            <strong>{{ motoData.cilindrada }} {{ $t('catalog.cc') }}</strong>
+            <small class="text-muted d-block">{{ $t('contracts.description') }}</small>
+            <strong>{{ motoData.descripcion }}</strong>
           </div>
           <div class="col-4">
             <small class="text-muted d-block">{{ $t('reservation.price') }}</small>
@@ -145,7 +138,6 @@ const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
 
-// Datos de la moto (se pasan por route params)
 const motoData = ref({
   id: null,
   nombre: '',
@@ -170,7 +162,6 @@ const fechaHoy = computed(() => {
   return new Date().toISOString().split('T')[0]
 })
 
-// Calcular total CORREGIDO
 const calcularTotal = () => {
   if (!fechaInicio.value || !fechaFin.value) return 0
 
@@ -182,15 +173,13 @@ const calcularTotal = () => {
 
   let total = dias * motoData.value.precio
 
-  // CORRECCIÓN: El seguro se suma una sola vez, no por día
   if (seguro.value) {
-    total += 50 // Solo $50 adicionales, no por día
+    total += 50
   }
 
   return total
 }
 
-// También puedes calcular el desglose para mostrarlo
 const calcularDesglose = () => {
   if (!fechaInicio.value || !fechaFin.value) return null
 
@@ -215,13 +204,12 @@ const calcularDesglose = () => {
 onMounted(() => {
   motoData.value = {
     id: route.query.id,
-    nombre: route.query.nombre,
+    marca: route.query.marca,
+    modelo: route.query.modelo,
     categoria: route.query.categoria,
     imagen: route.query.imagen,
     precio: Number(route.query.precio),
-    potencia: Number(route.query.potencia),
-    cilindrada: Number(route.query.cilindrada),
-    rating: Number(route.query.rating)
+    descripcion: route.query.descripcion,
   }
 })
 

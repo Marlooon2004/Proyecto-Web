@@ -249,6 +249,8 @@
     "status": "Status",
     "active": "Active",
     "motorcycle": "Motorcycle",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "description": "Description",
+    "category": "Category"
   }
 }
