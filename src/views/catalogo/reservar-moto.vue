@@ -37,15 +37,16 @@
       <div class="reservation-form p-3">
         <h6 class="mb-3">{{ $t('reservation.title') }}</h6>
 
-        <!-- Fechas -->
+        <!-- Fecha inicio -->
         <div class="form-group">
           <label class="small">{{ $t('reservation.startDate') }}</label>
           <input type="date" v-model="fechaInicio" class="form-control" :min="fechaHoy">
         </div>
 
+        <!-- Fecha fin -->
         <div class="form-group">
           <label class="small">{{ $t('reservation.endDate') }}</label>
-          <input type="date" v-model="fechaFin" class="form-control" :min="fechaInicio || fechaHoy">
+          <input type="date" v-model="fechaFin" class="form-control" :min="minFechaFin">
         </div>
 
         <!-- Seguro -->
@@ -69,6 +70,10 @@
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" v-model="formaPago" value="tarjeta" id="tarjeta">
               <label class="form-check-label small" for="tarjeta">{{ $t('reservation.card') }}</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" v-model="formaPago" value="check" id="check">
+              <label class="form-check-label small" for="tarjeta">{{ $t('reservation.check') }}</label>
             </div>
           </div>
         </div>
@@ -116,8 +121,8 @@
 
       <!-- Botones de acción -->
       <div class="bottom-wrap">
-        <button @click="confirmarReserva" class="btn btn-primary float-right" data-abc="true">
-          {{ $t('reservation.confirm') }}
+        <button @click="confirmarReserva" :disabled="isLoading" class="btn btn-primary float-right" data-abc="true">
+          {{ isLoading ? t('reservation.processing') : t('reservation.confirm') }}
         </button>
         <div class="price-wrap">
           <button @click="cancelarReserva" class="btn btn-warning float-left" data-abc="true">
@@ -157,9 +162,22 @@ const formaPago = ref('efectivo')
 const numeroTarjeta = ref('')
 const fechaExpiracion = ref('')
 const cvv = ref('')
+const isLoading = ref(false)
 
 const fechaHoy = computed(() => {
   return new Date().toISOString().split('T')[0]
+})
+
+const minFechaFin = computed(() => {
+  if (fechaInicio.value) {
+    const fecha = new Date(fechaInicio.value)
+    fecha.setDate(fecha.getDate() + 1)
+    return fecha.toISOString().split('T')[0]
+  }
+  // Si no hay fecha inicio, usar mañana como mínimo
+  const manana = new Date()
+  manana.setDate(manana.getDate() + 1)
+  return manana.toISOString().split('T')[0]
 })
 
 const calcularTotal = () => {
@@ -180,27 +198,6 @@ const calcularTotal = () => {
   return total
 }
 
-const calcularDesglose = () => {
-  if (!fechaInicio.value || !fechaFin.value) return null
-
-  const inicio = new Date(fechaInicio.value)
-  const fin = new Date(fechaFin.value)
-  const dias = Math.ceil((fin - inicio) / (1000 * 60 * 60 * 24)) + 1
-
-  if (dias <= 0) return null
-
-  const costoMoto = dias * motoData.value.precio
-  const costoSeguro = seguro.value ? 50 : 0
-  const total = costoMoto + costoSeguro
-
-  return {
-    dias,
-    costoMoto,
-    costoSeguro,
-    total
-  }
-}
-
 onMounted(() => {
   motoData.value = {
     id: route.query.id,
@@ -213,10 +210,67 @@ onMounted(() => {
   }
 })
 
+// Cargar datos de usuario
+async function cargarDatosUsuario() {
+  try {
+    const userData = localStorage.getItem('userData');
+    const token = localStorage.getItem('authToken');
+
+    if (!userData || !token) {
+      alert('Debe estar registrado para reservar una moto')
+      router.push({ name: 'IniciarSesion' });
+      return null;
+    }
+
+    const user = JSON.parse(userData);
+    const usuarioId = user.usuario?.id_generated || user.id_generated;
+
+    const response = await fetch(`http://localhost:3000/users/usuario/${usuarioId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (response.status === 404) {
+      console.log('Cliente no encontrado para este usuario');
+      return user;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Error ${response.status}: ${await response.text()}`);
+    }
+
+    const cliente = await response.json();
+    return cliente;
+  } catch (error) {
+    console.error('Error cargando datos del usuario:', error);
+    router.push({ name: 'IniciarSesion' });
+    return null;
+  }
+}
+
 // Confirmar reserva
-const confirmarReserva = () => {
+async function confirmarReserva() {
   if (!fechaInicio.value || !fechaFin.value) {
     alert(t('reservation.selectDates'))
+    return
+  }
+
+  // Validar que la fecha fin sea mayor que la fecha inicio
+  const inicio = new Date(fechaInicio.value)
+  const fin = new Date(fechaFin.value)
+  if (fin <= inicio) {
+    alert(t('reservation.invalidDates'))
+    return
+  }
+
+  // Obtener cliente
+  const cliente = await cargarDatosUsuario();
+
+  if (!cliente) {
+    alert('No se pudo obtener la información del cliente')
     return
   }
 
@@ -225,23 +279,57 @@ const confirmarReserva = () => {
     return
   }
 
-  const desglose = calcularDesglose()
-  const reserva = {
-    moto: motoData.value,
-    fechaInicio: fechaInicio.value,
-    fechaFin: fechaFin.value,
-    seguro: seguro.value,
-    formaPago: formaPago.value,
-    dias: desglose?.dias || 0,
-    costoMoto: desglose?.costoMoto || 0,
-    costoSeguro: desglose?.costoSeguro || 0,
-    total: calcularTotal()
+  isLoading.value = true;
+
+  try {
+    const token = localStorage.getItem('authToken');
+
+    let formaPagoContrato;
+    if (formaPago.value == 'efectivo') {
+      formaPagoContrato = 'E'
+    } else if (formaPago.value == 'tarjeta') {
+      formaPagoContrato = 'T'
+    } else {
+      formaPagoContrato = 'C'
+    }
+
+    const reserva = {
+      idCliente: cliente.id_generated,
+      fechaInicio: fechaInicio.value,
+      fechaFin: fechaFin.value,
+      formaPago: formaPagoContrato,
+      seguro: seguro.value ? 'Y' : 'N',
+      idMoto: motoData.value.id,
+      costoTotal: calcularTotal()
+    }
+
+    console.log('Enviando reserva:', reserva)
+
+    const response = await fetch('http://localhost:3000/contratos', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(reserva)
+    })
+
+    const respuesta = await response.json()
+    console.log('Respuesta del servidor:', respuesta)
+
+    if (!response.ok) {
+      throw new Error(respuesta.message || `Error ${response.status}`)
+    }
+
+    alert(t('reservation.success'))
+    router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
+
+  } catch (error) {
+    console.error('Error al confirmar reserva:', error)
+    alert(`Error al crear la reserva: ${error.message}`)
+  } finally {
+    isLoading.value = false
   }
-
-  console.log('Reserva confirmada:', reserva)
-
-  alert(t('reservation.success'))
-  router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 }
 
 // Cancelar reserva

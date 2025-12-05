@@ -47,7 +47,7 @@
 
                   <div class="form-outline">
                     <select id="sexo_id" v-model="sexo" :class="validacionSexo" @change="validarSexo"
-                      class="form-control">
+                      class="form-select">
                       <option value="" disabled selected>{{ $t('auth.gender') }}</option>
                       <option value="Male">{{ $t('auth.male') }}</option>
                       <option value="Female">{{ $t('auth.female') }}</option>
@@ -57,7 +57,7 @@
 
                   <div class="form-outline">
                     <select id="municipios_lista" v-model="municipio" :class="validacionMunicipio"
-                      @change="validarMunicipio" class="form-control">
+                      @change="validarMunicipio" class="form-select">
                       <option value="" disabled selected>{{ $t('auth.municipality') }}</option>
                       <option v-for="m in municipios" :key="m" :value="m">{{ m }}</option>
                     </select>

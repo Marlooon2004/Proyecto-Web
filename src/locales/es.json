@@ -197,7 +197,8 @@
         "expiryDate": "Fecha de expiración",
         "cvv": "CVV",
         "completeCardDetails": "Por favor completa todos los detalles de la tarjeta",
-        "price": "Precio"
+        "price": "Precio",
+        "check": "Cheque"
     },
     "profile": {
         "title": "Configuración de perfil",

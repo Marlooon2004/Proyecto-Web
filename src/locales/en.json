@@ -196,7 +196,8 @@
     "expiryDate": "Expiry date",
     "cvv": "CVV",
     "completeCardDetails": "Please complete all card details",
-    "price": "Price"
+    "price": "Price",
+    "check": "Check"
   },
   "profile": {
     "title": "My Profile",

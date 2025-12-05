@@ -181,11 +181,22 @@ const validacionCarnet = ref('')
 const validacionContrasenya = ref('')
 const validacionNuevaContrasenya = ref('')
 
-function closeSesion() {
+async function closeSesion() {
   if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+    try {
+      await fetch('http://localhost:3000/auth/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.log(error)
+    }
+
+    //por si aun quedan datos en el localstorage
     localStorage.removeItem('userData');
     localStorage.removeItem('token');
-    router.push({ name: 'IniciarSesion' })
+
+    router.push({ name: 'IniciarSesion' });
   }
 }
 
@@ -218,39 +229,41 @@ onMounted(async () => {
     console.log('Datos cargados en formulario:', perfilCompleto);
   }
 });
-// Función para cargar datos del usuario
+
 async function cargarDatosUsuario() {
   try {
-    const userData = localStorage.getItem('userData');
-    const token = localStorage.getItem('authToken');
+    const response = await fetch('http://localhost:3000/auth/me', {
+      method: 'GET',
+      credentials: 'include'
+    });
 
-    if (!userData || !token) {
+    if (response.status === 401 || response.status === 403) {
       router.push({ name: 'IniciarSesion' });
       return null;
-    }
-
-    const user = JSON.parse(userData);
-    const usuarioId = user.usuario?.id_generated || user.id_generated;
-
-    const response = await fetch(`http://localhost:3000/users/usuario/${usuarioId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
-    });
-    if (response.status === 404) {
-      console.log('Cliente no encontrado para este usuario');
-      return user;
     }
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${await response.text()}`);
     }
 
-    const cliente = await response.json();
-    console.log('Datos del cliente:', cliente);
+    const authData = await response.json();
+    const user = authData.user;
+    const usuarioId = user.id_generated || user.userId;
 
+    const clienteResponse = await fetch(`http://localhost:3000/users/usuario/${usuarioId}`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if (clienteResponse.status === 404) {
+      return user;
+    }
+
+    if (!clienteResponse.ok) {
+      throw new Error(`Error ${clienteResponse.status}: ${await clienteResponse.text()}`);
+    }
+
+    const cliente = await clienteResponse.json();
     const perfilCompleto = {
       ...user,
       ...cliente
@@ -258,7 +271,7 @@ async function cargarDatosUsuario() {
 
     return perfilCompleto;
   } catch (error) {
-    console.error('Error cargando datos del usuario:', error);
+    console.log(error)
     router.push({ name: 'IniciarSesion' });
     return null;
   }
@@ -540,19 +553,11 @@ async function savePassword() {
 
     console.log('Enviando cambio de contraseña:', changePasswordDto);
 
-    const token = localStorage.getItem('authToken') ||
-      localStorage.getItem('token') ||
-      localStorage.getItem('userToken');
-
-    if (!token) {
-      throw new Error('No hay token de autenticación');
-    }
-
     const response = await fetch('http://localhost:3000/users/password', {
       method: 'PATCH',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(changePasswordDto)
     });
@@ -585,14 +590,6 @@ async function saveProfile() {
   }
 
   try {
-    const userData = localStorage.getItem('userData');
-    const token = localStorage.getItem('token') || localStorage.getItem('authToken');
-
-    if (!userData || !token) {
-      router.push({ name: 'IniciarSesion' });
-      return;
-    }
-
     const updateData = {
       username: usuario.value,
       email: email.value,
@@ -609,9 +606,9 @@ async function saveProfile() {
 
     const response = await fetch('http://localhost:3000/users/profile', {
       method: 'PUT',
+      credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(updateData)
     });
@@ -623,15 +620,6 @@ async function saveProfile() {
 
     const result = await response.json();
     console.log('Perfil actualizado exitosamente:', result);
-
-    const currentUserData = JSON.parse(localStorage.getItem('userData') || '{}');
-    const updatedUserData = {
-      ...currentUserData,
-      usuario: updateData.username,
-    };
-
-    localStorage.setItem('userData', JSON.stringify(updatedUserData));
-
     alert('Cuenta actualizada correctamente');
 
   } catch (error) {

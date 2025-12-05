@@ -81,24 +81,25 @@ const cargando = ref(false)
 async function cargarContratos() {
   try {
     cargando.value = true
-    const userData = localStorage.getItem('userData')
-    const token = localStorage.getItem('authToken') || localStorage.getItem('token')
 
-    if (!userData || !token) {
-      router.push({ name: 'IniciarSesion' })
-      return
+    const userResponse = await fetch('http://localhost:3000/auth/me', {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if (!userResponse.ok) {
+      throw new Error('No se encuentra autenticado');
     }
 
-    const user = JSON.parse(userData)
-    const usuarioId = user.usuario?.id_generated || user.id_generated
+    const userData = await userResponse.json();
+    const usuarioId = userData.user.id_generated || userData.user.userId;
 
-    console.log('Cargando contratos para usuario:', usuarioId)
 
     const response = await fetch(`http://localhost:3000/contratos/${usuarioId}`, {
       method: 'GET',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
       }
     })
 

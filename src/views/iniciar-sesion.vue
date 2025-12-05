@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
@@ -72,6 +72,47 @@ const mensajeUsuario = ref('')
 const mensajeContrasenya = ref('')
 const validacionUsuario = ref('')
 const validacionContrasenya = ref('')
+let mostrarFormulario = true;
+
+
+onMounted(async () => {
+  const auth = await verificarAutenticacion();
+  if (auth.autenticado) {
+    alert('Ya se encuentra autenticado')
+    volverAlMenu()
+    mostrarFormulario = false;
+  } else {
+    mostrarFormulario = true;
+  }
+})
+
+async function verificarAutenticacion() {
+  try {
+    const response = await fetch('http://localhost:3000/auth/verify', {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return {
+        autenticado: true,
+        usuario: data.user
+      };
+    } else {
+      return {
+        autenticado: false,
+        usuario: null
+      };
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      autenticado: false,
+      usuario: null
+    };
+  }
+}
 
 function validarUsuario() {
   const regex = /^[a-zA-Z0-9@._-]{3,}$/
@@ -112,6 +153,8 @@ function validarFormularioCompleto() {
 }
 
 async function iniciarSesion() {
+  if (!mostrarFormulario)
+    return
   if (!validarFormularioCompleto()) {
     return;
   }
@@ -125,6 +168,7 @@ async function iniciarSesion() {
     // Llamada al backend
     const response = await fetch('http://localhost:3000/auth/login', {
       method: 'POST',
+      credentials: 'include', //cookies
       headers: {
         'Content-Type': 'application/json'
       },
@@ -139,10 +183,6 @@ async function iniciarSesion() {
     if (!response.ok) {
       throw new Error(data.message || 'Error en el login');
     }
-
-    // Guardar token y datos del usuario
-    localStorage.setItem('authToken', data.access_token);
-    localStorage.setItem('userData', JSON.stringify(data.user));
 
     console.log('Login exitoso:', data.user);
     alert(t('auth.loginSuccess'));
