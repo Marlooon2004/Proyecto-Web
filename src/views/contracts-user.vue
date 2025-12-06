@@ -125,8 +125,7 @@ async function cargarContratos() {
       formaPago: contrato.forma_pago,
       seguro: contrato.seguro,
       activo: contrato.contrato_activo,
-      tarifaContrato: contrato.tarifa?.tarifa_contrato || 0,
-      tarifaProrroga: contrato.tarifa?.tarifa_prorroga || 0
+      tarifaContrato: contrato.tarifa?.tarifa_contrato + contrato.tarifa?.tarifa_prorroga || 0
     }))
 
   } catch (error) {

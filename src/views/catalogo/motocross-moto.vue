@@ -25,10 +25,12 @@
             <div class="product-info">
               <span class="product-price">{{ $t('catalog.currency') }}{{ product.costo }}{{ $t('catalog.perDay')
               }}</span>
+              <span class="product-price">{{ $t('catalog.disponibility') }}{{ product.situacion }} </span>
             </div>
           </div>
           <div class="product-footer">
-            <router-link :to="{
+            <!-- Solo motos "Libre" pueden reservar -->
+            <router-link v-if="product.situacion === 'Libre' || product.situacion === 'Alquilada'" :to="{
               name: 'ReservarMoto',
               query: {
                 id: product.id,
@@ -38,10 +40,16 @@
                 imagen: product.imagen,
                 precio: product.costo,
                 descripcion: product.descripcion,
+                situacion: product.situacion,
               }
             }" class="btn primary">
               {{ $t('catalog.reserve') }}
             </router-link>
+
+            <!-- Para motos en Taller o Alquiladas, mostrar botón deshabilitado -->
+            <button v-else class="btn primary-not" :disabled="true" :title="getTooltip(product.situacion)">
+              {{ $t('catalog.reserve') }}
+            </button>
           </div>
         </div>
       </div>
@@ -61,6 +69,18 @@ const router = useRouter()
 const products = ref([])
 const loading = ref(true)
 const error = ref(null)
+
+// Método para tooltip del botón deshabilitado
+function getTooltip(situacion) {
+  switch (situacion) {
+    case 'Taller':
+      return 'Moto en taller - No disponible para reserva';
+    case 'Alquilada':
+      return 'Moto actualmente alquilada';
+    default:
+      return 'No disponible para reserva';
+  }
+}
 
 function goHome() {
   router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
@@ -110,18 +130,30 @@ async function cargarMotosMotocross() {
     const dataMotocross = await response.json()
     console.log('Datos recibidos del backend:', dataMotocross)
 
-    products.value = dataMotocross.map((moto, index) => ({
-      id: moto.id_generated || `motocross-${index}`,
-      marca: moto.marca || 'Marca no disponible',
-      modelo: moto.modelo || 'Modelo no disponible',
-      descripcion: moto.descripcion || 'Descripción no disponible',
-      imagen: moto.ruta_imagen || '',
-      costo: moto.costo_dia || moto.price || '0',
-      categoria: moto.categoria || 'Motocross',
-      color: moto.color || 'No especificado',
-      cantd_km: moto.cantd_km || 0,
-      situacion: moto.situacion || 'No especificado'
-    }))
+    products.value = dataMotocross.map((moto, index) => {
+      let situacion = moto.situacion || 'No especificado';
+
+      if (situacion === 'L') {
+        situacion = 'Libre';
+      } else if (situacion === 'A') {
+        situacion = 'Alquilada';
+      } else {
+        situacion = 'Taller';
+      }
+
+      return {
+        id: moto.id_generated || `custom-${index}`,
+        marca: moto.marca || 'Marca no disponible',
+        modelo: moto.modelo || 'Modelo no disponible',
+        descripcion: moto.descripcion || 'Descripción no disponible',
+        imagen: moto.ruta_imagen || '',
+        costo: moto.costo_dia || moto.price || '0',
+        categoria: moto.categoria || 'Custom',
+        color: moto.color || 'No especificado',
+        cantd_km: moto.cantd_km || 0,
+        situacion: situacion
+      };
+    });
 
   } catch (err) {
     console.error('Error cargando motos de categoria motocross:', err)
@@ -338,18 +370,25 @@ onMounted(() => {
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-}
-
-.btn.primary {
-  background-color: #007bff;
-  color: white;
   text-decoration: none;
   display: inline-block;
   text-align: center;
 }
 
+.btn.primary {
+  background-color: #007bff;
+  color: white;
+}
+
 .btn.primary:hover {
   background-color: #0056b3;
+}
+
+.btn.primary-not {
+  background-color: #ff0000;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .btn.secondary {

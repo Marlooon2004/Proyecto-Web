@@ -213,37 +213,24 @@ onMounted(() => {
 // Cargar datos de usuario
 async function cargarDatosUsuario() {
   try {
-    const userData = localStorage.getItem('userData');
-    const token = localStorage.getItem('authToken');
-
-    if (!userData || !token) {
-      alert('Debe estar registrado para reservar una moto')
-      router.push({ name: 'IniciarSesion' });
-      return null;
-    }
-
-    const user = JSON.parse(userData);
-    const usuarioId = user.usuario?.id_generated || user.id_generated;
-
-    const response = await fetch(`http://localhost:3000/users/usuario/${usuarioId}`, {
+    const response = await fetch('http://localhost:3000/auth/me', {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      }
+      credentials: 'include'
     });
 
-    if (response.status === 404) {
-      console.log('Cliente no encontrado para este usuario');
-      return user;
+    if (response.status === 401 || response.status === 403) {
+      router.push({ name: 'IniciarSesion' });
+      return null;
     }
 
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${await response.text()}`);
     }
 
-    const cliente = await response.json();
-    return cliente;
+    const authData = await response.json();
+    const user = authData.user;
+
+    return user;
   } catch (error) {
     console.error('Error cargando datos del usuario:', error);
     router.push({ name: 'IniciarSesion' });
@@ -282,7 +269,6 @@ async function confirmarReserva() {
   isLoading.value = true;
 
   try {
-    const token = localStorage.getItem('authToken');
 
     let formaPagoContrato;
     if (formaPago.value == 'efectivo') {
@@ -307,9 +293,9 @@ async function confirmarReserva() {
 
     const response = await fetch('http://localhost:3000/contratos', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(reserva)
     })

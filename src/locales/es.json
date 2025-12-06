@@ -179,7 +179,8 @@
         "currency": "$",
         "perDay": "/dia",
         "scootersCatalog": "Catálogo de scooters",
-        "touringCatalog": "Catálogo de motos touring"
+        "touringCatalog": "Catálogo de motos touring",
+        "disponibility": "Disponibilidad: "
     },
     "reservation": {
         "title": "Reserva tu Moto",
@@ -253,6 +254,7 @@
         "active": "Activo",
         "inactive": "Inactivo",
         "description": "Descripcion",
-        "category": "Categoria"
+        "category": "Categoria",
+        "cost": "Costo"
     }
 }

@@ -178,7 +178,8 @@
     "currency": "$",
     "perDay": "/day",
     "scootersCatalog": "Scooters catalog",
-    "touringCatalog": "Touring motorcycles catalog"
+    "touringCatalog": "Touring motorcycles catalog",
+    "disponibility": "Disponibility: "
   },
   "reservation": {
     "title": "Book Your Motorcycle",
@@ -252,6 +253,7 @@
     "motorcycle": "Motorcycle",
     "inactive": "Inactive",
     "description": "Description",
-    "category": "Category"
+    "category": "Category",
+    "cost": "Cost"
   }
 }
