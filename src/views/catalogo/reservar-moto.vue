@@ -254,12 +254,29 @@ async function confirmarReserva() {
   }
 
   // Obtener cliente
-  const cliente = await cargarDatosUsuario();
+  let cliente;
+  try {
+    const usuario = await cargarDatosUsuario();
+    const usuarioId = usuario.id_generated || usuario.userId;
 
-  if (!cliente) {
-    alert('No se pudo obtener la información del cliente')
-    return
+    const clienteResponse = await fetch(`http://localhost:3000/users/usuario/${usuarioId}`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    if (clienteResponse.status === 404) {
+      return cliente;
+    }
+
+    if (!clienteResponse.ok) {
+      throw new Error(`Error ${clienteResponse.status}: ${await clienteResponse.text()}`);
+    }
+    cliente = await clienteResponse.json()
+  } catch (error) {
+    console.error('Error cargando datos del usuario:', error);
   }
+
+  console.log(cliente)
 
   if (formaPago.value === 'tarjeta' && (!numeroTarjeta.value || !fechaExpiracion.value || !cvv.value)) {
     alert(t('reservation.completeCardDetails'))
@@ -311,7 +328,6 @@ async function confirmarReserva() {
     router.push({ name: 'PaginaPrincipal', hash: '#portfolio' })
 
   } catch (error) {
-    console.error('Error al confirmar reserva:', error)
     alert(`Error al crear la reserva: ${error.message}`)
   } finally {
     isLoading.value = false
