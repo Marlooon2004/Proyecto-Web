@@ -30,7 +30,7 @@
           </div>
           <div class="product-footer">
             <!-- Solo motos "Libre" pueden reservar -->
-            <router-link v-if="product.situacion === 'Libre' || product.situacion === 'Alquilada'" :to="{
+            <router-link v-if="product.situacion === 'Libre'" :to="{
               name: 'ReservarMoto',
               query: {
                 id: product.id,

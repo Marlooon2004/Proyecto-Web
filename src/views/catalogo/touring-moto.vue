@@ -24,13 +24,13 @@
             <p class="product-description">{{ product.descripcion }}</p>
             <div class="product-info">
               <span class="product-price">{{ $t('catalog.currency') }}{{ product.costo }}{{ $t('catalog.perDay')
-                }}</span>
+              }}</span>
               <span class="product-price">{{ $t('catalog.disponibility') }}{{ product.situacion }} </span>
             </div>
           </div>
           <div class="product-footer">
             <!-- Solo motos "Libre" pueden reservar -->
-            <router-link v-if="product.situacion === 'Libre' || product.situacion === 'Alquilada'" :to="{
+            <router-link v-if="product.situacion === 'Libre'" :to="{
               name: 'ReservarMoto',
               query: {
                 id: product.id,
