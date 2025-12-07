@@ -198,7 +198,8 @@
     "cvv": "CVV",
     "completeCardDetails": "Please complete all card details",
     "price": "Price",
-    "check": "Check"
+    "check": "Check",
+    "processing": "processing reservation"
   },
   "profile": {
     "title": "My Profile",
